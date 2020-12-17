@@ -1,5 +1,6 @@
-package at.fhhagenberg.sqe;
+package at.fhhagenberg.sqe.esd.ws20.view;
 
+import at.fhhagenberg.sqe.esd.ws20.model.SystemInfo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

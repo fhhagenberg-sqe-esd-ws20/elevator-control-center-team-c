@@ -8,6 +8,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import at.fhhagenberg.sqe.esd.ws20.view.App;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
