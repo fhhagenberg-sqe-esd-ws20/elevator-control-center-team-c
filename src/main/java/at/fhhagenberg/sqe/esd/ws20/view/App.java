@@ -1,6 +1,5 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
-import at.fhhagenberg.sqe.esd.ws20.model.SystemInfo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,8 +14,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
+        var javaVersion = "1";
+        var javafxVersion = "2";
 
         var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
         var layout = new BorderPane(label);
