@@ -39,6 +39,13 @@
 			<version>4.0.16-alpha</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- fxml -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>13</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -86,7 +93,7 @@
 				<version>0.0.3</version>
 				<configuration>
 					<launcher>launcher</launcher>
-					<mainClass>at.fhhagenberg.sqe.esd.ws20.view.App</mainClass>
+					<mainClass>at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

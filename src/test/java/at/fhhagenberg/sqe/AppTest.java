@@ -8,7 +8,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 
-import at.fhhagenberg.sqe.esd.ws20.view.App;
+import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -23,7 +23,7 @@ public class AppTest {
      */
     @Start
     public void start(Stage stage) {
-        var app = new App();
+        var app = new ElevatorControlCenter();
         app.start(stage);
     }
 
