@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqe;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
@@ -30,6 +31,7 @@ public class AppTest {
     /**
      * @param robot - Will be injected by the test runner.
      */
+    @Disabled
     @Test
     public void testButtonWithText(FxRobot robot) {
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("Click me!"));
@@ -38,6 +40,7 @@ public class AppTest {
     /**
      * @param robot - Will be injected by the test runner.
      */
+    @Disabled
     @Test
     public void testButtonClick(FxRobot robot) {
         // when:

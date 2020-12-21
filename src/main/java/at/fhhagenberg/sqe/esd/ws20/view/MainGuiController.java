@@ -2,6 +2,9 @@ package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -36,7 +39,7 @@ public class MainGuiController {
     private Label label_status_text; // Value injected by FXMLLoader
 
     @FXML // fx:id="listview_elevators"
-    private ListView<?> listview_elevators; // Value injected by FXMLLoader
+    private ListView<String> listview_elevators; // Value injected by FXMLLoader
 
     @FXML // fx:id="label_target_text"
     private Label label_target_text; // Value injected by FXMLLoader
@@ -82,6 +85,12 @@ public class MainGuiController {
         assert button_send_to_floor != null : "fx:id=\"button_send_to_floor\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_position_text != null : "fx:id=\"label_position_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert checkbox_manual_mode != null : "fx:id=\"checkbox_manual_mode\" was not injected: check your FXML file 'MainGui.fxml'.";
-
+    }
+    
+    public void startcontroller() {
+        ObservableList<String>itemList = FXCollections.observableArrayList("item1","item2","item3");
+        listview_elevators.setItems(itemList);
+        
+        System.out.println(itemList);
     }
 }

@@ -1,8 +1,8 @@
+//https://stackoverflow.com/questions/10751271/accessing-fxml-controller-class
+
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,16 +10,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
-
 public class ElevatorControlCenter extends Application {
 
+	static MainGuiController mainGuiController;
+	
 	/**
 	 * Initializes and shows the gui.
 	 * All controls are saved in the fxml file TODO and use localization.
@@ -27,9 +25,11 @@ public class ElevatorControlCenter extends Application {
 	@Override
 	public void start(Stage stage) {
 		Parent root = null;
+		FXMLLoader loader;
 		try {
 			//TODO Readd localization at the end of the project after all strings were defined and externalized
-			root = FXMLLoader.load(getClass().getResource("/MainGui.fxml"));
+			loader = new FXMLLoader(getClass().getResource("/MainGui.fxml"));
+			root = loader.load();
 		} catch (IOException e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -45,6 +45,10 @@ public class ElevatorControlCenter extends Application {
 		scene.getStylesheets().add("/modena_dark.css");
 		stage.setScene(scene);
 		stage.show();
+		
+		//save controller
+		mainGuiController = (MainGuiController)loader.getController();
+		mainGuiController.startcontroller();
 	}
 
     public static void main(String[] args) {
