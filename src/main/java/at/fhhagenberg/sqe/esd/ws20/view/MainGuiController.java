@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
+import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
