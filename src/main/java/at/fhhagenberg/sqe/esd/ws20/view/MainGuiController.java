@@ -3,6 +3,7 @@ package at.fhhagenberg.sqe.esd.ws20.view;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
