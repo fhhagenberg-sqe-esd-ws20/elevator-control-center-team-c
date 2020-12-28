@@ -3,6 +3,7 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.List;
 import java.util.TimerTask;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
