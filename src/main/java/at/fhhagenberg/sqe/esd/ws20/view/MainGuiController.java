@@ -93,4 +93,12 @@ public class MainGuiController {
         
         System.out.println(itemList);
     }
+    
+    public void update() {
+    	
+    }
+    
+    public void registerModels(IBuildingModel buildingModel, IElevatorModel elevatorModel, IFloorModel floorModel) {
+    	
+    }
 }
