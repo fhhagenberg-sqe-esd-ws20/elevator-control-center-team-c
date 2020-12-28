@@ -3,8 +3,17 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
+import at.fhhagenberg.sqe.esd.ws20.model.BuildingModel;
+import at.fhhagenberg.sqe.esd.ws20.model.ElevatorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.FloorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
+import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +64,30 @@ public class ElevatorControlCenter extends Application {
 
     public static void main(String[] args) {
         Timer time = new Timer();
-        time.schedule(new UpdateData(), 0, 1000);
+        
+        // Creating models
+        StatusAlert statusAlert = new StatusAlert();        
+        IBuildingModel building = new BuildingModel();
+        IFloorModel floor = new FloorModel();
+        
+        // creating 3 elevators
+        List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
+        for(int i = 0; i < 3; i++)
+        {
+        	elevators.add(new ElevatorModel());
+        }
+        
+        // creating updater, which polls values from the elevator every 10ms
+        //UpdateData updater = new UpdateData(building, floor, elevators, sqelevator);
+        
+        // give information about the models to the mainGuiController
+        //mainGuiController.registerModels(building, elevators, floor); //TODO: nullpointerexception?
+        
+        //time.schedule(updater, 0, 1000);
+        
+        
+        
+        
         launch();
         time.cancel();
 

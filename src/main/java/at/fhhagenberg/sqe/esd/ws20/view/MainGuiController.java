@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
@@ -101,7 +102,7 @@ public class MainGuiController {
     	
     }
     
-    public void registerModels(IBuildingModel buildingModel, IElevatorModel elevatorModel, IFloorModel floorModel) {
+    public void registerModels(IBuildingModel buildingModel, List<IElevatorModel> elevatorModels, IFloorModel floorModel) {
     	
     }
 }
