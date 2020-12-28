@@ -20,7 +20,7 @@ IElevator
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>340</x>
+      <x>470</x>
       <y>50</y>
       <w>210</w>
       <h>190</h>
@@ -51,7 +51,7 @@ IElevatorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>430</x>
+      <x>490</x>
       <y>230</y>
       <w>30</w>
       <h>130</h>
@@ -69,17 +69,6 @@ IElevatorWrapper
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>540</x>
-      <y>160</y>
-      <w>340</w>
-      <h>600</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>320.0;580.0;230.0;580.0;230.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
@@ -286,7 +275,7 @@ int when changed in gui
     <id>Relation</id>
     <coordinates>
       <x>700</x>
-      <y>750</y>
+      <y>780</y>
       <w>180</w>
       <h>40</h>
     </coordinates>
@@ -491,7 +480,7 @@ binding</panel_attributes>
     <coordinates>
       <x>0</x>
       <y>0</y>
-      <w>630</w>
+      <w>1090</w>
       <h>580</h>
     </coordinates>
     <panel_attributes>sqelevator
@@ -542,5 +531,54 @@ binding</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;590.0;10.0;590.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>230</x>
+      <y>50</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+IFloorWrapper
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>230</y>
+      <w>30</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>160</y>
+      <w>210</w>
+      <h>630</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>190.0;610.0;100.0;610.0;100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>230</y>
+      <w>540</w>
+      <h>540</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>520.0;520.0;460.0;520.0;460.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
