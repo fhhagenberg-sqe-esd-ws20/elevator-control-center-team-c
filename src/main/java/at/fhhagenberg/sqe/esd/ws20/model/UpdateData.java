@@ -38,7 +38,7 @@ public class UpdateData extends TimerTask {
         	//get current clocktick to guarantee atomar access
         	long clocktickBeforeUpdate = Sqelevator.getClockTick();
         	
-        	
+        	//
         	//TODO: Alle Lifte hier updaten? Oder jeden Lift einzeln? Es gibt nur eine einzige Updatemethode
         	// Get parameters for all elevators
         	//.
