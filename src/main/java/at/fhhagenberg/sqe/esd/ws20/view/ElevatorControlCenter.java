@@ -5,7 +5,7 @@ package at.fhhagenberg.sqe.esd.ws20.view;
 import java.io.IOException;
 import java.util.Timer;
 
-import at.fhhagenberg.sqe.esd.ws2020.controller.PeriodicTask;
+import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -55,7 +55,7 @@ public class ElevatorControlCenter extends Application {
 
     public static void main(String[] args) {
         Timer time = new Timer();
-        time.schedule(new PeriodicTask(), 0, 1000);
+        time.schedule(new UpdateData(), 0, 1000);
         launch();
         time.cancel();
 
