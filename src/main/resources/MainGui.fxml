@@ -75,7 +75,7 @@
                   <Label maxWidth="1.7976931348623157E308" text="Target" />
                   <Label maxWidth="1.7976931348623157E308" text="Position" />
                   <Label maxWidth="1.7976931348623157E308" text="Direction" />
-                  <Label maxWidth="1.7976931348623157E308" text="Payload [kg]" />
+                  <Label maxWidth="1.7976931348623157E308" text="Payload [lbs]" />
                   <Label maxWidth="1.7976931348623157E308" text="Speed [feet/s]" />
                   <Label maxWidth="1.7976931348623157E308" text="Doors" />
                </children>
