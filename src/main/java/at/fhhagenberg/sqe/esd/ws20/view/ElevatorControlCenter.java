@@ -78,7 +78,7 @@ public class ElevatorControlCenter extends Application {
         }
         
         // creating updater, which polls values from the elevator every 10ms
-        //UpdateData updater = new UpdateData(building, floor, elevators, sqelevator);
+        //UpdateData updater = new UpdateData(building, floor, elevators, sqelevator, mainGuiController);
         
         // give information about the models to the mainGuiController
         //mainGuiController.registerModels(building, elevators, floor); //TODO: nullpointerexception?
