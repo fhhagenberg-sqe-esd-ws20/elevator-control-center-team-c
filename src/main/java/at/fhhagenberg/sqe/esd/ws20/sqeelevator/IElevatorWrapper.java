@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe.esd.ws20.model;
+package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 public interface IElevatorWrapper {
 
