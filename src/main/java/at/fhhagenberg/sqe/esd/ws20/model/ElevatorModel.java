@@ -4,6 +4,18 @@ import java.util.List;
 
 public class ElevatorModel implements IElevatorModel {
 
+	/**
+	 * Add stop to elevator stop list
+	 */
+	@Override
+	public void AddStop(int stop)
+	{
+		if(!(Stops.contains(stop)))
+		{
+			Stops.add(stop);
+		}
+	}
+	
 	@Override
 	public void SetTarget(int target)
 	{
@@ -86,17 +98,6 @@ public class ElevatorModel implements IElevatorModel {
 	public List<Integer> GetStops()
 	{
 		return Stops;
-	}
-	
-	
-	
-	@Override
-	public void AddStop(int stop)
-	{
-		if(!(Stops.contains(stop)))
-		{
-			Stops.add(stop);
-		}
 	}
 	
 	
