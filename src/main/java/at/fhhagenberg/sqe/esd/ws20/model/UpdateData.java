@@ -29,6 +29,9 @@ public class UpdateData extends TimerTask {
 	}
 	
 
+    /**
+     * Initializes all constant properties of the building
+     */
 	public void initializeBuilding() throws RemoteException
 	{
 		// get number of floors and number of Elevators from the building
@@ -49,20 +52,15 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
-	private IElevatorWrapper Sqelevator;
-	private IBuildingWrapper SqBuilding;
-	private IBuildingModel Building;
-	private IFloorModel Floor;
-	private List<IElevatorModel> Elevators;
-	private MainGuiController GuiController;
+
 	
-	private int SelectedElevator;
-	
-	
+    /**
+     * Periodic task refreshes properties of the elevator periodically
+     */
     @Override
     public void run() {
         try {
-        	System.out.println("getting Data from Simulator");
+        	System.out.println("Getting Data from Simulator");
         	
         	//get current clocktick to guarantee atomar access
         	long clocktickBeforeUpdate = Sqelevator.getClockTick();
@@ -91,4 +89,28 @@ public class UpdateData extends TimerTask {
         } catch (Exception ex) {
         }
     }
+    
+    /**
+     * Set the index of the elevator, which is currently selected in the view
+     */
+    public void setSelectedElevator(int elevatorIdx)
+    {
+    	if(elevatorIdx > 0 && elevatorIdx < Elevators.size())
+		{
+			SelectedElevator = elevatorIdx;
+		}
+    }
+    
+    
+    
+	private IElevatorWrapper Sqelevator;
+	private IBuildingWrapper SqBuilding;
+	private IBuildingModel Building;
+	private IFloorModel Floor;
+	private List<IElevatorModel> Elevators;
+	private MainGuiController GuiController;
+	private int SelectedElevator;
+    
+    
+    
 }
