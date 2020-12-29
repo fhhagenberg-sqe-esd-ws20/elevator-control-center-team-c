@@ -8,6 +8,7 @@ import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -99,7 +100,7 @@ public class MainGuiController {
         System.out.println(itemList);
     }
     
-    public void update() {
+    public void update(IBuildingModel building, IFloorModel floor, IElevatorModel elevators) {
     	
     }
 
