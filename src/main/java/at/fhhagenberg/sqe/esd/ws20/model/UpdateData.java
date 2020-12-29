@@ -128,6 +128,28 @@ public class UpdateData extends TimerTask {
     	}
     }
     
+    /**
+     * Refresh list with pressed up buttons
+     */
+    public void refreshUpList() throws RemoteException
+    {
+    	for(int i = 0; i < Building.GetNumFloors(); i++)
+    	{
+    		
+    	}
+    	
+    }
+    
+    /**
+     * Refresh list with pressed down buttons
+     */
+    public void refreshDownList() throws RemoteException
+    {
+    	
+    	
+    }
+    
+    
 	private IElevatorWrapper Sqelevator;
 	private IBuildingWrapper SqBuilding;
 	private IBuildingModel Building;
