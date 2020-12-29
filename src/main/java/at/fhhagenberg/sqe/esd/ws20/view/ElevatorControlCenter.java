@@ -3,6 +3,7 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -16,7 +17,9 @@ import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -67,7 +70,12 @@ public class ElevatorControlCenter extends Application {
 		mainGuiController = (MainGuiController)loader.getController();
 		
 		// Setup and connect objects, which are necessary for the MVC Pattern
-		SetupMVC();
+		try {
+			SetupMVC();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		mainGuiController.startcontroller();
 		
@@ -81,26 +89,34 @@ public class ElevatorControlCenter extends Application {
 
     }
     
-    public void SetupMVC()
+    /**
+     * Create models and Controller and connect them with each other
+     * @throws RemoteException 
+     */
+    public void SetupMVC() throws RemoteException
     {	
         // Creating models
         StatusAlert statusAlert = new StatusAlert();        
         IBuildingModel building = new BuildingModel();
         IFloorModel floor = new FloorModel();
+        ElevatorWrapper sqelevator = new ElevatorWrapper(null);				//TODO: use a Mock or the Simulator instead of null
+
         
-        // creating 3 elevators
+        // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
-        for(int i = 0; i < 3; i++)
-        {
-        	elevators.add(new ElevatorModel());
-        }
+//		int nrElevators = sqelevator.getElevatorNum();
+//        for(int i = 0; i < nrElevators; i++)
+//        {
+//        	elevators.add(new ElevatorModel());
+//        }
+        
         
         // Create Scheduler
         scheduler = new Timer();
 
-        ElevatorWrapper sqelevator = new ElevatorWrapper(null);				//TODO: use a Mock or the Simulator instead of null
+
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(sqelevator, building, floor, elevators, mainGuiController);
+        UpdateData updater = new UpdateData(sqelevator, sqelevator, building, floor, elevators, mainGuiController);
         
         // give information about the models to the mainGuiController
         mainGuiController.register(updater);

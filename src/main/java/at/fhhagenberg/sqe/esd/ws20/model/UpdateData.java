@@ -1,29 +1,40 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
 public class UpdateData extends TimerTask {
 
-	public UpdateData(ElevatorWrapper sqelevator, IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController)
+	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
+			MainGuiController guiController) throws RemoteException
 	{
+		// assign models to the internal fields
+		SqBuilding = sqbuilding;
 		Building = building;
 		Floor = floor;
 		Elevators = elevators;
 		Sqelevator = sqelevator;
 		GuiController = guiController;
 		
+		
+
+		
 		// TODO: Daten, die sich nur einmal ändern (Anzahl der Lifte, ServicesFloors, ... hier einmalig im Konstruktor zuweisen?)
 	}
 	
+
+	
+	
 	
 	private IElevatorWrapper Sqelevator;
+	private IBuildingWrapper SqBuilding;
 	private IBuildingModel Building;
 	private IFloorModel Floor;
 	private List<IElevatorModel> Elevators;
