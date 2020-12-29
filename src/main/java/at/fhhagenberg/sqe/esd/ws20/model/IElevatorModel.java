@@ -3,6 +3,12 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.List;
 
 public interface IElevatorModel {
+	
+	/**
+	 * Add stop to elevator stop list
+	 */
+	void AddStop(int stop);
+
 
 	void SetTarget(int target);
 
@@ -32,6 +38,6 @@ public interface IElevatorModel {
 
 	List<Integer> GetStops();
 
-	void AddStop(int stop);
+
 
 }
