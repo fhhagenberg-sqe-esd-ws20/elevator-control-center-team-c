@@ -84,7 +84,7 @@ public class ElevatorControlCenter extends Application {
         //mainGuiController.registerModels(building, elevators, floor); //TODO: nullpointerexception?
         
         //time.schedule(updater, 0, 1000);
-        
+        //
         
         
         
