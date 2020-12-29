@@ -102,7 +102,7 @@ public class MainGuiController {
     	
     }
     
-    public void registerModels(IBuildingModel buildingModel, List<IElevatorModel> elevatorModels, IFloorModel floorModel) {
+    public void registerModels(IBuildingModel buildingModel, IElevatorModel aciveElevator, IFloorModel floorModel) {
     	
     }
 }

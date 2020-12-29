@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 public class ElevatorControlCenter extends Application {
 
 	static MainGuiController mainGuiController;
+	static Timer scheduler;
 	
 	/**
 	 * Initializes and shows the gui.
@@ -57,14 +58,24 @@ public class ElevatorControlCenter extends Application {
 		stage.setScene(scene);
 		stage.show();
 		
+
+		
 		//save controller
 		mainGuiController = (MainGuiController)loader.getController();
 		mainGuiController.startcontroller();
+		
+		// stop scheduler, when application is shutting down
+        scheduler.cancel();
 	}
 
     public static void main(String[] args) {
-        Timer time = new Timer();
         
+        launch();
+
+    }
+    
+    public void SetupMVC()
+    {	
         // Creating models
         StatusAlert statusAlert = new StatusAlert();        
         IBuildingModel building = new BuildingModel();
@@ -77,20 +88,17 @@ public class ElevatorControlCenter extends Application {
         	elevators.add(new ElevatorModel());
         }
         
-        // creating updater, which polls values from the elevator every 10ms
-        //UpdateData updater = new UpdateData(building, floor, elevators, sqelevator, mainGuiController);
+        // Create Scheduler
+        scheduler = new Timer();
+
+        // Create updater, which polls values from the elevator every 10ms
+        UpdateData updater = new UpdateData(building, floor, elevators, sqelevator, mainGuiController);
         
         // give information about the models to the mainGuiController
         //mainGuiController.registerModels(building, elevators, floor); //TODO: nullpointerexception?
         
-        //time.schedule(updater, 0, 1000);
+        scheduler.schedule(updater, 0, 1000);
         //
-        
-        
-        
-        launch();
-        time.cancel();
-
     }
 
 }
