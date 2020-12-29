@@ -23,14 +23,30 @@ public class UpdateData extends TimerTask {
 		Sqelevator = sqelevator;
 		GuiController = guiController;
 		
-		
+		initializeBuilding();
 
 		
-		// TODO: Daten, die sich nur einmal ändern (Anzahl der Lifte, ServicesFloors, ... hier einmalig im Konstruktor zuweisen?)
 	}
 	
 
-	
+	public void initializeBuilding() throws RemoteException
+	{
+		// get number of floors and number of Elevators from the building
+		Building.SetNumFloors(SqBuilding.getFloorNum());
+		Building.SetNumElevators(SqBuilding.getElevatorNum());
+		
+		// get all servicefloors of each elevator and store them in a list, which contains all service floors of the whole building
+		for(int elevator = 0; elevator < Elevators.size(); elevator++)
+		{
+			for(int floor = 0; floor < Building.GetNumFloors(); floor++)
+			{
+				if(Sqelevator.getServicesFloors(elevator, floor))
+				{
+					Building.AddServiceFloor(floor);
+				}
+			}
+		}
+	}
 	
 	
 	private IElevatorWrapper Sqelevator;
