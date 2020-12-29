@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -101,8 +102,8 @@ public class MainGuiController {
     public void update() {
     	
     }
-    
-    public void registerModels(IBuildingModel buildingModel, List<IElevatorModel> elevatorModels, IFloorModel floorModel) {
-    	
-    }
+
+	public void register(UpdateData updater) {
+		// TODO Auto-generated method stub
+	}
 }

@@ -15,6 +15,8 @@ import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,6 +30,8 @@ import javafx.stage.Stage;
 public class ElevatorControlCenter extends Application {
 
 	static MainGuiController mainGuiController;
+	static Timer scheduler;
+	static final int SCHEDULER_POLLING_INTERVAL_MS = 1000;
 	
 	/**
 	 * Initializes and shows the gui.
@@ -57,14 +61,28 @@ public class ElevatorControlCenter extends Application {
 		stage.setScene(scene);
 		stage.show();
 		
+
+		
 		//save controller
 		mainGuiController = (MainGuiController)loader.getController();
+		
+		// Setup and connect objects, which are necessary for the MVC Pattern
+		SetupMVC();
+		
 		mainGuiController.startcontroller();
+		
+		// stop scheduler, when application is shutting down
 	}
 
     public static void main(String[] args) {
-        Timer time = new Timer();
         
+        launch();
+        scheduler.cancel();
+
+    }
+    
+    public void SetupMVC()
+    {	
         // Creating models
         StatusAlert statusAlert = new StatusAlert();        
         IBuildingModel building = new BuildingModel();
@@ -77,20 +95,18 @@ public class ElevatorControlCenter extends Application {
         	elevators.add(new ElevatorModel());
         }
         
-        // creating updater, which polls values from the elevator every 10ms
-        //UpdateData updater = new UpdateData(building, floor, elevators, sqelevator, mainGuiController);
+        // Create Scheduler
+        scheduler = new Timer();
+
+        ElevatorWrapper sqelevator = new ElevatorWrapper(null);				//TODO: use a Mock or the Simulator instead of null
+		// Create updater, which polls values from the elevator every 10ms
+        UpdateData updater = new UpdateData(sqelevator, building, floor, elevators, mainGuiController);
         
         // give information about the models to the mainGuiController
-        //mainGuiController.registerModels(building, elevators, floor); //TODO: nullpointerexception?
+        mainGuiController.register(updater);
         
-        //time.schedule(updater, 0, 1000);
-        
-        
-        
-        
-        launch();
-        time.cancel();
-
+        // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
+        scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);
     }
 
 }

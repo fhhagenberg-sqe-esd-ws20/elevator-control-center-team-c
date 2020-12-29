@@ -3,13 +3,15 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.List;
 import java.util.TimerTask;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
 public class UpdateData extends TimerTask {
 
-	public UpdateData(IElevatorWrapper sqelevator, IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController)
+	public UpdateData(ElevatorWrapper sqelevator, IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
+			MainGuiController guiController)
 	{
 		Building = building;
 		Floor = floor;
