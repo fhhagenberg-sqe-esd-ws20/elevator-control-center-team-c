@@ -112,13 +112,16 @@ public class UpdateData extends TimerTask {
     }
     
     
-    //TODO: Was soll diese Funktion machen?
     /**
-     * 
+     * Press stop Button at the current selected elevator
      */
     public void setTarget(int floor)
     {
-
+    	if(floor <= Building.GetNumFloors())
+    	{
+    		Elevators.get(SelectedElevator).AddStop(floor);
+    		GuiController.update(Building, Floor, Elevators.get(SelectedElevator));
+    	}
     }
     
     
