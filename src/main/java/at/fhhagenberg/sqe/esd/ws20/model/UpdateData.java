@@ -2,12 +2,10 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
