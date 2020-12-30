@@ -16,7 +16,7 @@ public class ElevatorModel implements IElevatorModel {
 	 * Add stop to elevator stop list
 	 */
 	@Override
-	public void AddStop(Integer stop)
+	public void addStop(Integer stop)
 	{
 		if (Stops == null)
 		{
@@ -30,43 +30,43 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void SetTarget(Integer target)
+	public void setTarget(Integer target)
 	{
 		Target = target;
 	}
 	
 	@Override
-	public void SetPosition(Integer position)
+	public void setPosition(Integer position)
 	{
 		Position = position;
 	}
 	
 	@Override
-	public void SetDirection(Integer direction)
+	public void setDirection(Integer direction)
 	{
 		Direction = direction;
 	}
 	
 	@Override
-	public void SetPayload(Integer payload)
+	public void setPayload(Integer payload)
 	{
 		Payload = payload;
 	}
 	
 	@Override
-	public void SetSpeed(Integer speed)
+	public void setSpeed(Integer speed)
 	{
 		Speed = speed;
 	}
 	
 	@Override
-	public void SetDoors(Integer doors)
+	public void setDoors(Integer doors)
 	{
 		Doors = doors;
 	}
 	
 	@Override
-	public void SetStops(List<Integer> stops)
+	public void setStops(List<Integer> stops)
 	{
 		if(stops != null)
 		{
@@ -75,49 +75,49 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public Integer GetTarget()
+	public Integer getTarget()
 	{
 		return Target;
 	}
 	
 	@Override
-	public Integer GetPosition()
+	public Integer getPosition()
 	{
 		return Position;
 	}
 	
 	@Override
-	public Integer GetDirection()
+	public Integer getDirection()
 	{
 		return Direction;
 	}
 	
 	@Override
-	public Integer GetPayload()
+	public Integer getPayload()
 	{
 		return Payload;
 	}
 	
 	@Override
-	public Integer GetSpeed()
+	public Integer getSpeed()
 	{
 		return Speed;
 	}
 	
 	@Override
-	public Integer GetDoors()
+	public Integer getDoors()
 	{
 		return Doors;
 	}
 	
 	@Override
-	public List<Integer> GetStops()
+	public List<Integer> getStops()
 	{
 		return Stops;
 	}
 	
 	@Override
-	public void AddIgnoredFloor(int floorNumber)
+	public void addIgnoredFloor(int floorNumber)
 	{
 		if(!(IgnoredFloors.contains(floorNumber)))
 		{
@@ -126,7 +126,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void SetIgnoredFloors(List<Integer> serviceFloors)
+	public void setIgnoredFloors(List<Integer> serviceFloors)
 	{
 		if(serviceFloors != null)
 		{
@@ -135,7 +135,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public List<Integer> GetIgnoredFloors()
+	public List<Integer> getIgnoredFloors()
 	{
 		return IgnoredFloors;
 	}	

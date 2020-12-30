@@ -7,53 +7,53 @@ public interface IElevatorModel {
 	/**
 	 * Add stop to elevator stop list
 	 */
-	void AddStop(Integer stop);
+	void addStop(Integer stop);
 
 
-	void SetTarget(Integer target);
+	void setTarget(Integer target);
 
-	void SetPosition(Integer position);
+	void setPosition(Integer position);
 
-	void SetDirection(Integer direction);
+	void setDirection(Integer direction);
 
-	void SetPayload(Integer payload);
+	void setPayload(Integer payload);
 
-	void SetSpeed(Integer speed);
+	void setSpeed(Integer speed);
 
-	void SetDoors(Integer doors);
+	void setDoors(Integer doors);
 
-	void SetStops(List<Integer> stops);
+	void setStops(List<Integer> stops);
 
-	Integer GetTarget();
+	Integer getTarget();
 
-	Integer GetPosition();
+	Integer getPosition();
 
-	Integer GetDirection();
+	Integer getDirection();
 
-	Integer GetPayload();
+	Integer getPayload();
 
-	Integer GetSpeed();
+	Integer getSpeed();
 
-	Integer GetDoors();
+	Integer getDoors();
 
-	List<Integer> GetStops();
+	List<Integer> getStops();
 
 	/**
 	 * Adds a floor to the service-list so the elevator will service the specified floor.
 	 * @param floorNumber the floor which should be serviced
 	 */
-	public void AddIgnoredFloor(int floorNumber);
+	public void addIgnoredFloor(int floorNumber);
 	
 	/**
 	 * Set the list of floors which are serviced by the elevator.
 	 * @param floorNumber the floor which should be serviced
 	 */
-	void SetIgnoredFloors(List<Integer> serviceFloors);
+	void setIgnoredFloors(List<Integer> serviceFloors);
 	
 	/**
 	 * Get the list of floors which are serviced by the elevator.
 	 * @return the floor which are serviced
 	 */
-	List<Integer> GetIgnoredFloors();
+	List<Integer> getIgnoredFloors();
 
 }

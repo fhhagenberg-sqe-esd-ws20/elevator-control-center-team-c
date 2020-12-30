@@ -6,25 +6,25 @@ import java.util.List;
 public class BuildingModel implements IBuildingModel {
 	
 	@Override
-	public void SetNumElevators(int numElevators)
+	public void setNumElevators(int numElevators)
 	{
 		NumElevators = numElevators;
 	}
 	
 	@Override
-	public void SetNumFloors(int numFloors)
+	public void setNumFloors(int numFloors)
 	{
 		NumFloors = numFloors;
 	}
 		
 	@Override
-	public int GetNumElevators()
+	public int getNumElevators()
 	{
 		return NumElevators;
 	}
 	
 	@Override
-	public int GetNumFloors()
+	public int getNumFloors()
 	{
 		return NumFloors;
 	}

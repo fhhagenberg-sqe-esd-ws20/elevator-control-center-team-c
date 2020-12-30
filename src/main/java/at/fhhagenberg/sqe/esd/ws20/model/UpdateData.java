@@ -37,8 +37,8 @@ public class UpdateData extends TimerTask {
 	public void initializeBuilding() throws RemoteException
 	{
 		// get number of floors and number of Elevators from the building
-		Building.SetNumFloors(SqBuilding.getFloorNum());
-		Building.SetNumElevators(SqBuilding.getElevatorNum());
+		Building.setNumFloors(SqBuilding.getFloorNum());
+		Building.setNumElevators(SqBuilding.getElevatorNum());
 	}
 	
 	/** 
@@ -49,7 +49,7 @@ public class UpdateData extends TimerTask {
 	{
 		//check if the number of stored elevators is the same as the number of 
 		//elevators in the buildung
-		if(Building.GetNumElevators() != Elevators.size()) 
+		if(Building.getNumElevators() != Elevators.size()) 
 		{
 			throw new RuntimeException("Numer of sored elevators not the same as elevators in the building!");
 		}
@@ -57,11 +57,11 @@ public class UpdateData extends TimerTask {
 		// get all servicefloors of each elevator and store them in a list
 		for(int elevator = 0; elevator < Elevators.size(); elevator++)
 		{
-			for(int floor = 0; floor < Building.GetNumFloors(); floor++)
+			for(int floor = 0; floor < Building.getNumFloors(); floor++)
 			{
 				if(!Sqelevator.getServicesFloors(elevator, floor))
 				{
-					Elevators.get(elevator).AddIgnoredFloor(floor);
+					Elevators.get(elevator).addIgnoredFloor(floor);
 				}
 			}
 		}
@@ -111,11 +111,11 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor, int elevator)
     {
-    	if(floor >= 0 && floor <= Building.GetNumFloors())
+    	if(floor >= 0 && floor <= Building.getNumFloors())
 		{
 			if(elevator >= 0 && elevator < Elevators.size())
 			{
-				Elevators.get(elevator).SetTarget(floor);
+				Elevators.get(elevator).setTarget(floor);
 				
 				// set new target for SQElevator
 				try {
@@ -139,9 +139,9 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor)
     {
-    	if(floor >= 0 && floor <= Building.GetNumFloors())
+    	if(floor >= 0 && floor <= Building.getNumFloors())
     	{
-    		Elevators.get(SelectedElevator).SetTarget(floor);
+    		Elevators.get(SelectedElevator).setTarget(floor);
     		
 			// set new target for SQElevator
 			try {
@@ -183,15 +183,15 @@ public class UpdateData extends TimerTask {
      */
     public void refreshUpList() throws RemoteException
     {
-    	Floor.ClearUps();
+    	Floor.clearUpButtonsList();
     	
     	// check the up buttons of the floors
-    	for(int i = 0; i < Building.GetNumFloors(); i++)
+    	for(int i = 0; i < Building.getNumFloors(); i++)
     	{
     		// if button up is pressed, this button will be added to the list
     		if(SqBuilding.getFloorButtonUp(i))
     		{
-    			Floor.AddUp(i);
+    			Floor.addButtonUp(i);
     		}
     	}
     }
@@ -201,15 +201,15 @@ public class UpdateData extends TimerTask {
      */
     public void refreshDownList() throws RemoteException
     {
-    	Floor.ClearDowns();
+    	Floor.clearDownButtonsList();
     	
     	// Check the down buttons of the floors
-    	for(int i = 0; i < Building.GetNumFloors(); i++)
+    	for(int i = 0; i < Building.getNumFloors(); i++)
     	{
     		// if down button is pressed in a floor, add id to the list
     		if(SqBuilding.getFloorButtonDown(i))
     		{
-    			Floor.AddDown(i);
+    			Floor.addButtonDown(i);
     		}
     	}
     }
@@ -230,19 +230,19 @@ public class UpdateData extends TimerTask {
     	IElevatorModel tempElevator = new ElevatorModel();
     	
     	// refresh all fields in the elevator
-    	tempElevator.SetTarget(Sqelevator.getTarget(elevator_idx));
-    	tempElevator.SetDoors(Sqelevator.getElevatorDoorStatus(elevator_idx));
-    	tempElevator.SetPosition(Sqelevator.getElevatorFloor(elevator_idx));
-    	tempElevator.SetSpeed(Sqelevator.getElevatorSpeed(elevator_idx));
-    	tempElevator.SetPayload(Sqelevator.getElevatorWeight(elevator_idx));
-    	tempElevator.SetDirection(Sqelevator.getCommittedDirection(elevator_idx));
+    	tempElevator.setTarget(Sqelevator.getTarget(elevator_idx));
+    	tempElevator.setDoors(Sqelevator.getElevatorDoorStatus(elevator_idx));
+    	tempElevator.setPosition(Sqelevator.getElevatorFloor(elevator_idx));
+    	tempElevator.setSpeed(Sqelevator.getElevatorSpeed(elevator_idx));
+    	tempElevator.setPayload(Sqelevator.getElevatorWeight(elevator_idx));
+    	tempElevator.setDirection(Sqelevator.getCommittedDirection(elevator_idx));
     	
     	// refresh stoplist
     	List<Integer> Stops = new ArrayList<Integer>();
-    	tempElevator.SetStops(Stops);
+    	tempElevator.setStops(Stops);
     	
     	// get pressed stops for all floors
-    	for(int i = 0; i < Building.GetNumFloors(); i++)
+    	for(int i = 0; i < Building.getNumFloors(); i++)
     	{
     		// if stop button was pressed in this elevator, add it to the list
     		if(Sqelevator.getElevatorButton(elevator_idx, i))

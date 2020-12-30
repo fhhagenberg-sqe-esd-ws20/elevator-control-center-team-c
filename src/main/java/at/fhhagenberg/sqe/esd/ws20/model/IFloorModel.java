@@ -3,33 +3,35 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.List;
 
 public interface IFloorModel {
-
+	
 	/**
 	 * Add button press of an up button to the list
+	 * @param 
 	 */
-	public void AddUp(int up);
+	public void addButtonUp(int up);
 	
 	/**
 	 * Add button press of an down button to the list
 	 */
-	public void AddDown(int down);
+	public void addButtonDown(int down);
+	
 	
 	/**
 	 * clear the content of the up list
 	 */
-	public void ClearUps();
+	public void clearUpButtonsList();
 	
 	/**
 	 * clear the content of the down list
 	 */
-	public void ClearDowns();
+	public void clearDownButtonsList();
 	
-	void SetUps(List<Integer> ups);
+	void setUpButtonsList(List<Integer> ups);
 
-	void SetDowns(List<Integer> downs);
+	void setDownButtonsList(List<Integer> downs);
 
-	List<Integer> GetUps();
+	List<Integer> getUpButtonsList();
 
-	List<Integer> GetDowns();
+	List<Integer> getDownButtonsList();
 
 }
