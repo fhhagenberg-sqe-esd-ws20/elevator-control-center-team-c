@@ -4,6 +4,7 @@ module at.fhhagenberg.sqe.esd.ws20 {
 	requires javafx.graphics;
 	requires java.rmi;
 	requires java.sql;
+	requires javafx.base;
 
 	exports at.fhhagenberg.sqe.esd.ws20.view;
 	exports at.fhhagenberg.sqe.esd.ws20.model;

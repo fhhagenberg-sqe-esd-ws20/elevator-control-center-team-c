@@ -1,25 +1,33 @@
+//https://stackoverflow.com/questions/31039449/java-8-u40-textformatter-javafx-to-restrict-user-input-only-for-decimal-number
+
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
-import java.util.List;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ResourceBundle;
 
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+
 
 /**
- * Sample Skeleton for 'MainGui.fxml' Controller Class
+ * Main Controller for the MainGui.fxml.
+ * Also handles checkbox/button events.
+ * 
+ * @author Lukas Ebenstein (s1910567015)
+ * @since 2020-12-30 00:07
  */
 public class MainGuiController {
 
@@ -73,7 +81,7 @@ public class MainGuiController {
 
     @FXML // fx:id="checkbox_manual_mode"
     private CheckBox checkbox_manual_mode; // Value injected by FXMLLoader
-
+    
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert label_payload_text != null : "fx:id=\"label_payload_text\" was not injected: check your FXML file 'MainGui.fxml'.";
@@ -91,20 +99,80 @@ public class MainGuiController {
         assert button_send_to_floor != null : "fx:id=\"button_send_to_floor\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_position_text != null : "fx:id=\"label_position_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert checkbox_manual_mode != null : "fx:id=\"checkbox_manual_mode\" was not injected: check your FXML file 'MainGui.fxml'.";
-    }
-    
-    public void startcontroller() {
-        ObservableList<String>itemList = FXCollections.observableArrayList("item1","item2","item3");
-        listview_elevators.setItems(itemList);
         
-        System.out.println(itemList);
+        setup();
     }
     
-    public void update(IBuildingModel building, IFloorModel floor, IElevatorModel elevators) {
+    @FXML
+    void checkboxManualAutomatic(ActionEvent event) {
+    	//check checkbox state, if checked enable button, otherwise disable. The elevator can only be sent to a floor if in manual mode. 
+    	if(checkbox_manual_mode.isSelected()) {
+    		button_send_to_floor.setDisable(false);
+    		//disable the automatic mode -> enable manual mode
+    		//TODO 
+    		//if autoMode != null
+    		//autoMode.Disable(selectedElevator);
+    	}
+    	else {
+    		button_send_to_floor.setDisable(true);
+    		//TODO 
+    		// if autoMode != null
+    		//autoMode.Enable(selectedElevator);
+    	}
+    }
+    
+    @FXML
+    void buttonSendToFloor(ActionEvent event) {
+    	//get floor number from textfield
+    	
+    	//check if in range of available floors
+    	
+    	//send to UpdateData and set as new floor
+    	if(updateData == null) {
+			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
+		}
+    	//updateData.setTarget(floorNumber);
+    }
+    
+	private void setup() {
+		//only allow integers in textfield
+		DecimalFormat format = new DecimalFormat("#");
+		format.setParseIntegerOnly(true);
+		textfield_floor_number.setTextFormatter(new TextFormatter<>(c -> {
+			if (c.getControlNewText().isEmpty()) {
+				return c;
+			}
+
+			ParsePosition parsePosition = new ParsePosition(0);
+			Object object = format.parse(c.getControlNewText(), parsePosition);
+
+			if (object == null || parsePosition.getIndex() < c.getControlNewText().length()) {
+				return null;
+			} else {
+				return c;
+			}
+		}));
+	}
+    
+    
+    private UpdateData updateData = null;
+    
+    public void update(IBuildingModel building, IFloorModel floor, IElevatorModel elevator) {
+    	if(building == null || floor == null || elevator == null) {
+    		throw new NullPointerException("MainGuiController.update()");
+    	}
+    	
+    	//update gui with new values from the selected elevator
+    	//elevator data
+    	
     	
     }
 
 	public void register(UpdateData updater) {
-		// TODO Auto-generated method stub
+		if(updater == null) {
+			throw new NullPointerException("MainGuiController.register()");
+		}
+		
+		updateData = updater;
 	}
 }
