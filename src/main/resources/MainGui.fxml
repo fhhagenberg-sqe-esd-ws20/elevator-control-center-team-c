@@ -50,9 +50,9 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <children>
-                  <CheckBox fx:id="checkbox_manual_mode" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Manual Mode" />
+                  <CheckBox fx:id="checkbox_manual_mode" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#checkboxManualAutomatic" text="Manual Mode" />
                   <TextField fx:id="textfield_floor_number" maxWidth="1.7976931348623157E308" promptText="Floor number" />
-                  <Button fx:id="button_send_to_floor" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Send to Floor" />
+                  <Button fx:id="button_send_to_floor" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonSendToFloor" text="Send to Floor" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -61,7 +61,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                <children>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-border-color: transparent;" text="Stop Button" />
-                  <ListView fx:id="listview_stop_button" />
+                  <ListView fx:id="listview_stops" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">

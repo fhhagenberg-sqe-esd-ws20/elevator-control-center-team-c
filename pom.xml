@@ -102,7 +102,7 @@
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.3</version>
+				<version>0.0.5</version>
 				<configuration>
 					<launcher>launcher</launcher>
 					<mainClass>at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter</mainClass>
