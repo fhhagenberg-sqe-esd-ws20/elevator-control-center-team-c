@@ -70,7 +70,7 @@ public class UpdateData extends TimerTask {
         	// refresh the fields of all elevators
         	for(int i = 0; i < Elevators.size(); i++)
         	{
-        		refresElevator(i);
+        		refreshElevator(i);
         	}
 
         	
@@ -101,8 +101,16 @@ public class UpdateData extends TimerTask {
 		{
 			if(elevator >= 0 && elevator < Elevators.size())
 			{
-				IElevatorModel el = Elevators.get(elevator);
-				el.AddStop(floor);
+				Elevators.get(elevator).SetTarget(floor);
+				
+				// set new target for SQElevator
+				try {
+					Sqelevator.setTarget(elevator, floor);
+				} catch (RemoteException e) {
+					// TODO Update status here?
+					e.printStackTrace();
+				}
+				
 				if(elevator == SelectedElevator)
 				{
 					GuiController.update(Floor, Elevators.get(SelectedElevator));
@@ -117,9 +125,17 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor)
     {
-    	if(floor <= Building.GetNumFloors())
+    	if(floor >= 0 && floor <= Building.GetNumFloors())
     	{
-    		Elevators.get(SelectedElevator).AddStop(floor);
+    		Elevators.get(SelectedElevator).SetTarget(floor);
+    		
+			// set new target for SQElevator
+			try {
+				Sqelevator.setTarget(SelectedElevator, floor);
+			} catch (RemoteException e) {
+				// TODO Update status here?
+				e.printStackTrace();
+			}
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
     }
@@ -154,8 +170,11 @@ public class UpdateData extends TimerTask {
     public void refreshUpList() throws RemoteException
     {
     	Floor.ClearUps();
+    	
+    	// check the up buttons of the floors
     	for(int i = 0; i < Building.GetNumFloors(); i++)
     	{
+    		// if button up is pressed, this button will be added to the list
     		if(SqBuilding.getFloorButtonUp(i))
     		{
     			Floor.AddUp(i);
@@ -169,8 +188,11 @@ public class UpdateData extends TimerTask {
     public void refreshDownList() throws RemoteException
     {
     	Floor.ClearDowns();
+    	
+    	// Check the down buttons of the floors
     	for(int i = 0; i < Building.GetNumFloors(); i++)
     	{
+    		// if down button is pressed in a floor, add id to the list
     		if(SqBuilding.getFloorButtonDown(i))
     		{
     			Floor.AddDown(i);
@@ -181,10 +203,9 @@ public class UpdateData extends TimerTask {
     /**
      * Refresh whole content of an elevator
      */
-    public void refresElevator(int elevator_idx) throws RemoteException
+    public void refreshElevator(int elevator_idx) throws RemoteException
     {
-    	
-    	if(elevator_idx < 0 || elevator_idx > Elevators.size())
+    	if(elevator_idx < 0 || elevator_idx >= Elevators.size())
     	{
     		throw new InvalidParameterException("index of elevator out of range");
     	}
@@ -206,16 +227,16 @@ public class UpdateData extends TimerTask {
     	List<Integer> Stops = new ArrayList<Integer>();
     	tempElevator.SetStops(Stops);
     	
-    	// get pressed stops 
+    	// get pressed stops for all floors
     	for(int i = 0; i < Building.GetNumFloors(); i++)
     	{
+    		// if stop button was pressed in this elevator, add it to the list
     		if(Sqelevator.getElevatorButton(elevator_idx, i))
     		{
     			Stops.add(i);
     		}
     	}
     	
-    	// TODO: Muessen auch die Stops aus dem manual modus hier wieder hinzugefuegt werden?
     	
     	// check, if clocktick of the sqelevator has changed in the meantime
     	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
