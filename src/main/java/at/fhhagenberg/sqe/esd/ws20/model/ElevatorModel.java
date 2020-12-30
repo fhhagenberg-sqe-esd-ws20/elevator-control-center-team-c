@@ -8,7 +8,7 @@ public class ElevatorModel implements IElevatorModel {
 	public ElevatorModel()
 	{
 		Stops = new ArrayList<Integer>();
-		ServiceFloors = new ArrayList<Integer>();
+		IgnoredFloors = new ArrayList<Integer>();
 	}
 	
 	
@@ -117,27 +117,27 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void AddServiceFloor(int floorNumber)
+	public void AddIgnoredFloor(int floorNumber)
 	{
-		if(!(ServiceFloors.contains(floorNumber)))
+		if(!(IgnoredFloors.contains(floorNumber)))
 		{
-			ServiceFloors.add(floorNumber);
+			IgnoredFloors.add(floorNumber);
 		}
 	}
 	
 	@Override
-	public void SetServiceFloors(List<Integer> serviceFloors)
+	public void SetIgnoredFloors(List<Integer> serviceFloors)
 	{
 		if(serviceFloors != null)
 		{
-			ServiceFloors = serviceFloors;
+			IgnoredFloors = serviceFloors;
 		}
 	}
 	
 	@Override
-	public List<Integer> GetServiceFloors()
+	public List<Integer> GetIgnoredFloors()
 	{
-		return ServiceFloors;
+		return IgnoredFloors;
 	}	
 	
 	private Integer Target = 0;
@@ -147,5 +147,5 @@ public class ElevatorModel implements IElevatorModel {
 	private Integer Speed = 0;
 	private Integer Doors = 0;
 	private List<Integer> Stops;
-	 private List<Integer> ServiceFloors;
+	 private List<Integer> IgnoredFloors;
 }

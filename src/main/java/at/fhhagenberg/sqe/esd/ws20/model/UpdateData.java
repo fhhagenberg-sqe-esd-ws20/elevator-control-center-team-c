@@ -61,7 +61,7 @@ public class UpdateData extends TimerTask {
 			{
 				if(Sqelevator.getServicesFloors(elevator, floor))
 				{
-					Elevators.get(elevator).AddServiceFloor(floor);
+					Elevators.get(elevator).AddIgnoredFloor(floor);
 				}
 			}
 		}

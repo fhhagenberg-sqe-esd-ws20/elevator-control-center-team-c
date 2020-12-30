@@ -256,7 +256,7 @@ public class MainGuiController {
 			listview_calls_down.getItems().add("Floor " + e);
 		}
 		
-		List<Integer> serviceFloorsInteger = elevator.GetServiceFloors();
+		List<Integer> serviceFloorsInteger = elevator.GetIgnoredFloors();
 		if (serviceFloorsInteger == null) {
 			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
 		}
