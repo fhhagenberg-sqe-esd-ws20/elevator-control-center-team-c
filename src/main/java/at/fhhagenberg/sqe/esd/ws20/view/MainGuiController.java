@@ -4,9 +4,9 @@ package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ResourceBundle;
+import java.util.List;
 
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
@@ -66,16 +66,16 @@ public class MainGuiController {
     private Label label_target_text; // Value injected by FXMLLoader
 
     @FXML // fx:id="listview_calls_down"
-    private ListView<?> listview_calls_down; // Value injected by FXMLLoader
+    private ListView<String> listview_calls_down; // Value injected by FXMLLoader
 
     @FXML // fx:id="label_speed_text"
     private Label label_speed_text; // Value injected by FXMLLoader
 
     @FXML // fx:id="listview_calls_up"
-    private ListView<?> listview_calls_up; // Value injected by FXMLLoader
+    private ListView<String> listview_calls_up; // Value injected by FXMLLoader
 
     @FXML // fx:id="listview_no_service"
-    private ListView<?> listview_no_service; // Value injected by FXMLLoader
+    private ListView<String> listview_no_service; // Value injected by FXMLLoader
 
     @FXML // fx:id="label_doors_text"
     private Label label_doors_text; // Value injected by FXMLLoader
@@ -183,16 +183,29 @@ public class MainGuiController {
     private UpdateData updateData = null;
     private IBuildingModel iBuildingModel = null;
     private Integer numFloorsInBuilding = 0;
-    //private Integer numElevatorsInBuilding = 0;
     
     public void update(IFloorModel floor, IElevatorModel elevator) {
     	if(floor == null || elevator == null) {
     		throw new NullPointerException("MainGuiController.update()");
     	}
     	
+    	//get current selected elevator
+    	int selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
+    	if(selectedElevator < 0) {
+    		System.out.println("listview_elevators no line selected!");
+    		return;
+    	}
+    	
     	//update gui with new values from the selected elevator
     	//elevator data
+    	label_target_text.setText(elevator.GetTarget().toString());
+    	label_position_text.setText(elevator.GetPosition().toString());
+    	label_direction_text.setText(elevator.GetDirection().toString());
+    	label_payload_text.setText(elevator.GetPayload().toString());
+    	label_speed_text.setText(elevator.GetSpeed().toString());
+    	label_doors_text.setText(elevator.GetDoors().toString());
     	
+    	//floors
     	
     }
 
@@ -204,6 +217,7 @@ public class MainGuiController {
 		updateData = updater;
 		iBuildingModel = building;
 		
+		//set/initialize elements that don't change anymore
 		numFloorsInBuilding = iBuildingModel.GetNumFloors();
 		
 		ObservableList<String>elevatorList = FXCollections.observableArrayList();
@@ -212,11 +226,20 @@ public class MainGuiController {
 			elevatorList.add("Elevator " + i);
 		}
         listview_elevators.setItems(elevatorList);
-        
         //if there are elevators, automatically select the first one
         if(!listview_elevators.getItems().isEmpty()) {
 	        listview_elevators.getFocusModel().focus(0);
 	        listview_elevators.getSelectionModel().select(0);
+        }
+        
+        
+        List<Integer> serviceFloorsInteger = iBuildingModel.GetServiceFloors();
+        if(serviceFloorsInteger != null && !serviceFloorsInteger.isEmpty()) {
+        	ObservableList<String> serviceFloors = FXCollections.observableArrayList();
+	        for (Integer e : serviceFloorsInteger) {
+	        	serviceFloors.add("Floor " + e);
+	        }
+	        listview_no_service.setItems(serviceFloors);
         }
 	}
 }
