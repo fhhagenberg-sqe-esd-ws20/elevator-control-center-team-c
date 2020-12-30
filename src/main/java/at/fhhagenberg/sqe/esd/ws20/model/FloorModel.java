@@ -1,10 +1,16 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class FloorModel implements IFloorModel {
 
+	public FloorModel()
+	{
+		Ups = new ArrayList<Integer>();
+		Downs = new ArrayList<Integer>();
+	}
+	
 	/**
 	 * Add button press of an up button to the list
 	 */
@@ -44,13 +50,19 @@ public class FloorModel implements IFloorModel {
 	@Override
 	public void SetUps(List<Integer> ups)
 	{
-		Ups = ups;
+		if(ups != null)
+		{
+			Ups = ups;
+		}
 	}
 	
 	@Override
 	public void SetDowns(List<Integer> downs)
 	{
-		Downs = downs;
+		if(downs != null)
+		{
+			Downs = downs;
+		}
 	}
 	
 	@Override

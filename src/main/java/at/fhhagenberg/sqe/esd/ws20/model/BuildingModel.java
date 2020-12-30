@@ -35,7 +35,10 @@ public class BuildingModel implements IBuildingModel {
 	@Override
 	public void SetServiceFloors(List<Integer> serviceFloors)
 	{
-		ServiceFloors = serviceFloors;
+		if(serviceFloors != null)
+		{
+			ServiceFloors = serviceFloors;
+		}
 	}	
 	
 	@Override

@@ -1,15 +1,27 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ElevatorModel implements IElevatorModel {
 
+	public ElevatorModel()
+	{
+		Stops = new ArrayList<Integer>();
+	}
+	
+	
 	/**
 	 * Add stop to elevator stop list
 	 */
 	@Override
 	public void AddStop(Integer stop)
 	{
+		if (Stops == null)
+		{
+			throw new NullPointerException("Nullpointer in ElevatorModel.AddStop()");
+		}
+		
 		if(!(Stops.contains(stop)))
 		{
 			Stops.add(stop);
@@ -55,7 +67,10 @@ public class ElevatorModel implements IElevatorModel {
 	@Override
 	public void SetStops(List<Integer> stops)
 	{
-		Stops = stops;
+		if(stops != null)
+		{
+			Stops = stops;
+		}
 	}
 	
 	@Override
@@ -101,11 +116,11 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	
-	private Integer Target;
-	private Integer Position;
-	private Integer Direction;
-	private Integer Payload;
-	private Integer Speed;
-	private Integer Doors;
+	private Integer Target = 0;
+	private Integer Position = 0;
+	private Integer Direction = 0;
+	private Integer Payload = 0;
+	private Integer Speed = 0;
+	private Integer Doors = 0;
 	private List<Integer> Stops;
 }

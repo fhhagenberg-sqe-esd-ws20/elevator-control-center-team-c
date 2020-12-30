@@ -27,8 +27,7 @@ public class UpdateData extends TimerTask {
 		Sqelevator = sqelevator;
 		GuiController = guiController;
 		
-		//TODO: Activate this line, when mock is used for the elevatorinterface
-		//initializeBuilding();
+		initializeBuilding();
 	}
 	
 

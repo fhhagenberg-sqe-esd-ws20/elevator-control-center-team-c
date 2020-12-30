@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
-public ElevatorStub implements IElevator {	
+public class ElevatorStub implements IElevator {	
 	
 	public int getCommittedDirection(int elevatorNumber) throws java.rmi.RemoteException
 	{
