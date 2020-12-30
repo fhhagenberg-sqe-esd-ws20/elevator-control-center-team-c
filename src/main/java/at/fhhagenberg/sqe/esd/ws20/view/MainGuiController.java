@@ -14,12 +14,17 @@ import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 
 
 /**
@@ -124,18 +129,36 @@ public class MainGuiController {
     @FXML
     void buttonSendToFloor(ActionEvent event) {
     	//get floor number from textfield
+    	int floorNumber;
+    	try {
+    		floorNumber = Integer.parseInt(textfield_floor_number.getText());
+    	} catch (NumberFormatException e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
+			return;
+		}
     	
     	//check if in range of available floors
+    	if(floorNumber > numFloorsInBuilding) {
+    		Alert alert = new Alert(AlertType.ERROR, "Entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ") !");
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
+			return;
+    	}
     	
     	//send to UpdateData and set as new floor
     	if(updateData == null) {
 			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
 		}
-    	//updateData.setTarget(floorNumber);
+    	updateData.setTarget(floorNumber);
     }
     
+    
 	private void setup() {
-		//only allow integers in textfield
+		//only allow integers without decimal seperator in textfield
 		DecimalFormat format = new DecimalFormat("#");
 		format.setParseIntegerOnly(true);
 		textfield_floor_number.setTextFormatter(new TextFormatter<>(c -> {
@@ -156,11 +179,15 @@ public class MainGuiController {
     
     
     private UpdateData updateData = null;
+    private Integer numFloorsInBuilding = 0;
     
     public void update(IBuildingModel building, IFloorModel floor, IElevatorModel elevator) {
     	if(building == null || floor == null || elevator == null) {
     		throw new NullPointerException("MainGuiController.update()");
     	}
+    	
+    	//update building properties
+    	numFloorsInBuilding = building.GetNumFloors();
     	
     	//update gui with new values from the selected elevator
     	//elevator data
