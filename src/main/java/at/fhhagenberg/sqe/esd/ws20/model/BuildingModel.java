@@ -1,10 +1,16 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingModel implements IBuildingModel {
 
-	//TODO add constructor, which is creating list
+	public BuildingModel()
+	{
+		ServiceFloors = new ArrayList<Integer>();
+	}
+	
+	
 	@Override
 	public void AddServiceFloor(int floorNumber)
 	{

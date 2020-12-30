@@ -11,6 +11,6 @@ module at.fhhagenberg.sqe.esd.ws20 {
 	exports at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 	opens at.fhhagenberg.sqe.esd.ws20.view;
-	//opens at.fhhagenberg.sqe.esd.ws20.model;
-	//opens at.fhhagenberg.sqe.esd.ws20.sqeelevator;
+	opens at.fhhagenberg.sqe.esd.ws20.model;
+	opens at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 }

@@ -13,6 +13,7 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
+//TODO: update javadoc
 public class UpdateData extends TimerTask {
 
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
@@ -31,9 +32,11 @@ public class UpdateData extends TimerTask {
 	}
 	
 
-    /**
-     * Initializes all constant properties of the building
-     */
+
+	/** 
+	 * Initializes all constant properties of the building
+	 * @throws RemoteException
+	 */
 	public void initializeBuilding() throws RemoteException
 	{
 		// get number of floors and number of Elevators from the building
