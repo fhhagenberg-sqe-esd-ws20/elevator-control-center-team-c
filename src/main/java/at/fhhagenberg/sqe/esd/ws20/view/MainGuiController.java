@@ -3,6 +3,7 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
+import java.nio.channels.IllegalSelectorException;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.ResourceBundle;
@@ -53,8 +54,8 @@ public class MainGuiController {
     @FXML // fx:id="textfield_floor_number"
     private TextField textfield_floor_number; // Value injected by FXMLLoader
 
-    @FXML // fx:id="listview_stop_button"
-    private ListView<?> listview_stop_button; // Value injected by FXMLLoader
+    @FXML // fx:id="listview_stops"
+    private ListView<String> listview_stops; // Value injected by FXMLLoader
 
     @FXML // fx:id="label_status_text"
     private Label label_status_text; // Value injected by FXMLLoader
@@ -94,7 +95,7 @@ public class MainGuiController {
         assert label_payload_text != null : "fx:id=\"label_payload_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_direction_text != null : "fx:id=\"label_direction_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert textfield_floor_number != null : "fx:id=\"textfield_floor_number\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_stop_button != null : "fx:id=\"listview_stop_button\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listview_stops != null : "fx:id=\"listview_stops\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_status_text != null : "fx:id=\"label_status_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert listview_elevators != null : "fx:id=\"listview_elevators\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_target_text != null : "fx:id=\"label_target_text\" was not injected: check your FXML file 'MainGui.fxml'.";
@@ -160,7 +161,7 @@ public class MainGuiController {
     
     
 	private void setup() {
-		//only allow integers without decimal seperator in textfield
+		//only allow integers without decimal separator in textfield
 		DecimalFormat format = new DecimalFormat("#");
 		format.setParseIntegerOnly(true);
 		textfield_floor_number.setTextFormatter(new TextFormatter<>(c -> {
@@ -192,8 +193,7 @@ public class MainGuiController {
     	//get current selected elevator
     	int selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
     	if(selectedElevator < 0) {
-    		System.out.println("listview_elevators no line selected!");
-    		return;
+    		throw new IllegalStateException("listview_elevators no line selected!");
     	}
     	
     	//update gui with new values from the selected elevator
@@ -205,9 +205,35 @@ public class MainGuiController {
     	label_speed_text.setText(elevator.GetSpeed().toString());
     	label_doors_text.setText(elevator.GetDoors().toString());
     	
-    	//floors
+    	//stops
+    	List<Integer> stops = elevator.GetStops();
+    	listview_stops.getItems().clear();
+		if (stops == null) {
+			throw new NullPointerException("MainGuiController.update() stops");
+		}
+		for (Integer e : stops) {
+			listview_stops.getItems().add("Floor " + e);
+		}
     	
-    }
+    	//calls
+    	List<Integer> callsUp = floor.GetUps();
+    	listview_calls_up.getItems().clear();
+		if (callsUp == null) {
+			throw new NullPointerException("MainGuiController.update() callsUp");
+		}
+		for (Integer e : callsUp) {
+			listview_calls_up.getItems().add("Floor " + e);
+		}
+		
+		List<Integer> callsDown = floor.GetDowns();
+		listview_calls_down.getItems().clear();
+		if (callsDown == null) {
+			throw new NullPointerException("MainGuiController.update() callsDown");
+		}
+		for (Integer e : callsDown) {
+			listview_calls_down.getItems().add("Floor " + e);
+		}
+	}
 
 	public void register(UpdateData updater, IBuildingModel building) {
 		if(updater == null || building == null) {
@@ -220,26 +246,20 @@ public class MainGuiController {
 		//set/initialize elements that don't change anymore
 		numFloorsInBuilding = iBuildingModel.GetNumFloors();
 		
-		ObservableList<String>elevatorList = FXCollections.observableArrayList();
 		for(int i = 1; i < iBuildingModel.GetNumElevators() + 1; ++i) {
 		//for(int i = 1; i < 5 + 1; ++i) {
-			elevatorList.add("Elevator " + i);
+			listview_elevators.getItems().add("Elevator " + i);
 		}
-        listview_elevators.setItems(elevatorList);
-        //if there are elevators, automatically select the first one
-        if(!listview_elevators.getItems().isEmpty()) {
-	        listview_elevators.getFocusModel().focus(0);
-	        listview_elevators.getSelectionModel().select(0);
-        }
-        
-        
-        List<Integer> serviceFloorsInteger = iBuildingModel.GetServiceFloors();
-        if(serviceFloorsInteger != null && !serviceFloorsInteger.isEmpty()) {
-        	ObservableList<String> serviceFloors = FXCollections.observableArrayList();
-	        for (Integer e : serviceFloorsInteger) {
-	        	serviceFloors.add("Floor " + e);
-	        }
-	        listview_no_service.setItems(serviceFloors);
-        }
+		//automatically select the first elevator
+		listview_elevators.getFocusModel().focus(0);
+		listview_elevators.getSelectionModel().select(0);
+
+		List<Integer> serviceFloorsInteger = iBuildingModel.GetServiceFloors();
+		if (serviceFloorsInteger == null) {
+			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
+		}
+		for (Integer e : serviceFloorsInteger) {
+			listview_no_service.getItems().add("Floor " + e);
+		}
 	}
 }
