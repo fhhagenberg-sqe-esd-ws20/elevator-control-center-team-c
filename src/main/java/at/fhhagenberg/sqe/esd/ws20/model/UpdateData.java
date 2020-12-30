@@ -59,7 +59,7 @@ public class UpdateData extends TimerTask {
 		{
 			for(int floor = 0; floor < Building.GetNumFloors(); floor++)
 			{
-				if(Sqelevator.getServicesFloors(elevator, floor))
+				if(!Sqelevator.getServicesFloors(elevator, floor))
 				{
 					Elevators.get(elevator).AddIgnoredFloor(floor);
 				}
