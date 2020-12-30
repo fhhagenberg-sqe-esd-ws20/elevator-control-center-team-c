@@ -13,6 +13,7 @@ import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -215,12 +216,16 @@ public class MainGuiController {
     	
     	//update gui with new values from the selected elevator
     	//elevator data
-    	label_target_text.setText(elevator.GetTarget().toString());
-    	label_position_text.setText(elevator.GetPosition().toString());
-    	label_direction_text.setText(elevator.GetDirection().toString());
-    	label_payload_text.setText(elevator.GetPayload().toString());
-    	label_speed_text.setText(elevator.GetSpeed().toString());
-    	label_doors_text.setText(elevator.GetDoors().toString());
+    	Platform.runLater(new Runnable() {
+			public void run() {
+				label_target_text.setText(elevator.GetTarget().toString());
+		    	label_position_text.setText(elevator.GetPosition().toString());
+		    	label_direction_text.setText(elevator.GetDirection().toString());
+		    	label_payload_text.setText(elevator.GetPayload().toString());
+		    	label_speed_text.setText(elevator.GetSpeed().toString());
+		    	label_doors_text.setText(elevator.GetDoors().toString());
+			}
+		});
     	
     	//stops
     	List<Integer> stops = elevator.GetStops();

@@ -2,17 +2,16 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
+//TODO: update javadoc
 public class UpdateData extends TimerTask {
 
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
@@ -26,14 +25,15 @@ public class UpdateData extends TimerTask {
 		Sqelevator = sqelevator;
 		GuiController = guiController;
 		
-		//TODO: Activate this line, when mock is used for the elevatorinterface
-		//initializeBuilding();
+		initializeBuilding();
 	}
 	
 
-    /**
-     * Initializes all constant properties of the building
-     */
+
+	/** 
+	 * Initializes all constant properties of the building
+	 * @throws RemoteException
+	 */
 	public void initializeBuilding() throws RemoteException
 	{
 		// get number of floors and number of Elevators from the building
