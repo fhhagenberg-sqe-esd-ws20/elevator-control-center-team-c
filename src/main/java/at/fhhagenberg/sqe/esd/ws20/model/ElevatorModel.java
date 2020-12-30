@@ -3,6 +3,9 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
+
 public class ElevatorModel implements IElevatorModel {
 
 	public ElevatorModel()
@@ -42,7 +45,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void setDirection(Integer direction)
+	public void setDirection(ElevatorDirection direction)
 	{
 		Direction = direction;
 	}
@@ -60,7 +63,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void setDoors(Integer doors)
+	public void setDoors(ElevatorDoorStatus doors)
 	{
 		Doors = doors;
 	}
@@ -87,7 +90,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public Integer getDirection()
+	public ElevatorDirection getDirection()
 	{
 		return Direction;
 	}
@@ -105,7 +108,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public Integer getDoors()
+	public ElevatorDoorStatus getDoors()
 	{
 		return Doors;
 	}
@@ -142,10 +145,10 @@ public class ElevatorModel implements IElevatorModel {
 	
 	private Integer Target = 0;
 	private Integer Position = 0;
-	private Integer Direction = 0;
+	private ElevatorDirection Direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
 	private Integer Payload = 0;
 	private Integer Speed = 0;
-	private Integer Doors = 0;
+	private ElevatorDoorStatus Doors = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
 	private List<Integer> Stops;
 	 private List<Integer> IgnoredFloors;
 }

@@ -36,17 +36,17 @@ public class ElevatorWrapperStub implements IElevatorWrapper, IBuildingWrapper  
 	}
 
 	@Override
-	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
+	public void setCommittedDirection(int elevatorNumber, ElevatorDirection direction) throws RemoteException {
 	}
 
 	@Override
-	public int getCommittedDirection(int elevatorNumber) throws RemoteException {
-		return 1;
+	public ElevatorDirection getCommittedDirection(int elevatorNumber) throws RemoteException {
+		return ElevatorDirection.ELEVATOR_DIRECTION_DOWN;
 	}
 
 	@Override
-	public int getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
-		return 2;
+	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
+		return ElevatorDoorStatus.ELEVATOR_DOORS_OPEN;
 	}
 
 	@Override

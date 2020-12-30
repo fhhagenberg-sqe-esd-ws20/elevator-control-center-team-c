@@ -58,18 +58,50 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
 	}
 
 	@Override
-	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
-		elevatorInterface.setCommittedDirection(elevatorNumber, direction);	
+	public void setCommittedDirection(int elevatorNumber, ElevatorDirection direction) throws RemoteException {
+        switch(direction){
+        case ELEVATOR_DIRECTION_UP:
+        	elevatorInterface.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UP);
+            break;
+        case ELEVATOR_DIRECTION_DOWN:
+        	elevatorInterface.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_DOWN);
+            break;
+        case ELEVATOR_DIRECTION_UNCOMMITTED:
+        	elevatorInterface.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+            break;
+        default:
+            throw new RuntimeException("Wrong commited direction");
+        }			
 	}
 
 	@Override
-	public int getCommittedDirection(int elevatorNumber) throws RemoteException {
-		return elevatorInterface.getCommittedDirection(elevatorNumber);
+	public ElevatorDirection getCommittedDirection(int elevatorNumber) throws RemoteException {
+        switch(elevatorInterface.getCommittedDirection(elevatorNumber)){
+        case IElevator.ELEVATOR_DIRECTION_UP:
+        	return ElevatorDirection.ELEVATOR_DIRECTION_UP;
+        case IElevator.ELEVATOR_DIRECTION_DOWN:
+        	return ElevatorDirection.ELEVATOR_DIRECTION_DOWN;
+        case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
+        	return ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
+        default:
+            throw new RuntimeException("Wrong commited direction");
+        }
 	}
 
 	@Override
-	public int getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
-		return elevatorInterface.getElevatorDoorStatus(elevatorNumber);
+	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
+        switch(elevatorInterface.getElevatorDoorStatus(elevatorNumber)){
+        case IElevator.ELEVATOR_DOORS_OPEN:
+        	return ElevatorDoorStatus.ELEVATOR_DOORS_OPEN;
+        case IElevator.ELEVATOR_DOORS_CLOSED:
+        	return ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
+        case IElevator.ELEVATOR_DOORS_OPENING:
+        	return ElevatorDoorStatus.ELEVATOR_DOORS_OPENING;
+        case IElevator.ELEVATOR_DOORS_CLOSING:
+        	return ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING;
+        default:
+            throw new RuntimeException("Wrong commited direction");
+        }
 	}
 
 	@Override

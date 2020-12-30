@@ -2,6 +2,9 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.util.List;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
+
 /**
  * Interface for the ElevatorModel
  * Each elevator has the following attributes:
@@ -42,7 +45,7 @@ public interface IElevatorModel {
 	 * ELEVATOR_DIRECTION_DOWN = 1
 	 * ELEVATOR_DIRECTION_UNCOMMITTED = 2
 	 */
-	void setDirection(Integer direction);
+	void setDirection(ElevatorDirection direction);
 
 	/**
 	 * Set the playload of the elevator
@@ -64,7 +67,7 @@ public interface IElevatorModel {
 	 *   ELEVATOR_DOORS_OPENING = 3
 	 *   ELEVATOR_DOORS_CLOSING = 4
 	 */
-	void setDoors(Integer doors);
+	void setDoors(ElevatorDoorStatus doors);
 
 	/**
 	 * Set the list of pressed stop buttons inside the elevator
@@ -92,7 +95,7 @@ public interface IElevatorModel {
 	 * ELEVATOR_DIRECTION_DOWN = 1
 	 * ELEVATOR_DIRECTION_UNCOMMITTED = 2
 	 */
-	Integer getDirection();
+	ElevatorDirection getDirection();
 
 	/**
 	 * Get the elevator payload
@@ -114,7 +117,7 @@ public interface IElevatorModel {
 	 *   ELEVATOR_DOORS_OPENING = 3
 	 *   ELEVATOR_DOORS_CLOSING = 4
 	 */
-	Integer getDoors();
+	ElevatorDoorStatus getDoors();
 
 	List<Integer> getStops();
 
