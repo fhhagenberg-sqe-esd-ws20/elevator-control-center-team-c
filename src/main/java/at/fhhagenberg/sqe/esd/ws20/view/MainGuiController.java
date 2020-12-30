@@ -3,7 +3,6 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
-import java.nio.channels.IllegalSelectorException;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.ResourceBundle;
@@ -12,9 +11,10 @@ import java.util.List;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
+import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -35,7 +35,7 @@ import javafx.stage.Stage;
  * Also handles checkbox/button events.
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2020-12-30 00:07
+ * @since 2020-12-30 04:25
  */
 public class MainGuiController {
 
@@ -178,12 +178,29 @@ public class MainGuiController {
 				return c;
 			}
 		}));
+		
+		//listen for selection changes on the elevator listview. Update the selected index.
+		listview_elevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
+				
+				if(updateData == null) {
+					throw new NullPointerException("MainGuiController.setup()");
+				}
+				//getSelectedIndex() returned -1 if no line is selected
+				if(selectedElevator < 0) {
+					return;
+				}
+				updateData.setSelectedElevator(selectedElevator);
+			}
+		});
 	}
     
     
     private UpdateData updateData = null;
     private IBuildingModel iBuildingModel = null;
     private Integer numFloorsInBuilding = 0;
+    private Integer selectedElevator = -1;
     
     public void update(IFloorModel floor, IElevatorModel elevator) {
     	if(floor == null || elevator == null) {
@@ -191,7 +208,7 @@ public class MainGuiController {
     	}
     	
     	//get current selected elevator
-    	int selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
+    	//getSelectedIndex() returned -1 if no line is selected
     	if(selectedElevator < 0) {
     		throw new IllegalStateException("listview_elevators no line selected!");
     	}
@@ -235,8 +252,8 @@ public class MainGuiController {
 		}
 	}
 
-	public void register(UpdateData updater, IBuildingModel building) {
-		if(updater == null || building == null) {
+	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert) {
+		if(updater == null || building == null || statusAlert == null) {
 			throw new NullPointerException("MainGuiController.register()");
 		}
 		
@@ -250,7 +267,7 @@ public class MainGuiController {
 		//for(int i = 1; i < 5 + 1; ++i) {
 			listview_elevators.getItems().add("Elevator " + i);
 		}
-		//automatically select the first elevator
+		//automatically select the first elevator. If the list is empty no items will be selected
 		listview_elevators.getFocusModel().focus(0);
 		listview_elevators.getSelectionModel().select(0);
 
@@ -261,5 +278,8 @@ public class MainGuiController {
 		for (Integer e : serviceFloorsInteger) {
 			listview_no_service.getItems().add("Floor " + e);
 		}
+		
+		//bind status so that gui always show the latest status automatically
+		label_status_text.textProperty().bind(statusAlert.Status);
 	}
 }

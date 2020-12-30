@@ -111,7 +111,7 @@ public class ElevatorControlCenter extends Application {
         UpdateData updater = new UpdateData(sqelevator, sqelevator, building, floor, elevators, mainGuiController);
         
         // give information about the models to the mainGuiController
-        mainGuiController.register(updater, building);
+        mainGuiController.register(updater, building, statusAlert);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);
