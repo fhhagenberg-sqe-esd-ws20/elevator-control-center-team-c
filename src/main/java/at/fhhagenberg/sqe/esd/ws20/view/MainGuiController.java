@@ -220,10 +220,19 @@ public class MainGuiController {
 			public void run() {
 				label_target_text.setText(elevator.getTarget().toString());
 		    	label_position_text.setText(elevator.getPosition().toString());
-		    	label_direction_text.setText(elevator.getDirection().toString());
+		    	
+		    	String direction = elevator.getDirection().toString();
+		    	direction = direction.substring(direction.lastIndexOf('_') + 1);
+		    	direction = direction.substring(0,1).toUpperCase() + direction.substring(1).toLowerCase();
+		    	label_direction_text.setText(direction);
+		    	
 		    	label_payload_text.setText(elevator.getPayload().toString());
 		    	label_speed_text.setText(elevator.getSpeed().toString());
-		    	label_doors_text.setText(elevator.getDoors().toString());
+		    	
+		    	String doorsState = elevator.getDoors().toString();
+		    	doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
+		    	doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
+		    	label_doors_text.setText(doorsState);
 			}
 		});
     	
@@ -280,7 +289,7 @@ public class MainGuiController {
 		//for(int i = 1; i < 5 + 1; ++i) {
 			listview_elevators.getItems().add("Elevator " + i);
 		}
-		//automatically select the first elevator. If the list is empty no items will be selected
+		//automatically select the first elevator. If the list is empty no item will be selected.
 		listview_elevators.getFocusModel().focus(0);
 		listview_elevators.getSelectionModel().select(0);
 		
