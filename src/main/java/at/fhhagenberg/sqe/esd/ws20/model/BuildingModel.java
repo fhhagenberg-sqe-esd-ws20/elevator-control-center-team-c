@@ -4,7 +4,7 @@ import java.util.List;
 
 public class BuildingModel implements IBuildingModel {
 
-	
+	//TODO add constructor, which is creating list
 	@Override
 	public void AddServiceFloor(int floorNumber)
 	{
