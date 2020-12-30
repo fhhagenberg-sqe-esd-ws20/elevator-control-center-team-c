@@ -7,34 +7,34 @@ public interface IElevatorModel {
 	/**
 	 * Add stop to elevator stop list
 	 */
-	void AddStop(int stop);
+	void AddStop(Integer stop);
 
 
-	void SetTarget(int target);
+	void SetTarget(Integer target);
 
-	void SetPosition(int position);
+	void SetPosition(Integer position);
 
-	void SetDirection(int direction);
+	void SetDirection(Integer direction);
 
-	void SetPayload(int payload);
+	void SetPayload(Integer payload);
 
-	void SetSpeed(int speed);
+	void SetSpeed(Integer speed);
 
-	void SetDoors(int doors);
+	void SetDoors(Integer doors);
 
 	void SetStops(List<Integer> stops);
 
-	int GetTarget();
+	Integer GetTarget();
 
-	int GetPosition();
+	Integer GetPosition();
 
-	int GetDirection();
+	Integer GetDirection();
 
-	int GetPayload();
+	Integer GetPayload();
 
-	int GetSpeed();
+	Integer GetSpeed();
 
-	int GetDoors();
+	Integer GetDoors();
 
 	List<Integer> GetStops();
 

@@ -8,7 +8,7 @@ public class ElevatorModel implements IElevatorModel {
 	 * Add stop to elevator stop list
 	 */
 	@Override
-	public void AddStop(int stop)
+	public void AddStop(Integer stop)
 	{
 		if(!(Stops.contains(stop)))
 		{
@@ -17,37 +17,37 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void SetTarget(int target)
+	public void SetTarget(Integer target)
 	{
 		Target = target;
 	}
 	
 	@Override
-	public void SetPosition(int position)
+	public void SetPosition(Integer position)
 	{
 		Position = position;
 	}
 	
 	@Override
-	public void SetDirection(int direction)
+	public void SetDirection(Integer direction)
 	{
 		Direction = direction;
 	}
 	
 	@Override
-	public void SetPayload(int payload)
+	public void SetPayload(Integer payload)
 	{
 		Payload = payload;
 	}
 	
 	@Override
-	public void SetSpeed(int speed)
+	public void SetSpeed(Integer speed)
 	{
 		Speed = speed;
 	}
 	
 	@Override
-	public void SetDoors(int doors)
+	public void SetDoors(Integer doors)
 	{
 		Doors = doors;
 	}
@@ -59,37 +59,37 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public int GetTarget()
+	public Integer GetTarget()
 	{
 		return Target;
 	}
 	
 	@Override
-	public int GetPosition()
+	public Integer GetPosition()
 	{
 		return Position;
 	}
 	
 	@Override
-	public int GetDirection()
+	public Integer GetDirection()
 	{
 		return Direction;
 	}
 	
 	@Override
-	public int GetPayload()
+	public Integer GetPayload()
 	{
 		return Payload;
 	}
 	
 	@Override
-	public int GetSpeed()
+	public Integer GetSpeed()
 	{
 		return Speed;
 	}
 	
 	@Override
-	public int GetDoors()
+	public Integer GetDoors()
 	{
 		return Doors;
 	}
@@ -101,11 +101,11 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	
-	private int Target;
-	private int Position;
-	private int Direction;
-	private int Payload;
-	private int Speed;
-	private int Doors;
+	private Integer Target;
+	private Integer Position;
+	private Integer Direction;
+	private Integer Payload;
+	private Integer Speed;
+	private Integer Doors;
 	private List<Integer> Stops;
 }
