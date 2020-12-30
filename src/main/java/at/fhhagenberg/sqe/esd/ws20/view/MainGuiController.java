@@ -255,6 +255,14 @@ public class MainGuiController {
 		for (Integer e : callsDown) {
 			listview_calls_down.getItems().add("Floor " + e);
 		}
+		
+		List<Integer> serviceFloorsInteger = elevator.GetServiceFloors();
+		if (serviceFloorsInteger == null) {
+			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
+		}
+		for (Integer e : serviceFloorsInteger) {
+			listview_no_service.getItems().add("Floor " + e);
+		}
 	}
 
 	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert) {
@@ -275,14 +283,6 @@ public class MainGuiController {
 		//automatically select the first elevator. If the list is empty no items will be selected
 		listview_elevators.getFocusModel().focus(0);
 		listview_elevators.getSelectionModel().select(0);
-
-		List<Integer> serviceFloorsInteger = iBuildingModel.GetServiceFloors();
-		if (serviceFloorsInteger == null) {
-			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
-		}
-		for (Integer e : serviceFloorsInteger) {
-			listview_no_service.getItems().add("Floor " + e);
-		}
 		
 		//bind status so that gui always show the latest status automatically
 		label_status_text.textProperty().bind(statusAlert.Status);

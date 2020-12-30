@@ -8,6 +8,7 @@ public class ElevatorModel implements IElevatorModel {
 	public ElevatorModel()
 	{
 		Stops = new ArrayList<Integer>();
+		ServiceFloors = new ArrayList<Integer>();
 	}
 	
 	
@@ -115,6 +116,29 @@ public class ElevatorModel implements IElevatorModel {
 		return Stops;
 	}
 	
+	@Override
+	public void AddServiceFloor(int floorNumber)
+	{
+		if(!(ServiceFloors.contains(floorNumber)))
+		{
+			ServiceFloors.add(floorNumber);
+		}
+	}
+	
+	@Override
+	public void SetServiceFloors(List<Integer> serviceFloors)
+	{
+		if(serviceFloors != null)
+		{
+			ServiceFloors = serviceFloors;
+		}
+	}
+	
+	@Override
+	public List<Integer> GetServiceFloors()
+	{
+		return ServiceFloors;
+	}	
 	
 	private Integer Target = 0;
 	private Integer Position = 0;
@@ -123,4 +147,5 @@ public class ElevatorModel implements IElevatorModel {
 	private Integer Speed = 0;
 	private Integer Doors = 0;
 	private List<Integer> Stops;
+	 private List<Integer> ServiceFloors;
 }

@@ -38,6 +38,22 @@ public interface IElevatorModel {
 
 	List<Integer> GetStops();
 
-
+	/**
+	 * Adds a floor to the service-list so the elevator will service the specified floor.
+	 * @param floorNumber the floor which should be serviced
+	 */
+	public void AddServiceFloor(int floorNumber);
+	
+	/**
+	 * Set the list of floors which are serviced by the elevator.
+	 * @param floorNumber the floor which should be serviced
+	 */
+	void SetServiceFloors(List<Integer> serviceFloors);
+	
+	/**
+	 * Get the list of floors which are serviced by the elevator.
+	 * @return the floor which are serviced
+	 */
+	List<Integer> GetServiceFloors();
 
 }

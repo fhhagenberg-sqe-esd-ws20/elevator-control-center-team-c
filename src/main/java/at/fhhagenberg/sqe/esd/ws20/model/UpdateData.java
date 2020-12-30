@@ -39,15 +39,29 @@ public class UpdateData extends TimerTask {
 		// get number of floors and number of Elevators from the building
 		Building.SetNumFloors(SqBuilding.getFloorNum());
 		Building.SetNumElevators(SqBuilding.getElevatorNum());
+	}
+	
+	/** 
+	 * Initializes every elevator in the building
+	 * @throws RemoteException
+	 */
+	public void initializeElevators() throws RemoteException
+	{
+		//check if the number of stored elevators is the same as the number of 
+		//elevators in the buildung
+		if(Building.GetNumElevators() != Elevators.size()) 
+		{
+			throw new RuntimeException("Numer of sored elevators not the same as elevators in the building!");
+		}
 		
-		// get all servicefloors of each elevator and store them in a list, which contains all service floors of the whole building
+		// get all servicefloors of each elevator and store them in a list
 		for(int elevator = 0; elevator < Elevators.size(); elevator++)
 		{
 			for(int floor = 0; floor < Building.GetNumFloors(); floor++)
 			{
 				if(Sqelevator.getServicesFloors(elevator, floor))
 				{
-					Building.AddServiceFloor(floor);
+					Elevators.get(elevator).AddServiceFloor(floor);
 				}
 			}
 		}
