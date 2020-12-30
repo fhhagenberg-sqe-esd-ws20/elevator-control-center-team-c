@@ -2,6 +2,11 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.util.List;
 
+/**
+ * Interface for the FloorModel
+ * The floor model has a list of up buttons pressed and a list of down buttons pressed.
+ *
+ */
 public interface IFloorModel {
 	
 	/**
