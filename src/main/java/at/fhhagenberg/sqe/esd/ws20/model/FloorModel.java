@@ -15,7 +15,7 @@ public class FloorModel implements IFloorModel {
 	 * Add button press of an up button to the list
 	 */
 	@Override
-	public void AddUp(int up)
+	public void addButtonUp(int up)
 	{
 		Ups.add(up);
 	}
@@ -24,7 +24,7 @@ public class FloorModel implements IFloorModel {
 	 * Add button press of an down button to the list
 	 */
 	@Override
-	public void AddDown(int down)
+	public void addButtonDown(int down)
 	{
 		Ups.add(down);
 	}
@@ -33,7 +33,7 @@ public class FloorModel implements IFloorModel {
 	 * clear the content of the up list
 	 */
 	@Override
-	public void ClearUps()
+	public void clearUpButtonsList()
 	{
 		Ups.clear();
 	}
@@ -42,13 +42,13 @@ public class FloorModel implements IFloorModel {
 	 * clear the content of the down list
 	 */
 	@Override
-	public void ClearDowns()
+	public void clearDownButtonsList()
 	{
 		Downs.clear();
 	}
 	
 	@Override
-	public void SetUps(List<Integer> ups)
+	public void setUpButtonsList(List<Integer> ups)
 	{
 		if(ups != null)
 		{
@@ -57,7 +57,7 @@ public class FloorModel implements IFloorModel {
 	}
 	
 	@Override
-	public void SetDowns(List<Integer> downs)
+	public void setDownButtonsList(List<Integer> downs)
 	{
 		if(downs != null)
 		{
@@ -66,13 +66,13 @@ public class FloorModel implements IFloorModel {
 	}
 	
 	@Override
-	public List<Integer> GetUps()
+	public List<Integer> getUpButtonsList()
 	{
 		return Ups;
 	}
 	
 	@Override
-	public List<Integer> GetDowns()
+	public List<Integer> getDownButtonsList()
 	{
 		return Downs;
 	}

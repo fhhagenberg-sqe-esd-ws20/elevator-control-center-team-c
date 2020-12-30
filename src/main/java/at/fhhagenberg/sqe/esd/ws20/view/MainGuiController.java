@@ -218,17 +218,17 @@ public class MainGuiController {
     	//elevator data
     	Platform.runLater(new Runnable() {
 			public void run() {
-				label_target_text.setText(elevator.GetTarget().toString());
-		    	label_position_text.setText(elevator.GetPosition().toString());
-		    	label_direction_text.setText(elevator.GetDirection().toString());
-		    	label_payload_text.setText(elevator.GetPayload().toString());
-		    	label_speed_text.setText(elevator.GetSpeed().toString());
-		    	label_doors_text.setText(elevator.GetDoors().toString());
+				label_target_text.setText(elevator.getTarget().toString());
+		    	label_position_text.setText(elevator.getPosition().toString());
+		    	label_direction_text.setText(elevator.getDirection().toString());
+		    	label_payload_text.setText(elevator.getPayload().toString());
+		    	label_speed_text.setText(elevator.getSpeed().toString());
+		    	label_doors_text.setText(elevator.getDoors().toString());
 			}
 		});
     	
     	//stops
-    	List<Integer> stops = elevator.GetStops();
+    	List<Integer> stops = elevator.getStops();
     	listview_stops.getItems().clear();
 		if (stops == null) {
 			throw new NullPointerException("MainGuiController.update() stops");
@@ -238,7 +238,7 @@ public class MainGuiController {
 		}
     	
     	//calls
-    	List<Integer> callsUp = floor.GetUps();
+    	List<Integer> callsUp = floor.getUpButtonsList();
     	listview_calls_up.getItems().clear();
 		if (callsUp == null) {
 			throw new NullPointerException("MainGuiController.update() callsUp");
@@ -247,13 +247,21 @@ public class MainGuiController {
 			listview_calls_up.getItems().add("Floor " + e);
 		}
 		
-		List<Integer> callsDown = floor.GetDowns();
+		List<Integer> callsDown = floor.getDownButtonsList();
 		listview_calls_down.getItems().clear();
 		if (callsDown == null) {
 			throw new NullPointerException("MainGuiController.update() callsDown");
 		}
 		for (Integer e : callsDown) {
 			listview_calls_down.getItems().add("Floor " + e);
+		}
+		
+		List<Integer> serviceFloorsInteger = elevator.getIgnoredFloors();
+		if (serviceFloorsInteger == null) {
+			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
+		}
+		for (Integer e : serviceFloorsInteger) {
+			listview_no_service.getItems().add("Floor " + e);
 		}
 	}
 
@@ -266,23 +274,15 @@ public class MainGuiController {
 		iBuildingModel = building;
 		
 		//set/initialize elements that don't change anymore
-		numFloorsInBuilding = iBuildingModel.GetNumFloors();
+		numFloorsInBuilding = iBuildingModel.getNumFloors();
 		
-		for(int i = 1; i < iBuildingModel.GetNumElevators() + 1; ++i) {
+		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
 		//for(int i = 1; i < 5 + 1; ++i) {
 			listview_elevators.getItems().add("Elevator " + i);
 		}
 		//automatically select the first elevator. If the list is empty no items will be selected
 		listview_elevators.getFocusModel().focus(0);
 		listview_elevators.getSelectionModel().select(0);
-
-		List<Integer> serviceFloorsInteger = iBuildingModel.GetServiceFloors();
-		if (serviceFloorsInteger == null) {
-			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
-		}
-		for (Integer e : serviceFloorsInteger) {
-			listview_no_service.getItems().add("Floor " + e);
-		}
 		
 		//bind status so that gui always show the latest status automatically
 		label_status_text.textProperty().bind(statusAlert.Status);

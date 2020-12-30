@@ -2,22 +2,15 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 public interface IElevatorWrapper {
 
-	/** State variable for elevator doors open.	 */
-	public final static int ELEVATOR_DOORS_OPEN = 1;	
-	/** State variable for elevator doors closed. */
-	public final static int ELEVATOR_DOORS_CLOSED = 2;
-	/** State variable for elevator doors opening. */
-	public final static int ELEVATOR_DOORS_OPENING = 3;
-	/** State variable for elevator doors closing. */
-	public final static int ELEVATOR_DOORS_CLOSING = 4;
+	public enum ElevatorDoorStatus
+	{
+		ELEVATOR_DOORS_OPEN, ELEVATOR_DOORS_CLOSED, ELEVATOR_DOORS_OPENING, ELEVATOR_DOORS_CLOSING
+	}
 	
-	
-	/** State variable for elevator status when going up */
-	public final static int ELEVATOR_DIRECTION_UP = 0;				
-	/** State variable for elevator status when going down. */
-	public final static int ELEVATOR_DIRECTION_DOWN = 1;			
-	/** State variables for elevator status stopped and uncommitted. */
-	public final static int ELEVATOR_DIRECTION_UNCOMMITTED = 2;	
+	public enum ElevatorDirection
+	{
+		ELEVATOR_DIRECTION_UP, ELEVATOR_DIRECTION_DOWN, ELEVATOR_DIRECTION_UNCOMMITTED
+	}
 	
 	
 	/* **********************************************************************************
@@ -44,14 +37,14 @@ public interface IElevatorWrapper {
 	 * @param elevatorNumber elevator number whose committed direction is being set
 	 * @param direction direction being set where up=0, down=1 and uncommitted=2
 	 */
-	public void setCommittedDirection(int elevatorNumber, int direction) throws java.rmi.RemoteException;
+	public void setCommittedDirection(int elevatorNumber, ElevatorDirection direction) throws java.rmi.RemoteException;
 	
 	/**
 	 * Retrieves the committed direction of the specified elevator (up / down / uncommitted). 
 	 * @param elevatorNumber - elevator number whose committed direction is being retrieved 
 	 * @return the current direction of the specified elevator where up=0, down=1 and uncommitted=2
 	 */
-	public int getCommittedDirection(int elevatorNumber) throws java.rmi.RemoteException; 
+	public ElevatorDirection getCommittedDirection(int elevatorNumber) throws java.rmi.RemoteException; 
 
 	
 	
@@ -64,7 +57,7 @@ public interface IElevatorWrapper {
 	 * @param elevatorNumber - elevator number whose door status is being retrieved 
 	 * @return returns the door status of the indicated elevator where 1=open and 2=closed
 	 */
-	public int getElevatorDoorStatus(int elevatorNumber) throws java.rmi.RemoteException; 
+	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber) throws java.rmi.RemoteException; 
 
 	/**
 	 * Provides the current location of the specified elevator to the nearest floor 

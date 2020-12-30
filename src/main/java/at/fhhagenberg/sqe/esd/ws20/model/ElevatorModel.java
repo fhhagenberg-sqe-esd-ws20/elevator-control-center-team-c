@@ -3,11 +3,15 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
+
 public class ElevatorModel implements IElevatorModel {
 
 	public ElevatorModel()
 	{
 		Stops = new ArrayList<Integer>();
+		IgnoredFloors = new ArrayList<Integer>();
 	}
 	
 	
@@ -15,7 +19,7 @@ public class ElevatorModel implements IElevatorModel {
 	 * Add stop to elevator stop list
 	 */
 	@Override
-	public void AddStop(Integer stop)
+	public void addStop(Integer stop)
 	{
 		if (Stops == null)
 		{
@@ -29,43 +33,43 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public void SetTarget(Integer target)
+	public void setTarget(Integer target)
 	{
 		Target = target;
 	}
 	
 	@Override
-	public void SetPosition(Integer position)
+	public void setPosition(Integer position)
 	{
 		Position = position;
 	}
 	
 	@Override
-	public void SetDirection(Integer direction)
+	public void setDirection(ElevatorDirection direction)
 	{
 		Direction = direction;
 	}
 	
 	@Override
-	public void SetPayload(Integer payload)
+	public void setPayload(Integer payload)
 	{
 		Payload = payload;
 	}
 	
 	@Override
-	public void SetSpeed(Integer speed)
+	public void setSpeed(Integer speed)
 	{
 		Speed = speed;
 	}
 	
 	@Override
-	public void SetDoors(Integer doors)
+	public void setDoors(ElevatorDoorStatus doors)
 	{
 		Doors = doors;
 	}
 	
 	@Override
-	public void SetStops(List<Integer> stops)
+	public void setStops(List<Integer> stops)
 	{
 		if(stops != null)
 		{
@@ -74,53 +78,77 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public Integer GetTarget()
+	public Integer getTarget()
 	{
 		return Target;
 	}
 	
 	@Override
-	public Integer GetPosition()
+	public Integer getPosition()
 	{
 		return Position;
 	}
 	
 	@Override
-	public Integer GetDirection()
+	public ElevatorDirection getDirection()
 	{
 		return Direction;
 	}
 	
 	@Override
-	public Integer GetPayload()
+	public Integer getPayload()
 	{
 		return Payload;
 	}
 	
 	@Override
-	public Integer GetSpeed()
+	public Integer getSpeed()
 	{
 		return Speed;
 	}
 	
 	@Override
-	public Integer GetDoors()
+	public ElevatorDoorStatus getDoors()
 	{
 		return Doors;
 	}
 	
 	@Override
-	public List<Integer> GetStops()
+	public List<Integer> getStops()
 	{
 		return Stops;
 	}
 	
+	@Override
+	public void addIgnoredFloor(int floorNumber)
+	{
+		if(!(IgnoredFloors.contains(floorNumber)))
+		{
+			IgnoredFloors.add(floorNumber);
+		}
+	}
+	
+	@Override
+	public void setIgnoredFloors(List<Integer> serviceFloors)
+	{
+		if(serviceFloors != null)
+		{
+			IgnoredFloors = serviceFloors;
+		}
+	}
+	
+	@Override
+	public List<Integer> getIgnoredFloors()
+	{
+		return IgnoredFloors;
+	}	
 	
 	private Integer Target = 0;
 	private Integer Position = 0;
-	private Integer Direction = 0;
+	private ElevatorDirection Direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
 	private Integer Payload = 0;
 	private Integer Speed = 0;
-	private Integer Doors = 0;
+	private ElevatorDoorStatus Doors = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
 	private List<Integer> Stops;
+	 private List<Integer> IgnoredFloors;
 }

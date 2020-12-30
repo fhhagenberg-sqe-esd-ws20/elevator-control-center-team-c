@@ -2,20 +2,34 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.util.List;
 
+/**
+ * Interface of a Model representing a building.
+ * A building can have many floors and several elevators.
+ */
 public interface IBuildingModel {
 
-	public void AddServiceFloor(int floorNumber);
-	
-	void SetNumElevators(int numElevators);
+	/**
+	 * Set the number of elevators in the building.
+	 * @param numElevators number of elevators in this building
+	 */
+	void setNumElevators(int numElevators);
 
-	void SetNumFloors(int numFloors);
+	/**
+	 * Set the number of floors in the building.
+	 * @param numFloors number of floors in this building
+	 */
+	void setNumFloors(int numFloors);
 
-	void SetServiceFloors(List<Integer> serviceFloors);
+	/**
+	 * Get the number of elevators in the building.
+	 * @return number of elevators in the building
+	 */
+	int getNumElevators();
 
-	int GetNumElevators();
-
-	int GetNumFloors();
-
-	List<Integer> GetServiceFloors();
+	/**
+	 * Get the number of floors in the building.
+	 * @return the number of floors in the building.
+	 */
+	int getNumFloors();
 
 }

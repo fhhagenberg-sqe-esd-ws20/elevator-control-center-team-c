@@ -2,34 +2,57 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.util.List;
 
+/**
+ * Interface for the FloorModel
+ * The floor model has a list of up buttons pressed and a list of down buttons pressed.
+ *
+ */
 public interface IFloorModel {
-
+	
 	/**
 	 * Add button press of an up button to the list
+	 * @param floorUp the number of floor in which the up button is pressed and should be added to the list
 	 */
-	public void AddUp(int up);
+	public void addButtonUp(int floorUp);
 	
 	/**
 	 * Add button press of an down button to the list
+	 * @param floorDown the number of floor in which the down button is pressed and should be added to the list
 	 */
-	public void AddDown(int down);
+	public void addButtonDown(int floorDown);
 	
 	/**
-	 * clear the content of the up list
+	 * Clear the content of the up list
 	 */
-	public void ClearUps();
+	public void clearUpButtonsList();
 	
 	/**
-	 * clear the content of the down list
+	 * Clear the content of the down list
 	 */
-	public void ClearDowns();
+	public void clearDownButtonsList();
 	
-	void SetUps(List<Integer> ups);
+	/**
+	 * Set the list of up buttons pressed
+	 * @param ups list of up buttons pressed
+	 */
+	void setUpButtonsList(List<Integer> ups);
 
-	void SetDowns(List<Integer> downs);
+	/**
+	 * Set the list of down buttons pressed
+	 * @param downs list of down buttons pressed
+	 */
+	void setDownButtonsList(List<Integer> downs);
 
-	List<Integer> GetUps();
+	/**
+	 * Get the list of floors in which the up button is pressed
+	 * @return the list of up buttons pressed
+	 */
+	List<Integer> getUpButtonsList();
 
-	List<Integer> GetDowns();
+	/**
+	 * Get the list of floors in which the down button is pressed
+	 * @return the list of down buttons pressed
+	 */
+	List<Integer> getDownButtonsList();
 
 }

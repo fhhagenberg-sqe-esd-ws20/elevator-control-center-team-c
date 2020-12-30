@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
+
 @ExtendWith(MockitoExtension.class)
 
 
@@ -89,25 +91,25 @@ public class ElevatorWrapperTest {
     
     @Test
     public void testSetCommittedDirection() throws RemoteException {
-    	elevatorWrapper.setCommittedDirection(1, 2);
+    	elevatorWrapper.setCommittedDirection(1, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
     	
         // verify method calls
-        Mockito.verify(mockedIElevator).setCommittedDirection(1, 2);
+        Mockito.verify(mockedIElevator).setCommittedDirection(1, IElevator.ELEVATOR_DIRECTION_DOWN);
         Mockito.verifyNoMoreInteractions(mockedIElevator);
     }
     
     @Test
     public void testGetCommittedDirection() throws RemoteException {
-        Mockito.when(mockedIElevator.getCommittedDirection(4)).thenReturn(0);
+        Mockito.when(mockedIElevator.getCommittedDirection(4)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
 		
-        assertEquals(0, elevatorWrapper.getCommittedDirection(4));
+        assertEquals(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_DOWN, elevatorWrapper.getCommittedDirection(4));
     }
     
     @Test
     public void testGetElevatorDoorStatus() throws RemoteException {
-        Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(3);
+        Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
 		
-        assertEquals(3, elevatorWrapper.getElevatorDoorStatus(5));
+        assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED, elevatorWrapper.getElevatorDoorStatus(5));
     }
     
     @Test
