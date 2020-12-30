@@ -88,7 +88,7 @@ public class UpdateData extends TimerTask {
     	if(elevatorIdx >= 0 && elevatorIdx < Elevators.size())
 		{
 			SelectedElevator = elevatorIdx;
-			GuiController.update(Building, Floor, Elevators.get(SelectedElevator));
+			GuiController.update(Floor, Elevators.get(SelectedElevator));
 		}
     }
     
@@ -105,7 +105,7 @@ public class UpdateData extends TimerTask {
 				el.AddStop(floor);
 				if(elevator == SelectedElevator)
 				{
-					GuiController.update(Building, Floor, Elevators.get(SelectedElevator));
+					GuiController.update(Floor, Elevators.get(SelectedElevator));
 				}
 			}
 		}
@@ -120,7 +120,7 @@ public class UpdateData extends TimerTask {
     	if(floor <= Building.GetNumFloors())
     	{
     		Elevators.get(SelectedElevator).AddStop(floor);
-    		GuiController.update(Building, Floor, Elevators.get(SelectedElevator));
+    		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
     }
     
@@ -144,7 +144,7 @@ public class UpdateData extends TimerTask {
     	else
     	{
     		// everything is okay. Notify the Controller, that updownlist has been updated
-    		GuiController.update(Building, Floor, Elevators.get(SelectedElevator));
+    		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
     }
     
@@ -228,7 +228,7 @@ public class UpdateData extends TimerTask {
     		Elevators.set(elevator_idx, tempElevator);
     		if(elevator_idx == SelectedElevator)
     		{
-    			GuiController.update(Building, Floor, Elevators.get(SelectedElevator));
+    			GuiController.update(Floor, Elevators.get(SelectedElevator));
     		}
     	}
     }

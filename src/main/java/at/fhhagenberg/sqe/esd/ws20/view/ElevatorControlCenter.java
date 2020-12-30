@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Timer;
 
 import at.fhhagenberg.sqe.esd.ws20.model.BuildingModel;
-import at.fhhagenberg.sqe.esd.ws20.model.ElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.FloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
@@ -17,9 +16,6 @@ import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -65,8 +61,7 @@ public class ElevatorControlCenter extends Application {
 		stage.show();
 		
 
-		
-		//save controller
+		//save controller to access functions from it later
 		mainGuiController = (MainGuiController)loader.getController();
 		
 		// Setup and connect objects, which are necessary for the MVC Pattern
@@ -76,15 +71,12 @@ public class ElevatorControlCenter extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		mainGuiController.startcontroller();
-		
-		// stop scheduler, when application is shutting down
 	}
 
     public static void main(String[] args) {
         
         launch();
+        // stop scheduler, when application is shutting down
         scheduler.cancel();
 
     }
@@ -94,9 +86,9 @@ public class ElevatorControlCenter extends Application {
      * @throws RemoteException 
      */
     public void SetupMVC() throws RemoteException
-    {	
+    {
         // Creating models
-        StatusAlert statusAlert = new StatusAlert();        
+        StatusAlert statusAlert = new StatusAlert();
         IBuildingModel building = new BuildingModel();
         IFloorModel floor = new FloorModel();
         ElevatorWrapper sqelevator = new ElevatorWrapper(null);				//TODO: use a Mock or the Simulator instead of null
@@ -119,7 +111,7 @@ public class ElevatorControlCenter extends Application {
         UpdateData updater = new UpdateData(sqelevator, sqelevator, building, floor, elevators, mainGuiController);
         
         // give information about the models to the mainGuiController
-        mainGuiController.register(updater);
+        mainGuiController.register(updater, building);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);

@@ -12,6 +12,8 @@ import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -179,15 +181,14 @@ public class MainGuiController {
     
     
     private UpdateData updateData = null;
+    private IBuildingModel iBuildingModel = null;
     private Integer numFloorsInBuilding = 0;
+    //private Integer numElevatorsInBuilding = 0;
     
-    public void update(IBuildingModel building, IFloorModel floor, IElevatorModel elevator) {
-    	if(building == null || floor == null || elevator == null) {
+    public void update(IFloorModel floor, IElevatorModel elevator) {
+    	if(floor == null || elevator == null) {
     		throw new NullPointerException("MainGuiController.update()");
     	}
-    	
-    	//update building properties
-    	numFloorsInBuilding = building.GetNumFloors();
     	
     	//update gui with new values from the selected elevator
     	//elevator data
@@ -195,11 +196,27 @@ public class MainGuiController {
     	
     }
 
-	public void register(UpdateData updater) {
-		if(updater == null) {
+	public void register(UpdateData updater, IBuildingModel building) {
+		if(updater == null || building == null) {
 			throw new NullPointerException("MainGuiController.register()");
 		}
 		
 		updateData = updater;
+		iBuildingModel = building;
+		
+		numFloorsInBuilding = iBuildingModel.GetNumFloors();
+		
+		ObservableList<String>elevatorList = FXCollections.observableArrayList();
+		for(int i = 1; i < iBuildingModel.GetNumElevators() + 1; ++i) {
+		//for(int i = 1; i < 5 + 1; ++i) {
+			elevatorList.add("Elevator " + i);
+		}
+        listview_elevators.setItems(elevatorList);
+        
+        //if there are elevators, automatically select the first one
+        if(!listview_elevators.getItems().isEmpty()) {
+	        listview_elevators.getFocusModel().focus(0);
+	        listview_elevators.getSelectionModel().select(0);
+        }
 	}
 }
