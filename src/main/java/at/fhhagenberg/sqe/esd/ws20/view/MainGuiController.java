@@ -8,6 +8,7 @@ import java.text.ParsePosition;
 import java.util.ResourceBundle;
 import java.util.List;
 
+import at.fhhagenberg.sqe.esd.ws20.model.AutoModeSimpleAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
@@ -114,19 +115,19 @@ public class MainGuiController {
     
     @FXML
     void checkboxManualAutomatic(ActionEvent event) {
+    	if (autoModeAlgo == null) {
+    		throw new NullPointerException("MainGuiController.checkboxManualAutomatic() setDisable");
+    	}
+    	
     	//check checkbox state, if checked enable button, otherwise disable. The elevator can only be sent to a floor if in manual mode. 
     	if(checkbox_manual_mode.isSelected()) {
-    		button_send_to_floor.setDisable(false);
     		//disable the automatic mode -> enable manual mode
-    		//TODO 
-    		//if autoMode != null
-    		//autoMode.Disable(selectedElevator);
+    		autoModeAlgo.disable(selectedElevator);
+    		button_send_to_floor.setDisable(false);
     	}
     	else {
+    		autoModeAlgo.enable(selectedElevator);
     		button_send_to_floor.setDisable(true);
-    		//TODO 
-    		// if autoMode != null
-    		//autoMode.Enable(selectedElevator);
     	}
     }
     
@@ -200,8 +201,9 @@ public class MainGuiController {
     
     private UpdateData updateData = null;
     private IBuildingModel iBuildingModel = null;
+    private AutoModeSimpleAlgo autoModeAlgo = null;
     private Integer numFloorsInBuilding = 0;
-    private Integer selectedElevator = -1;
+    private int selectedElevator = -1;
     
     public void update(IFloorModel floor, IElevatorModel elevator) {
     	if(floor == null || elevator == null) {
@@ -212,6 +214,16 @@ public class MainGuiController {
     	//getSelectedIndex() returned -1 if no line is selected
     	if(selectedElevator < 0) {
     		throw new IllegalStateException("listview_elevators no line selected!");
+    	}
+    	
+    	//check if the selected elevator is in manual or automatic mode -> set checkbox and button to right state.
+    	if(autoModeAlgo.checkIfInAutoMode(selectedElevator)) {
+    		checkbox_manual_mode.setSelected(false);
+    		button_send_to_floor.setDisable(true);
+    	}
+    	else {
+    		checkbox_manual_mode.setSelected(true);
+    		button_send_to_floor.setDisable(false);
     	}
     	
     	//update gui with new values from the selected elevator
@@ -274,13 +286,14 @@ public class MainGuiController {
 		}
 	}
 
-	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert) {
-		if(updater == null || building == null || statusAlert == null) {
+	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert, AutoModeSimpleAlgo autoModeAlgorithm) {
+		if(updater == null || building == null || statusAlert == null || autoModeAlgorithm == null) {
 			throw new NullPointerException("MainGuiController.register()");
 		}
 		
 		updateData = updater;
 		iBuildingModel = building;
+		autoModeAlgo = autoModeAlgorithm;
 		
 		//set/initialize elements that don't change anymore
 		numFloorsInBuilding = iBuildingModel.getNumFloors();
