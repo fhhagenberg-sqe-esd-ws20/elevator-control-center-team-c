@@ -11,9 +11,25 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
-//TODO: update javadoc
-public class UpdateData extends TimerTask {
+/**
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:10
+ * 
+ * Represents the updater, which refreshes all data of the elevator every 10 ms
+ *
+ */public class UpdateData extends TimerTask {
 
+	/**
+	 * Constructor initializes the number of floors and elevators
+	 * 
+	 * @param sqbuilding - the simulator for the building
+	 * @param sqelevator - the simulator for the elevators
+	 * @param building - the internal model of the building
+	 * @param floor - the internal model for the floors
+	 * @param elevators - the internal list with the models for the elevators
+	 * @param guiController - the controller, which controls the gui
+	 * @throws RemoteException
+	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
 			MainGuiController guiController) throws RemoteException
 	{
@@ -32,6 +48,7 @@ public class UpdateData extends TimerTask {
 
 	/** 
 	 * Initializes all constant properties of the building
+	 * 
 	 * @throws RemoteException
 	 */
 	public void initializeBuilding() throws RemoteException
@@ -94,8 +111,11 @@ public class UpdateData extends TimerTask {
         }
     }
     
+
     /**
      * Set the index of the elevator, which is currently selected in the view
+     * 
+     * @param elevatorIdx - index of the elevator, which is selected in the GUI
      */
     public void setSelectedElevator(int elevatorIdx)
     {
@@ -107,7 +127,10 @@ public class UpdateData extends TimerTask {
     }
     
     /**
-     * Stop was pressed in an elevator. The Target will be added to the targetlist of the elevator
+     * Set a new target for the elevator
+     * 
+     * @param floor - index of the floor, where the elevator should stop
+     * @param elevator - index of the elevator, which should stop in the floor
      */
     public void setTarget(int floor, int elevator)
     {
@@ -135,7 +158,9 @@ public class UpdateData extends TimerTask {
     
     
     /**
-     * Press stop Button at the current selected elevator
+     * Set a new target for the elevator
+     * 
+     * @param floor - index of the floor, where the elevator should stop
      */
     public void setTarget(int floor)
     {
@@ -157,6 +182,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed up and down buttons and notify the gui to show them
+     * 
+     * @throws RemoteException
      */
     public void refreshUpDownList() throws RemoteException
     {
@@ -180,6 +207,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed up buttons
+     * 
+     * @throws RemoteException
      */
     public void refreshUpList() throws RemoteException
     {
@@ -198,6 +227,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed down buttons
+     * 
+     * @throws RemoteException
      */
     public void refreshDownList() throws RemoteException
     {
@@ -216,6 +247,9 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh whole content of an elevator
+     * 
+     * @param elevator_idx - index of the elevator, that should be refreshed
+     * @throws RemoteException
      */
     public void refreshElevator(int elevator_idx) throws RemoteException
     {

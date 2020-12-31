@@ -3,6 +3,9 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import java.util.List;
 
 /**
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:06
+ * 
  * Interface for the FloorModel
  * The floor model has a list of up buttons pressed and a list of down buttons pressed.
  *

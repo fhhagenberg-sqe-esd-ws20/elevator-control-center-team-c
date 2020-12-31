@@ -6,6 +6,9 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirectio
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 
 /**
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:06
+ * 
  * Interface for the ElevatorModel
  * Each elevator has the following attributes:
  * - target
