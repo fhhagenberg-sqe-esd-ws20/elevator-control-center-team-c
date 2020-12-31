@@ -31,7 +31,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	 * @throws RemoteException
 	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController) throws RemoteException
+			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
 	{
 		// assign models to the internal fields
 		SqBuilding = sqbuilding;
@@ -40,6 +40,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 		Elevators = elevators;
 		Sqelevator = sqelevator;
 		GuiController = guiController;
+		StatusAlert = statusAlert;
 		
 		initializeBuilding();
 	}
@@ -92,9 +93,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
      */
     @Override
     public void run() {
-        try {
-        	//System.out.println("Getting Data from Simulator");
-        	
+        try {        	
         	// refresh list with the up and down buttons of the floors
         	refreshUpDownList();
         	
@@ -106,8 +105,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
         	
         } catch (Exception ex) {
-        	//TODO: Statusmessage hier printen, oder kapseln wir das?
-        	System.out.println("Exception when getting values from SQelevator");
+        	StatusAlert.Status.set("Exception when getting values from SQelevator");
         }
     }
     
@@ -144,8 +142,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 				try {
 					Sqelevator.setTarget(elevator, floor);
 				} catch (RemoteException e) {
-					// TODO Update status here?
-					e.printStackTrace();
+					StatusAlert.Status.set("Could not set Target " + floor + " for Elevator" + elevator);
 				}
 				
 				if(elevator == SelectedElevator)
@@ -172,8 +169,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 			try {
 				Sqelevator.setTarget(SelectedElevator, floor);
 			} catch (RemoteException e) {
-				// TODO Update status here?
-				e.printStackTrace();
+				StatusAlert.Status.set("Could not set Target " + floor);
 			}
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
@@ -193,10 +189,11 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	refreshUpList();
     	refreshDownList();
     	
+    	long clocktick = Sqelevator.getClockTick();
     	// check, if clocktick of the sqelevator has changed in the meantime
-    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
+    	if(clocktick != clocktickBeforeUpdate)
     	{
-    		System.out.println("out of sync with the simulator");
+    		StatusAlert.Status.set("Out of sync with the simulator at clocktick " + clocktick);
     	}
     	else
     	{
@@ -289,7 +286,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	// check, if clocktick of the sqelevator has changed in the meantime
     	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
     	{
-    		System.out.println("Out of sync with the simulator when getting updownlist");
+    		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
     	}
     	else
     	{
@@ -310,6 +307,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	private List<IElevatorModel> Elevators;
 	private MainGuiController GuiController;
 	private int SelectedElevator;
+	StatusAlert StatusAlert;
     
     
     
