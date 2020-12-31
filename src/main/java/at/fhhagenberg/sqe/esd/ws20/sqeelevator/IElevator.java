@@ -76,7 +76,7 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 public interface IElevator extends java.rmi.Remote {
 	
 	/** State variable for elevator doors open.	 */
-	public final static int ELEVATOR_DOORS_OPEN = 1;	
+	public final static int ELEVATOR_DOORS_OPEN = 1;
 	/** State variable for elevator doors closed. */
 	public final static int ELEVATOR_DOORS_CLOSED = 2;
 	/** State variable for elevator doors opening. */
@@ -85,18 +85,18 @@ public interface IElevator extends java.rmi.Remote {
 	public final static int ELEVATOR_DOORS_CLOSING = 4;
 		
 	/** State variable for elevator status when going up */
-	public final static int ELEVATOR_DIRECTION_UP = 0;				
+	public final static int ELEVATOR_DIRECTION_UP = 0;
 	/** State variable for elevator status when going down. */
-	public final static int ELEVATOR_DIRECTION_DOWN = 1;			
+	public final static int ELEVATOR_DIRECTION_DOWN = 1;
 	/** State variables for elevator status stopped and uncommitted. */
-	public final static int ELEVATOR_DIRECTION_UNCOMMITTED = 2;		
+	public final static int ELEVATOR_DIRECTION_UNCOMMITTED = 2;
 	
 	/**
 	 * Retrieves the committed direction of the specified elevator (up / down / uncommitted). 
 	 * @param elevatorNumber - elevator number whose committed direction is being retrieved 
 	 * @return the current direction of the specified elevator where up=0, down=1 and uncommitted=2
 	 */
-	public int getCommittedDirection(int elevatorNumber) throws java.rmi.RemoteException; 
+	public int getCommittedDirection(int elevatorNumber) throws java.rmi.RemoteException;
 
 	/**
 	 * Provides the current acceleration of the specified elevator in feet per sec^2. 
@@ -107,7 +107,7 @@ public interface IElevator extends java.rmi.Remote {
 	public int getElevatorAccel(int elevatorNumber) throws java.rmi.RemoteException;
 
 	/**
-	 * Provides the status of a floor request button on a specified elevator (on/off).      
+	 * Provides the status of a floor request button on a specified elevator (on/off).
 	 * @param elevatorNumber - elevator number whose button status is being retrieved
 	 * @param floor - floor number button being checked on the selected elevator 
 	 * @return returns boolean to indicate if floor button on the elevator is active (true) or not (false)
@@ -115,7 +115,7 @@ public interface IElevator extends java.rmi.Remote {
 	public boolean getElevatorButton(int elevatorNumber, int floor) throws java.rmi.RemoteException;
 
 	/**
-	 * Provides the current status of the doors of the specified elevator (open/closed).      
+	 * Provides the current status of the doors of the specified elevator (open/closed).
 	 * @param elevatorNumber - elevator number whose door status is being retrieved 
 	 * @return returns the door status of the indicated elevator where 1=open and 2=closed
 	 */
