@@ -76,7 +76,7 @@ public class UpdateData extends TimerTask {
     @Override
     public void run() {
         try {
-        	System.out.println("Getting Data from Simulator");
+        	//System.out.println("Getting Data from Simulator");
         	
         	// refresh list with the up and down buttons of the floors
         	refreshUpDownList();
