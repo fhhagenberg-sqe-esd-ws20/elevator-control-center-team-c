@@ -31,7 +31,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	 * @throws RemoteException
 	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController) throws RemoteException
+			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
 	{
 		// assign models to the internal fields
 		SqBuilding = sqbuilding;
@@ -40,6 +40,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 		Elevators = elevators;
 		Sqelevator = sqelevator;
 		GuiController = guiController;
+		StatusAlert = statusAlert;
 		
 		initializeBuilding();
 	}
@@ -310,6 +311,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	private List<IElevatorModel> Elevators;
 	private MainGuiController GuiController;
 	private int SelectedElevator;
+	StatusAlert StatusAlert;
     
     
     
