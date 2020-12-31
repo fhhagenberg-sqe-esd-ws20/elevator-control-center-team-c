@@ -1,7 +1,5 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class BuildingModel implements IBuildingModel {
 	
