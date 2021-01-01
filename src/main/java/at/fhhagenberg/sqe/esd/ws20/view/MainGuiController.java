@@ -37,7 +37,7 @@ import javafx.stage.Stage;
  * Also handles checkbox/button events.
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2020-12-30 04:25
+ * @since 2021-01-01 05:19
  */
 public class MainGuiController {
 
@@ -210,12 +210,16 @@ public class MainGuiController {
     		throw new NullPointerException("MainGuiController.update()");
     	}
     	
+    	//if there are no elevators, do nothing on update. Nothing should or can be updated
+    	if(listview_elevators.getItems().isEmpty()) {
+    		return;
+    	}
+    	
     	//get current selected elevator
     	//getSelectedIndex() returned -1 if no line is selected
     	if(selectedElevator < 0) {
     		throw new IllegalStateException("listview_elevators no line selected!");
     	}
-    	
     	//check if the selected elevator is in manual or automatic mode -> set checkbox and button to right state.
     	if(autoModeAlgo.checkIfInAutoMode(selectedElevator)) {
     		checkbox_manual_mode.setSelected(false);
@@ -226,7 +230,7 @@ public class MainGuiController {
     		button_send_to_floor.setDisable(false);
     	}
     	
-    	//update gui with new values from the selected elevator
+    	//update gui with new values from the given elevator
     	//elevator data
     	Platform.runLater(new Runnable() {
 			public void run() {
@@ -258,6 +262,15 @@ public class MainGuiController {
 			listview_stops.getItems().add("Floor " + e);
 		}
     	
+		//not serviced floors
+		List<Integer> serviceFloorsInteger = elevator.getIgnoredFloors();
+		if (serviceFloorsInteger == null) {
+			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
+		}
+		for (Integer e : serviceFloorsInteger) {
+			listview_no_service.getItems().add("Floor " + e);
+		}
+		
     	//calls
     	List<Integer> callsUp = floor.getUpButtonsList();
     	listview_calls_up.getItems().clear();
@@ -275,14 +288,6 @@ public class MainGuiController {
 		}
 		for (Integer e : callsDown) {
 			listview_calls_down.getItems().add("Floor " + e);
-		}
-		
-		List<Integer> serviceFloorsInteger = elevator.getIgnoredFloors();
-		if (serviceFloorsInteger == null) {
-			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
-		}
-		for (Integer e : serviceFloorsInteger) {
-			listview_no_service.getItems().add("Floor " + e);
 		}
 	}
 
@@ -307,6 +312,10 @@ public class MainGuiController {
 		listview_elevators.getSelectionModel().select(0);
 		
 		//bind status so that gui always show the latest status automatically
-		label_status_text.textProperty().bind(statusAlert.Status);
+		Platform.runLater(new Runnable() {
+			public void run() {
+				label_status_text.textProperty().bind(statusAlert.Status);
+			}
+		});
 	}
 }
