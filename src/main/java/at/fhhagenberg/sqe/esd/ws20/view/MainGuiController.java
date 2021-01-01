@@ -236,25 +236,23 @@ public class MainGuiController {
     	
     	//update gui with new values from the given elevator
     	//elevator data
-    	Platform.runLater(new Runnable() {
-			public void run() {
-				label_target_text.setText(elevator.getTarget().toString());
-		    	label_position_text.setText(elevator.getPosition().toString());
-		    	
-		    	String direction = elevator.getDirection().toString();
-		    	direction = direction.substring(direction.lastIndexOf('_') + 1);
-		    	direction = direction.substring(0,1).toUpperCase() + direction.substring(1).toLowerCase();
-		    	label_direction_text.setText(direction);
-		    	
-		    	label_payload_text.setText(elevator.getPayload().toString());
-		    	label_speed_text.setText(elevator.getSpeed().toString());
-		    	
-		    	String doorsState = elevator.getDoors().toString();
-		    	doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
-		    	doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
-		    	label_doors_text.setText(doorsState);
-			}
-		});
+    	Platform.runLater(new Runnable() { public void run() {
+			label_target_text.setText(elevator.getTarget().toString());
+	    	label_position_text.setText(elevator.getPosition().toString());
+	    	
+	    	String direction = elevator.getDirection().toString();
+	    	direction = direction.substring(direction.lastIndexOf('_') + 1);
+	    	direction = direction.substring(0,1).toUpperCase() + direction.substring(1).toLowerCase();
+	    	label_direction_text.setText(direction);
+	    	
+	    	label_payload_text.setText(elevator.getPayload().toString());
+	    	label_speed_text.setText(elevator.getSpeed().toString());
+	    	
+	    	String doorsState = elevator.getDoors().toString();
+	    	doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
+	    	doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
+	    	label_doors_text.setText(doorsState);
+		}});
     	
     	//stops
     	List<Integer> stops = elevator.getStopsList();
@@ -306,7 +304,9 @@ public class MainGuiController {
 		
 		//set/initialize elements that don't change anymore
 		numFloorsInBuilding = iBuildingModel.getNumFloors();
-		label_floors_text.setText(numFloorsInBuilding.toString());
+		Platform.runLater(new Runnable() { public void run() {
+			label_floors_text.setText(numFloorsInBuilding.toString());
+		}});
 		
 		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
 		//for(int i = 1; i < 5 + 1; ++i) {
@@ -317,10 +317,8 @@ public class MainGuiController {
 		listview_elevators.getSelectionModel().select(0);
 		
 		//bind status so that gui always show the latest status automatically
-		Platform.runLater(new Runnable() {
-			public void run() {
-				label_status_text.textProperty().bind(statusAlert.Status);
-			}
-		});
+		Platform.runLater(new Runnable() { public void run() {
+			label_status_text.textProperty().bind(statusAlert.Status);
+		}});
 	}
 }
