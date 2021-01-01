@@ -58,7 +58,6 @@ public class MainGuiControllerTest {
 	
 	private MainGuiController mainGuiController = null;
 	private String uiDefaultLabelText = "...";
-	private int uiDefaultSelectedElevatorIndex = 0;
 	
 	
 	@Start
@@ -193,8 +192,8 @@ public class MainGuiControllerTest {
 		Mockito.when(mockedElevator.getSpeed()).thenReturn(4);
 		Mockito.when(mockedElevator.getDoors()).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_OPENING);
 		
-		Mockito.when(mockedElevator.getStops()).thenReturn(List.of(1, 2));
-		Mockito.when(mockedElevator.getIgnoredFloors()).thenReturn(List.of(3, 4));
+		Mockito.when(mockedElevator.getStopsList()).thenReturn(List.of(1, 2));
+		Mockito.when(mockedElevator.getIgnoredFloorsList()).thenReturn(List.of(3, 4));
 		Mockito.when(mockedFloor.getUpButtonsList()).thenReturn(List.of(5, 6));
 		Mockito.when(mockedFloor.getDownButtonsList()).thenReturn(List.of(7, 8));
 		
@@ -205,20 +204,20 @@ public class MainGuiControllerTest {
 		
 		
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
-		//FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
-		//FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
 		
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(2));
-		//FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 3"));
-		//FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 4"));
 
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
-		//FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 5"));
-		//FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 6"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 5"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 6"));
 		
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		//FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 7"));
-		//FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 8"));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 7"));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 8"));
 	}
 	
 	@Test
@@ -237,6 +236,7 @@ public class MainGuiControllerTest {
 	
 	
 	//TODO tests
+	//Anzahl der Floors in der gui richtig
 	//StatusAlert neue Nachricht
 	//ob das button aktivieren funktioniert
 		//bei leerer uns bei gefüllter Liste

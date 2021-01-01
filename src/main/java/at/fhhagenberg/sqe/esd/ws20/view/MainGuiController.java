@@ -50,14 +50,14 @@ public class MainGuiController {
     @FXML // fx:id="label_payload_text"
     private Label label_payload_text; // Value injected by FXMLLoader
 
+    @FXML // fx:id="label_floors_text"
+    private Label label_floors_text; // Value injected by FXMLLoader
+
     @FXML // fx:id="label_direction_text"
     private Label label_direction_text; // Value injected by FXMLLoader
 
     @FXML // fx:id="textfield_floor_number"
     private TextField textfield_floor_number; // Value injected by FXMLLoader
-
-    @FXML // fx:id="listview_stops"
-    private ListView<String> listview_stops; // Value injected by FXMLLoader
 
     @FXML // fx:id="label_status_text"
     private Label label_status_text; // Value injected by FXMLLoader
@@ -77,6 +77,9 @@ public class MainGuiController {
     @FXML // fx:id="listview_calls_up"
     private ListView<String> listview_calls_up; // Value injected by FXMLLoader
 
+    @FXML // fx:id="listview_stops"
+    private ListView<String> listview_stops; // Value injected by FXMLLoader
+
     @FXML // fx:id="listview_no_service"
     private ListView<String> listview_no_service; // Value injected by FXMLLoader
 
@@ -95,15 +98,16 @@ public class MainGuiController {
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert label_payload_text != null : "fx:id=\"label_payload_text\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert label_floors_text != null : "fx:id=\"label_floors_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_direction_text != null : "fx:id=\"label_direction_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert textfield_floor_number != null : "fx:id=\"textfield_floor_number\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_stops != null : "fx:id=\"listview_stops\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_status_text != null : "fx:id=\"label_status_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert listview_elevators != null : "fx:id=\"listview_elevators\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_target_text != null : "fx:id=\"label_target_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert listview_calls_down != null : "fx:id=\"listview_calls_down\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_speed_text != null : "fx:id=\"label_speed_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert listview_calls_up != null : "fx:id=\"listview_calls_up\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listview_stops != null : "fx:id=\"listview_stops\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert listview_no_service != null : "fx:id=\"listview_no_service\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert label_doors_text != null : "fx:id=\"label_doors_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert button_send_to_floor != null : "fx:id=\"button_send_to_floor\" was not injected: check your FXML file 'MainGui.fxml'.";
@@ -253,7 +257,7 @@ public class MainGuiController {
 		});
     	
     	//stops
-    	List<Integer> stops = elevator.getStops();
+    	List<Integer> stops = elevator.getStopsList();
     	listview_stops.getItems().clear();
 		if (stops == null) {
 			throw new NullPointerException("MainGuiController.update() stops");
@@ -263,7 +267,7 @@ public class MainGuiController {
 		}
     	
 		//not serviced floors
-		List<Integer> serviceFloorsInteger = elevator.getIgnoredFloors();
+		List<Integer> serviceFloorsInteger = elevator.getIgnoredFloorsList();
 		if (serviceFloorsInteger == null) {
 			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
 		}
@@ -302,6 +306,7 @@ public class MainGuiController {
 		
 		//set/initialize elements that don't change anymore
 		numFloorsInBuilding = iBuildingModel.getNumFloors();
+		label_floors_text.setText(numFloorsInBuilding.toString());
 		
 		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
 		//for(int i = 1; i < 5 + 1; ++i) {

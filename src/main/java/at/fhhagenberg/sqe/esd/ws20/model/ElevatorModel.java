@@ -114,7 +114,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public List<Integer> getStops()
+	public List<Integer> getStopsList()
 	{
 		return Stops;
 	}
@@ -138,7 +138,7 @@ public class ElevatorModel implements IElevatorModel {
 	}
 	
 	@Override
-	public List<Integer> getIgnoredFloors()
+	public List<Integer> getIgnoredFloorsList()
 	{
 		return IgnoredFloors;
 	}	

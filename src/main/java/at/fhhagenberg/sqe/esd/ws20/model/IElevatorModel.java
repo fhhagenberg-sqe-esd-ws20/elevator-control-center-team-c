@@ -122,7 +122,7 @@ public interface IElevatorModel {
 	 */
 	ElevatorDoorStatus getDoors();
 
-	List<Integer> getStops();
+	List<Integer> getStopsList();
 
 	/**
 	 * Adds a floor to the service-list so the elevator will service the specified floor.
@@ -140,6 +140,6 @@ public interface IElevatorModel {
 	 * Get the list of floors which are serviced by the elevator.
 	 * @return the floor which are serviced
 	 */
-	List<Integer> getIgnoredFloors();
+	List<Integer> getIgnoredFloorsList();
 
 }
