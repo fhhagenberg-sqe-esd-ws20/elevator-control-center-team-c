@@ -126,6 +126,7 @@ public class MainGuiControllerTest {
 		
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
+		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
@@ -160,7 +161,7 @@ public class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
+		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
 
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
@@ -200,7 +201,7 @@ public class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
