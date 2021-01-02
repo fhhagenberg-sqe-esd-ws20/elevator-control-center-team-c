@@ -33,6 +33,13 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
 			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
 	{
+		
+		if(sqbuilding == null || building == null || floor == null 
+				|| elevators == null || sqelevator == null || guiController == null || statusAlert == null )
+		{
+			throw new NullPointerException("Nullpointer in UpdateData!");
+		}
+		
 		// assign models to the internal fields
 		SqBuilding = sqbuilding;
 		Building = building;
@@ -60,16 +67,16 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	}
 	
 	/** 
-	 * Initializes every elevator in the building
+	 * Set service floor for each elevator in the building
 	 * @throws RemoteException
 	 */
-	public void initializeElevators() throws RemoteException
+	public void initializeServicedFloors() throws RemoteException
 	{
 		//check if the number of stored elevators is the same as the number of 
 		//elevators in the buildung
 		if(Building.getNumElevators() != Elevators.size()) 
 		{
-			throw new RuntimeException("Numer of sored elevators not the same as elevators in the building!");
+			throw new RuntimeException("Numer of stored elevators not the same as number of elevators in the building!");
 		}
 		
 		// get all servicefloors of each elevator and store them in a list
@@ -297,6 +304,12 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     			GuiController.update(Floor, Elevators.get(SelectedElevator));
     		}
     	}
+    }
+    
+    public List<IElevatorModel> getElevators()
+    {
+		return Elevators;
+    	
     }
     
     
