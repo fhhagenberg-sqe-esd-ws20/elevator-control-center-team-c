@@ -410,6 +410,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("#checkbox_manual_mode");
 		robot.doubleClickOn("#textfield_floor_number").write("5");
 		robot.clickOn("#button_send_to_floor");
+		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(5);
