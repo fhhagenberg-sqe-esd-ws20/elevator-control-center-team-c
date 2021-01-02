@@ -26,7 +26,7 @@ public class FloorModel implements IFloorModel {
 	@Override
 	public void addButtonDown(int down)
 	{
-		Ups.add(down);
+		Downs.add(down);
 	}
 	
 	/**
