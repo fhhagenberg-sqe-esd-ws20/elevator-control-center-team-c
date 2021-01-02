@@ -1,8 +1,9 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
-import java.util.List;
-
 /**
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:06
+ * 
  * Interface of a Model representing a building.
  * A building can have many floors and several elevators.
  */

@@ -6,6 +6,9 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirectio
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 
 /**
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:06
+ * 
  * Interface for the ElevatorModel
  * Each elevator has the following attributes:
  * - target
@@ -119,7 +122,7 @@ public interface IElevatorModel {
 	 */
 	ElevatorDoorStatus getDoors();
 
-	List<Integer> getStops();
+	List<Integer> getStopsList();
 
 	/**
 	 * Adds a floor to the service-list so the elevator will service the specified floor.
@@ -137,6 +140,6 @@ public interface IElevatorModel {
 	 * Get the list of floors which are serviced by the elevator.
 	 * @return the floor which are serviced
 	 */
-	List<Integer> getIgnoredFloors();
+	List<Integer> getIgnoredFloorsList();
 
 }

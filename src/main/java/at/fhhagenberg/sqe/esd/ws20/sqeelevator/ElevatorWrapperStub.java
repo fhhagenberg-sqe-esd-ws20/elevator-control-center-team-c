@@ -2,7 +2,7 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import java.rmi.RemoteException;
 
-//TODO: Move this file to test folder, when real simulator is availlable
+//TODO: Move this file to test folder, when real simulator is available
 
 public class ElevatorWrapperStub implements IElevatorWrapper, IBuildingWrapper  {
 

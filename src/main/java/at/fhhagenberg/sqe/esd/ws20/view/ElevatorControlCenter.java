@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import at.fhhagenberg.sqe.esd.ws20.model.AutoModeSimpleAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.BuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.ElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.FloorModel;
@@ -95,23 +96,30 @@ public class ElevatorControlCenter extends Application {
         IFloorModel floor = new FloorModel();
         //ElevatorWrapper sqelevator = new ElevatorWrapper(null);				//TODO: use real Simulator instead of Mock
         ElevatorWrapperStub stub = new ElevatorWrapperStub();
+        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo(stub.getElevatorNum());	//TODO: use real Simulator instead of Mock
+        
         
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
         for(int i = 0; i < stub.getElevatorNum(); i++)							//TODO: use real simulator instead of stub
         {
         	elevators.add(new ElevatorModel());
+        	//as all elevators start in automatic mode -> add all elevators to automode algorithm.
+        	autoModeAlgorithm.enable(i);
         }
+        
+        
+
                 
         // Create Scheduler
         scheduler = new Timer();
 
 
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(stub, stub, building, floor, elevators, mainGuiController); //TODO: use real Simulator instead of Mock
+        UpdateData updater = new UpdateData(stub, stub, building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
         
         // give information about the models to the mainGuiController
-        mainGuiController.register(updater, building, statusAlert);
+        mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);

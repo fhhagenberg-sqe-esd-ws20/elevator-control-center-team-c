@@ -11,11 +11,27 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
-//TODO: update javadoc
-public class UpdateData extends TimerTask {
+/**
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:10
+ * 
+ * Represents the updater, which refreshes all data of the elevator every 10 ms
+ *
+ */public class UpdateData extends TimerTask {
 
+	/**
+	 * Constructor initializes the number of floors and elevators
+	 * 
+	 * @param sqbuilding - the simulator for the building
+	 * @param sqelevator - the simulator for the elevators
+	 * @param building - the internal model of the building
+	 * @param floor - the internal model for the floors
+	 * @param elevators - the internal list with the models for the elevators
+	 * @param guiController - the controller, which controls the gui
+	 * @throws RemoteException
+	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController) throws RemoteException
+			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
 	{
 		// assign models to the internal fields
 		SqBuilding = sqbuilding;
@@ -24,6 +40,7 @@ public class UpdateData extends TimerTask {
 		Elevators = elevators;
 		Sqelevator = sqelevator;
 		GuiController = guiController;
+		StatusAlert = statusAlert;
 		
 		initializeBuilding();
 	}
@@ -32,6 +49,7 @@ public class UpdateData extends TimerTask {
 
 	/** 
 	 * Initializes all constant properties of the building
+	 * 
 	 * @throws RemoteException
 	 */
 	public void initializeBuilding() throws RemoteException
@@ -75,9 +93,7 @@ public class UpdateData extends TimerTask {
      */
     @Override
     public void run() {
-        try {
-        	System.out.println("Getting Data from Simulator");
-        	
+        try {        	
         	// refresh list with the up and down buttons of the floors
         	refreshUpDownList();
         	
@@ -89,13 +105,15 @@ public class UpdateData extends TimerTask {
 
         	
         } catch (Exception ex) {
-        	//TODO: Statusmessage hier printen, oder kapseln wir das?
-        	System.out.println("Exception when getting values from SQelevator");
+        	StatusAlert.Status.set("Exception when getting values from SQelevator");
         }
     }
     
+
     /**
      * Set the index of the elevator, which is currently selected in the view
+     * 
+     * @param elevatorIdx - index of the elevator, which is selected in the GUI
      */
     public void setSelectedElevator(int elevatorIdx)
     {
@@ -107,7 +125,10 @@ public class UpdateData extends TimerTask {
     }
     
     /**
-     * Stop was pressed in an elevator. The Target will be added to the targetlist of the elevator
+     * Set a new target for the elevator
+     * 
+     * @param floor - index of the floor, where the elevator should stop
+     * @param elevator - index of the elevator, which should stop in the floor
      */
     public void setTarget(int floor, int elevator)
     {
@@ -121,8 +142,7 @@ public class UpdateData extends TimerTask {
 				try {
 					Sqelevator.setTarget(elevator, floor);
 				} catch (RemoteException e) {
-					// TODO Update status here?
-					e.printStackTrace();
+					StatusAlert.Status.set("Could not set Target " + floor + " for Elevator" + elevator);
 				}
 				
 				if(elevator == SelectedElevator)
@@ -135,7 +155,9 @@ public class UpdateData extends TimerTask {
     
     
     /**
-     * Press stop Button at the current selected elevator
+     * Set a new target for the elevator
+     * 
+     * @param floor - index of the floor, where the elevator should stop
      */
     public void setTarget(int floor)
     {
@@ -147,8 +169,7 @@ public class UpdateData extends TimerTask {
 			try {
 				Sqelevator.setTarget(SelectedElevator, floor);
 			} catch (RemoteException e) {
-				// TODO Update status here?
-				e.printStackTrace();
+				StatusAlert.Status.set("Could not set Target " + floor);
 			}
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
@@ -157,6 +178,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed up and down buttons and notify the gui to show them
+     * 
+     * @throws RemoteException
      */
     public void refreshUpDownList() throws RemoteException
     {
@@ -166,10 +189,11 @@ public class UpdateData extends TimerTask {
     	refreshUpList();
     	refreshDownList();
     	
+    	long clocktick = Sqelevator.getClockTick();
     	// check, if clocktick of the sqelevator has changed in the meantime
-    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
+    	if(clocktick != clocktickBeforeUpdate)
     	{
-    		System.out.println("out of sync with the simulator");
+    		StatusAlert.Status.set("Out of sync with the simulator at clocktick " + clocktick);
     	}
     	else
     	{
@@ -180,6 +204,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed up buttons
+     * 
+     * @throws RemoteException
      */
     public void refreshUpList() throws RemoteException
     {
@@ -198,6 +224,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed down buttons
+     * 
+     * @throws RemoteException
      */
     public void refreshDownList() throws RemoteException
     {
@@ -216,6 +244,9 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh whole content of an elevator
+     * 
+     * @param elevator_idx - index of the elevator, that should be refreshed
+     * @throws RemoteException
      */
     public void refreshElevator(int elevator_idx) throws RemoteException
     {
@@ -255,7 +286,7 @@ public class UpdateData extends TimerTask {
     	// check, if clocktick of the sqelevator has changed in the meantime
     	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
     	{
-    		System.out.println("Out of sync with the simulator when getting updownlist");
+    		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
     	}
     	else
     	{
@@ -276,6 +307,7 @@ public class UpdateData extends TimerTask {
 	private List<IElevatorModel> Elevators;
 	private MainGuiController GuiController;
 	private int SelectedElevator;
+	StatusAlert StatusAlert;
     
     
     
