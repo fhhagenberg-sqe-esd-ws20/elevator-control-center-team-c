@@ -151,7 +151,14 @@ public class MainGuiController {
     	
     	//check if in range of available floors
     	if(floorNumber > numFloorsInBuilding) {
-    		Alert alert = new Alert(AlertType.ERROR, "Entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ") !");
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
+			return;
+    	}
+    	if(floorNumber <= 0) {
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
@@ -311,6 +318,10 @@ public class MainGuiController {
 		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
 		//for(int i = 1; i < 5 + 1; ++i) {
 			listview_elevators.getItems().add("Elevator " + i);
+		}
+		//disable the checkbox if no elevators are in the list/building
+		if(listview_elevators.getItems().isEmpty()) {
+			checkbox_manual_mode.setDisable(true);
 		}
 		//automatically select the first elevator. If the list is empty no item will be selected.
 		listview_elevators.getFocusModel().focus(0);
