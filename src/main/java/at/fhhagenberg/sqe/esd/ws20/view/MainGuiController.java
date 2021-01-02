@@ -145,29 +145,29 @@ public class MainGuiController {
     	try {
     		floorNumber = Integer.parseInt(textfield_floor_number.getText());
     	} catch (NumberFormatException e) {
+    		System.out.println("Stage 3");
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
-			System.out.println("Stage 3");
 			return;
 		}
     	
     	//check if in range of available floors
     	if(floorNumber > numFloorsInBuilding) {
+    		System.out.println("Stage 4");
     		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
-			System.out.println("Stage 4");
 			return;
     	}
     	if(floorNumber <= 0) {
+    		System.out.println("Stage 5");
     		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
-			System.out.println("Stage 5");
 			return;
     	}
     	
@@ -176,8 +176,9 @@ public class MainGuiController {
     		System.out.println("Stage 6");
 			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
 		}
-    	updateData.setTarget(floorNumber);
     	System.out.println("Stage 7");
+    	updateData.setTarget(floorNumber);
+    	System.out.println("Stage 8");
     }
     
     
