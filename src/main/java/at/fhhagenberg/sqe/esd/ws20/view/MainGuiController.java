@@ -139,6 +139,7 @@ public class MainGuiController {
     
     @FXML
     void buttonSendToFloor(ActionEvent event) {
+    	System.out.println("Stage 2,5");
     	//get floor number from textfield
     	int floorNumber;
     	try {

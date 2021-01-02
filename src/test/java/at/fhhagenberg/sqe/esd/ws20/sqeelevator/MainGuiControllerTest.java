@@ -417,7 +417,7 @@ public class MainGuiControllerTest {
 		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 		System.out.println("Stage 12");
 		
-		Mockito.verify(mockedUpdater).setSelectedElevator(0);
+		//Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(5);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
