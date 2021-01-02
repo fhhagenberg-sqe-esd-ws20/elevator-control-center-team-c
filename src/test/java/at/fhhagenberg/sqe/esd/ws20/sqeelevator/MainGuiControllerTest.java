@@ -417,11 +417,11 @@ public class MainGuiControllerTest {
 		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 		System.out.println("Stage 12");
 		
-		//Mockito.verify(mockedUpdater).setSelectedElevator(0);
+		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(5);
-		//Mockito.verifyNoMoreInteractions(mockedUpdater);
+		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
-	@Disabled
+	
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -437,7 +437,7 @@ public class MainGuiControllerTest {
 		verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 	}
-	@Disabled
+	
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
