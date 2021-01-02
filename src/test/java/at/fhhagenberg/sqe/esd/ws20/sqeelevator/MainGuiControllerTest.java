@@ -437,7 +437,7 @@ public class MainGuiControllerTest {
 		verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 	}
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
