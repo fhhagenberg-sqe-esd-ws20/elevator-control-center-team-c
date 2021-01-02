@@ -128,10 +128,12 @@ public class MainGuiController {
     		//disable the automatic mode -> enable manual mode
     		autoModeAlgo.disable(selectedElevator);
     		button_send_to_floor.setDisable(false);
+    		System.out.println("Stage 1");
     	}
     	else {
     		autoModeAlgo.enable(selectedElevator);
     		button_send_to_floor.setDisable(true);
+    		System.out.println("Stage 2");
     	}
     }
     
@@ -146,6 +148,7 @@ public class MainGuiController {
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
+			System.out.println("Stage 3");
 			return;
 		}
     	
@@ -155,6 +158,7 @@ public class MainGuiController {
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
+			System.out.println("Stage 4");
 			return;
     	}
     	if(floorNumber <= 0) {
@@ -162,14 +166,17 @@ public class MainGuiController {
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
+			System.out.println("Stage 5");
 			return;
     	}
     	
     	//send to UpdateData and set as new floor
     	if(updateData == null) {
+    		System.out.println("Stage 6");
 			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
 		}
     	updateData.setTarget(floorNumber);
+    	System.out.println("Stage 7");
     }
     
     
