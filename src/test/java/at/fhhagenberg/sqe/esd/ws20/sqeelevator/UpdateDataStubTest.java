@@ -480,7 +480,7 @@ public class UpdateDataStubTest {
 	
 	
 	@Test
-    public void testRefreshElevatorValidValues() throws RemoteException {
+    public void testRefreshElevatorValidValuesElevator0() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		
@@ -515,6 +515,70 @@ public class UpdateDataStubTest {
 		assertEquals(0 , Elevators.get(0).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(0).getStopsList().get(1));
 	}				
+	
+	@Test
+    public void testRefreshElevatorValidValuesElevator1() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		
+		Mockito.when(MockedElevatorWrapper.getTarget(1)).thenReturn(1);
+		Mockito.when(MockedElevatorWrapper.getElevatorDoorStatus(1)).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_OPEN);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(1)).thenReturn(2);
+		Mockito.when(MockedElevatorWrapper.getElevatorSpeed(1)).thenReturn(4711);
+		Mockito.when(MockedElevatorWrapper.getElevatorWeight(1)).thenReturn(4712);
+		Mockito.when(MockedElevatorWrapper.getCommittedDirection(1)).thenReturn(ElevatorDirection.ELEVATOR_DIRECTION_UP);
+
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 0)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 1)).thenReturn(false);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 2)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 3)).thenReturn(false);
+
+		
+		coreUpdater = new UpdateData(MockedBuildingWrapper, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		AddEmptyElevators(2);
+		coreUpdater.initializeServicedFloors();
+		coreUpdater.setSelectedElevator(1);
+		coreUpdater.refreshElevator(1);
+		
+		
+		Mockito.verify(MockedmainGuiControler, times(1)).update(Mockedfloor, Elevators.get(1));
+		assertEquals(1 , Elevators.get(1).getTarget());
+		assertEquals(ElevatorDoorStatus.ELEVATOR_DOORS_OPEN , Elevators.get(1).getDoors());
+		assertEquals(2 , Elevators.get(1).getPosition());
+		assertEquals(4711 , Elevators.get(1).getSpeed());
+		assertEquals(4712 , Elevators.get(1).getPayload());
+		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UP , Elevators.get(1).getDirection());
+		
+		List<Integer> stops = Elevators.get(1).getStopsList();
+		assertEquals(0 , Elevators.get(1).getStopsList().get(0));
+		assertEquals(2 , Elevators.get(1).getStopsList().get(1));
+	}		
+	
+	@Test
+    public void testRefreshElevatorValidValuesNotSelectedElevator() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		
+		Mockito.when(MockedElevatorWrapper.getTarget(1)).thenReturn(1);
+		Mockito.when(MockedElevatorWrapper.getElevatorDoorStatus(1)).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_OPEN);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(1)).thenReturn(2);
+		Mockito.when(MockedElevatorWrapper.getElevatorSpeed(1)).thenReturn(4711);
+		Mockito.when(MockedElevatorWrapper.getElevatorWeight(1)).thenReturn(4712);
+		Mockito.when(MockedElevatorWrapper.getCommittedDirection(1)).thenReturn(ElevatorDirection.ELEVATOR_DIRECTION_UP);
+
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 0)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 1)).thenReturn(false);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 2)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 3)).thenReturn(false);
+
+		
+		coreUpdater = new UpdateData(MockedBuildingWrapper, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		AddEmptyElevators(2);
+		coreUpdater.initializeServicedFloors();
+		coreUpdater.refreshElevator(1);
+		
+		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
+	}			
 	
 	
 	void AddEmptyElevators(int numElevators)
