@@ -408,9 +408,11 @@ public class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		robot.clickOn("#checkbox_manual_mode");
+		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 		robot.doubleClickOn("#textfield_floor_number").write("5");
+		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 		robot.clickOn("#button_send_to_floor");
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(5);
