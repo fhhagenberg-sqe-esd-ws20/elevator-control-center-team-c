@@ -47,6 +47,79 @@ public class ElevatorModelTest {
     }
     
     
+    @Test
+    void testAddStop() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.addStop(3);
+    	
+    	assertEquals(1, elevatorModel.getStops().size());
+    	assertEquals(3, elevatorModel.getStops().get(0));
+    }
+    
+    @Test
+    void testAddIgnoredFloor() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.addIgnoredFloor(4);
+    	
+    	assertEquals(1, elevatorModel.getIgnoredFloors().size());
+    	assertEquals(4, elevatorModel.getIgnoredFloors().get(0));
+    }
+    
+    @Test
+    void testTargetSet_Get() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.setTarget(1);
+    	
+        assertEquals(1, elevatorModel.getTarget());
+    }
+
+    @Test
+    void testPositionSet_Get() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.setPosition(2);
+    	
+        assertEquals(2, elevatorModel.getPosition());
+    }
+    
+    @Test
+    void testDirectionSet_Get() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.setDirection(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
+    	
+        assertEquals(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_DOWN, elevatorModel.getDirection());
+    }
+    
+    @Test
+    void testPayloadSet_Get() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.setPayload(44);
+    	
+        assertEquals(44, elevatorModel.getPayload());
+    }
+    
+    @Test
+    void testSpeedSet_Get() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.setSpeed(41);
+    	
+        assertEquals(41, elevatorModel.getSpeed());
+    }
+    
+    @Test
+    void testDoorsSet_Get() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	
+    	elevatorModel.setDoors(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_OPEN);
+    	
+        assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_OPEN, elevatorModel.getDoors());
+    }
     
     
 }
