@@ -301,10 +301,14 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	}
     	
     	
-    	// check, if clocktick of the sqelevator has changed in the meantime and sanity checks succeeded
-    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate && validValues != false)
+    	// check, if clocktick of the sqelevator has changed in the meantime
+    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
     	{
     		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
+    	}
+    	else if(validValues == false) // sanity checks failes
+    	{
+    		StatusAlert.Status.set("Sanity Check failed in UpdateData.refreshElevator()");
     	}
     	else
     	{
