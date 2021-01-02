@@ -409,10 +409,13 @@ public class MainGuiControllerTest {
 		
 		robot.clickOn("#checkbox_manual_mode");
 		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+		System.out.println("Stage 10");
 		robot.doubleClickOn("#textfield_floor_number").write("5");
 		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+		System.out.println("Stage 11");
 		robot.clickOn("#button_send_to_floor");
 		try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+		System.out.println("Stage 12");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(5);
