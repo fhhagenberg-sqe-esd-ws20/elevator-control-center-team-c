@@ -301,6 +301,7 @@ public class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		statusAlert.Status.set("moinmoin");
+		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("moinmoin"));
 	}
