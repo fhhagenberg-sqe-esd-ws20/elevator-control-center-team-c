@@ -73,7 +73,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	public void initializeServicedFloors() throws RemoteException
 	{
 		//check if the number of stored elevators is the same as the number of 
-		//elevators in the buildung
+		//elevators in the building
 		if(Building.getNumElevators() != Elevators.size()) 
 		{
 			throw new RuntimeException("Numer of stored elevators not the same as number of elevators in the building!");
@@ -266,6 +266,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	
     	// store values to temp elevator. Necessary to do not overwrite the real elevator with corrupted data, if we are out of sync
     	IElevatorModel tempElevator = new ElevatorModel();
+    	Boolean validValues = true;
     	
     	// refresh all fields in the elevator
     	tempElevator.setTarget(Sqelevator.getTarget(elevator_idx));
@@ -274,6 +275,16 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	tempElevator.setSpeed(Sqelevator.getElevatorSpeed(elevator_idx));
     	tempElevator.setPayload(Sqelevator.getElevatorWeight(elevator_idx));
     	tempElevator.setDirection(Sqelevator.getCommittedDirection(elevator_idx));
+    	
+    	// sanity checks
+    	if(tempElevator.getTarget() > Building.getNumFloors())
+    	{
+    		validValues = false;
+    	}
+    	if(tempElevator.getPosition() > Building.getNumFloors())
+    	{
+    		validValues = false;
+    	}    	
     	
     	// refresh stoplist
     	List<Integer> Stops = new ArrayList<Integer>();
@@ -290,8 +301,8 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	}
     	
     	
-    	// check, if clocktick of the sqelevator has changed in the meantime
-    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
+    	// check, if clocktick of the sqelevator has changed in the meantime and sanity checks succeeded
+    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate && validValues != false)
     	{
     		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
     	}
@@ -306,10 +317,20 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	}
     }
     
+    /**
+     * returns list of elevators
+     */
     public List<IElevatorModel> getElevators()
     {
 		return Elevators;
-    	
+    }
+    
+    /**
+     * returns the index of the current selected elevator
+     */
+    public int getSelectedElevator()
+    {
+    	return SelectedElevator;
     }
     
     
