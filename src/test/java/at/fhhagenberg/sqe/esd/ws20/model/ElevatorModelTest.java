@@ -15,8 +15,8 @@ public class ElevatorModelTest {
     void testCreate_and_get() {
     	ElevatorModel elevatorModel = new ElevatorModel();
     	
-        assertEquals(0, elevatorModel.getIgnoredFloors().size());
-        assertEquals(0, elevatorModel.getStops().size());
+        assertEquals(0, elevatorModel.getIgnoredFloorsList().size());
+        assertEquals(0, elevatorModel.getStopsList().size());
         assertEquals(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED, elevatorModel.getDirection());
         assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED, elevatorModel.getDoors());
         assertEquals(0, elevatorModel.getPayload());
@@ -33,7 +33,7 @@ public class ElevatorModelTest {
     	
     	elevatorModel.setStops(list);
     	
-        assertEquals(list, elevatorModel.getStops());
+        assertEquals(list, elevatorModel.getStopsList());
     }
 	
     @Test
@@ -43,7 +43,7 @@ public class ElevatorModelTest {
     	
     	elevatorModel.setIgnoredFloors(list);
     	
-        assertEquals(list, elevatorModel.getIgnoredFloors());
+        assertEquals(list, elevatorModel.getIgnoredFloorsList());
     }
     
     
@@ -53,8 +53,8 @@ public class ElevatorModelTest {
     	
     	elevatorModel.addStop(3);
     	
-    	assertEquals(1, elevatorModel.getStops().size());
-    	assertEquals(3, elevatorModel.getStops().get(0));
+    	assertEquals(1, elevatorModel.getStopsList().size());
+    	assertEquals(3, elevatorModel.getStopsList().get(0));
     }
     
     @Test
@@ -63,8 +63,8 @@ public class ElevatorModelTest {
     	
     	elevatorModel.addIgnoredFloor(4);
     	
-    	assertEquals(1, elevatorModel.getIgnoredFloors().size());
-    	assertEquals(4, elevatorModel.getIgnoredFloors().get(0));
+    	assertEquals(1, elevatorModel.getIgnoredFloorsList().size());
+    	assertEquals(4, elevatorModel.getIgnoredFloorsList().get(0));
     }
     
     @Test
