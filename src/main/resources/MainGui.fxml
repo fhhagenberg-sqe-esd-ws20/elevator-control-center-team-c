@@ -71,7 +71,7 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <children>
-                  <CheckBox fx:id="checkbox_manual_mode" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#checkboxManualAutomatic" text="Manual Mode" />
+                  <CheckBox fx:id="checkbox_manual_mode" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#checkboxManualAutomatic" text="Manual Mode" />
                   <TextField fx:id="textfield_floor_number" maxWidth="1.7976931348623157E308" promptText="Floor number" />
                   <Button fx:id="button_send_to_floor" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonSendToFloor" text="Send to Floor" />
                </children>

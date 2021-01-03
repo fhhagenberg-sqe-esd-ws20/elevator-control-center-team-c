@@ -127,7 +127,7 @@ public class MainGuiController {
     @FXML
     void checkboxManualAutomatic(ActionEvent event) {
     	if (autoModeAlgo == null) {
-    		throw new NullPointerException("MainGuiController.checkboxManualAutomatic() setDisable");
+    		throw new NullPointerException("MainGuiController.checkboxManualAutomatic() autoModeAlgo == null");
     	}
     	
     	//check checkbox state, if checked enable button, otherwise disable. The elevator can only be sent to a floor if in manual mode. 
@@ -360,9 +360,9 @@ public class MainGuiController {
 		//for(int i = 1; i < 5 + 1; ++i) {
 			listview_elevators.getItems().add("Elevator " + i);
 		}
-		//disable the checkbox if no elevators are in the list/building
-		if(listview_elevators.getItems().isEmpty()) {
-			checkbox_manual_mode.setDisable(true);
+		//enable the default disabled checkbox if elevators are in the list/building
+		if(!listview_elevators.getItems().isEmpty()) {
+			checkbox_manual_mode.setDisable(false);
 		}
 		//automatically select the first elevator. If the list is empty no item will be selected.
 		listview_elevators.getFocusModel().focus(0);
