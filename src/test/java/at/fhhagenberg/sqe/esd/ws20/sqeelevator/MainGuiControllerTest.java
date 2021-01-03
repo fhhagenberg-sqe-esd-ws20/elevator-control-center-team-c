@@ -511,7 +511,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("OK");
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
