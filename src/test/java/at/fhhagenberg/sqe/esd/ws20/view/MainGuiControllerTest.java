@@ -2,7 +2,7 @@
 //https://github.com/TestFX/TestFX/issues/638
 //https://stackoverflow.com/questions/12598261/maven-build-debug-in-eclipse
 
-package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
+package at.fhhagenberg.sqe.esd.ws20.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -494,7 +494,7 @@ public class MainGuiControllerTest {
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
 	
-
+	
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -511,7 +511,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("OK");
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
