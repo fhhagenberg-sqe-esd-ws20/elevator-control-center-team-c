@@ -128,57 +128,57 @@ public class MainGuiController {
     		//disable the automatic mode -> enable manual mode
     		autoModeAlgo.disable(selectedElevator);
     		button_send_to_floor.setDisable(false);
-    		System.out.println("Stage 1");
+    		//System.out.println("After checkbox isSelected 1");
     	}
     	else {
     		autoModeAlgo.enable(selectedElevator);
     		button_send_to_floor.setDisable(true);
-    		System.out.println("Stage 2");
+    		//System.out.println("After checkbox isSelected 2");
     	}
     }
     
     @FXML
     void buttonSendToFloor(ActionEvent event) {
-    	System.out.println("Stage 2,5");
+    	System.out.println("Entering button handler");
     	//get floor number from textfield
     	int floorNumber;
     	try {
     		floorNumber = Integer.parseInt(textfield_floor_number.getText());
     	} catch (NumberFormatException e) {
-    		System.out.println("Stage 3");
-			//Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
-			//alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			//((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
-			//alert.showAndWait();
+    		//System.out.println("Alert floor text->int parse error");
+			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
 			return;
 		}
     	
     	//check if in range of available floors
     	if(floorNumber > numFloorsInBuilding) {
-    		System.out.println("Stage 4");
-    		//Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
-			//alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			//((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
-			//alert.showAndWait();
+    		//System.out.println("Alert floorNumber > numFloorsInBuilding");
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
 			return;
     	}
     	if(floorNumber <= 0) {
-    		System.out.println("Stage 5");
-    		//Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
-			//alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			//((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
-			//alert.showAndWait();
+    		//System.out.println("Alert floorNumber <= 0");
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
 			return;
     	}
     	
     	//send to UpdateData and set as new floor
     	if(updateData == null) {
-    		System.out.println("Stage 6");
+    		//System.out.println("Alert updateData == null");
 			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
 		}
-    	System.out.println("Stage 7");
+    	//System.out.println("Before updateData.setTarget(floorNumber)");
     	updateData.setTarget(floorNumber);
-    	System.out.println("Stage 8");
+    	//System.out.println("After updateData.setTarget(floorNumber)");
     }
     
     
