@@ -46,6 +46,13 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 
+/**
+ * Tests for the MainGuiController for the MainGui.fxml.
+ * After everty call to the update method a delay ist used. As the MainGuiController uses the runLater method we need to wait till the ui thread got scheduled and executed the ui changes.
+ * 
+ * @author Lukas Ebenstein (s1910567015)
+ * @since 2021-01-03 04:18
+ */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
 public class MainGuiControllerTest {
@@ -69,6 +76,13 @@ public class MainGuiControllerTest {
 	private String uiDefaultLabelText = "...";
 	
 	
+	/**
+	 * Initialize and open gui.
+	 * Gets executed before each test, works like @BeforeEach.
+	 * 
+	 * @param stage
+	 * @throws Exception
+	 */
 	@Start
 	public void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainGui.fxml"));
@@ -420,7 +434,7 @@ public class MainGuiControllerTest {
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
 	
-	@Disabled
+	
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -437,7 +451,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("OK");
 	}
 	
-	@Disabled
+	
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);

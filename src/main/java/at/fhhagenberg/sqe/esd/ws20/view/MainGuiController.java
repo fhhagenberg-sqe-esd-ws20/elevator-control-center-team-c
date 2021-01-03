@@ -35,9 +35,10 @@ import javafx.stage.Stage;
 /**
  * Main Controller for the MainGui.fxml.
  * Also handles checkbox/button events.
+ * The register method has to be called before any interaction with the gui is possible!
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2021-01-01 05:19
+ * @since 2021-01-03 04:06
  */
 public class MainGuiController {
 
@@ -114,9 +115,15 @@ public class MainGuiController {
         assert label_position_text != null : "fx:id=\"label_position_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert checkbox_manual_mode != null : "fx:id=\"checkbox_manual_mode\" was not injected: check your FXML file 'MainGui.fxml'.";
         
+        //my own initialization after the one from fxml loader are finished
         setup();
     }
     
+    /**
+     * Checkbox handler that gets called on interaction with the checkbox
+     * 
+     * @param event
+     */
     @FXML
     void checkboxManualAutomatic(ActionEvent event) {
     	if (autoModeAlgo == null) {
@@ -137,9 +144,14 @@ public class MainGuiController {
     	}
     }
     
+    /**
+     * Button handler that gets called on interaction with the button
+     * 
+     * @param event
+     */
     @FXML
     void buttonSendToFloor(ActionEvent event) {
-    	System.out.println("Entering button handler");
+    	//System.out.println("Entering button handler");
     	//get floor number from textfield
     	int floorNumber;
     	try {
@@ -182,6 +194,9 @@ public class MainGuiController {
     }
     
     
+	/**
+	 * Sets up a formatter for the textfield and registers a listener for the elevator listview
+	 */
 	private void setup() {
 		//only allow integers without decimal separator in textfield
 		DecimalFormat format = new DecimalFormat("#");
@@ -209,7 +224,7 @@ public class MainGuiController {
 				if(updateData == null) {
 					throw new NullPointerException("MainGuiController.setup()");
 				}
-				//getSelectedIndex() returned -1 if no line is selected
+				//getSelectedIndex() returns -1 if no line is selected
 				if(selectedElevator < 0) {
 					return;
 				}
@@ -225,6 +240,13 @@ public class MainGuiController {
     private Integer numFloorsInBuilding = 0;
     private int selectedElevator = -1;
     
+    
+    /**
+     * Updates the gui with information from the provided objects
+     * 
+     * @param floor		All information about the floors in the building
+     * @param elevator	The informatino about a elevator that should be displayed in the gui
+     */
     public void update(IFloorModel floor, IElevatorModel elevator) {
     	if(floor == null || elevator == null) {
     		throw new NullPointerException("MainGuiController.update()");
@@ -309,6 +331,16 @@ public class MainGuiController {
 		}
 	}
 
+    
+	/**
+	 * Register needed objects in the controller that don't change any more. See update(...) for updates with objects that change during operation.
+	 * Must be called before interacting with any other function in this module!
+	 * 
+	 * @param updater				Interaction on selection changes from the user in the gui
+	 * @param building				Information about the building that should be displayed
+	 * @param statusAlert			Binding to new status messages
+	 * @param autoModeAlgorithm		Enable/disable elevators for automatic/manual mode
+	 */
 	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert, AutoModeSimpleAlgo autoModeAlgorithm) {
 		if(updater == null || building == null || statusAlert == null || autoModeAlgorithm == null) {
 			throw new NullPointerException("MainGuiController.register()");
