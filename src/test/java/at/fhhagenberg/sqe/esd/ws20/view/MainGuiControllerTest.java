@@ -494,7 +494,7 @@ public class MainGuiControllerTest {
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
