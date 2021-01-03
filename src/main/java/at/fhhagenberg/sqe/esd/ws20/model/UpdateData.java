@@ -33,6 +33,13 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
 			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
 	{
+		
+		if(sqbuilding == null || building == null || floor == null 
+				|| elevators == null || sqelevator == null || guiController == null || statusAlert == null )
+		{
+			throw new NullPointerException("Nullpointer in UpdateData!");
+		}
+		
 		// assign models to the internal fields
 		SqBuilding = sqbuilding;
 		Building = building;
@@ -60,16 +67,16 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	}
 	
 	/** 
-	 * Initializes every elevator in the building
+	 * Set service floor for each elevator in the building
 	 * @throws RemoteException
 	 */
-	public void initializeElevators() throws RemoteException
+	public void initializeServicedFloors() throws RemoteException
 	{
 		//check if the number of stored elevators is the same as the number of 
-		//elevators in the buildung
+		//elevators in the building
 		if(Building.getNumElevators() != Elevators.size()) 
 		{
-			throw new RuntimeException("Numer of sored elevators not the same as elevators in the building!");
+			throw new RuntimeException("Numer of stored elevators not the same as number of elevators in the building!");
 		}
 		
 		// get all servicefloors of each elevator and store them in a list
@@ -259,6 +266,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	
     	// store values to temp elevator. Necessary to do not overwrite the real elevator with corrupted data, if we are out of sync
     	IElevatorModel tempElevator = new ElevatorModel();
+    	Boolean validValues = true;
     	
     	// refresh all fields in the elevator
     	tempElevator.setTarget(Sqelevator.getTarget(elevator_idx));
@@ -267,6 +275,16 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	tempElevator.setSpeed(Sqelevator.getElevatorSpeed(elevator_idx));
     	tempElevator.setPayload(Sqelevator.getElevatorWeight(elevator_idx));
     	tempElevator.setDirection(Sqelevator.getCommittedDirection(elevator_idx));
+    	
+    	// sanity checks
+    	if(tempElevator.getTarget() > Building.getNumFloors())
+    	{
+    		validValues = false;
+    	}
+    	if(tempElevator.getPosition() > Building.getNumFloors())
+    	{
+    		validValues = false;
+    	}    	
     	
     	// refresh stoplist
     	List<Integer> Stops = new ArrayList<Integer>();
@@ -288,6 +306,10 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	{
     		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
     	}
+    	else if(validValues == false) // sanity checks failes
+    	{
+    		StatusAlert.Status.set("Sanity Check failed in UpdateData.refreshElevator()");
+    	}
     	else
     	{
     		// everything is okay. update the elevator and notify the gui, if this is the selected elevator
@@ -297,6 +319,22 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     			GuiController.update(Floor, Elevators.get(SelectedElevator));
     		}
     	}
+    }
+    
+    /**
+     * returns list of elevators
+     */
+    public List<IElevatorModel> getElevators()
+    {
+		return Elevators;
+    }
+    
+    /**
+     * returns the index of the current selected elevator
+     */
+    public int getSelectedElevator()
+    {
+    	return SelectedElevator;
     }
     
     
