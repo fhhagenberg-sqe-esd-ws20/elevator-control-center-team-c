@@ -511,7 +511,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("OK");
 	}
 	
-	@Disabled
+	
 	@Test
 	public void testButtonClickedEnteredFloorInsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -525,8 +525,8 @@ public class MainGuiControllerTest {
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 		verifyAlertDialogHasHeader("Error");
-		robot.clickOn("OK");
-		//robot.type(KeyCode.ESCAPE);
+		//robot.clickOn("OK");
+		robot.type(KeyCode.ESCAPE);
 	}
 	
 	
