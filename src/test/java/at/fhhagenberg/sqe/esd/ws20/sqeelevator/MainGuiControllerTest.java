@@ -483,20 +483,20 @@ public class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		robot.clickOn("#checkbox_manual_mode");
-		System.out.println("After click on checkbox");
+		//System.out.println("After click on checkbox");
 		robot.doubleClickOn("#textfield_floor_number").write("5");
-		System.out.println("After textbox enter floor");
+		//System.out.println("After textbox enter floor");
 		robot.clickOn("#button_send_to_floor");
-		System.out.println("After click on button");
+		//System.out.println("After click on button");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(5);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
 	
-	@Disabled
+
 	@Test
-	public void testButtonClickedEnteredFloorInsideBoundsLower(FxRobot robot) {
+	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -513,7 +513,7 @@ public class MainGuiControllerTest {
 	
 	
 	@Test
-	public void testButtonClickedEnteredFloorInsideBoundsUpper(FxRobot robot) {
+	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
