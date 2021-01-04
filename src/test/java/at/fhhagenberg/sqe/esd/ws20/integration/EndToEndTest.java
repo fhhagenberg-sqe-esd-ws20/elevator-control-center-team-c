@@ -21,6 +21,7 @@ import org.testfx.matcher.control.TextMatchers;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
+import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
@@ -36,6 +37,7 @@ public class EndToEndTest {
 	
 	private final static int waitUpdateInterval = 2000;
 	
+	private Stage stage_;
 	
 	
 	@Mock
@@ -50,9 +52,16 @@ public class EndToEndTest {
 	 */
 	@Start
 	public void start(Stage stage) throws Exception {
-		ElevatorControlCenter ecs = new ElevatorControlCenter();
-		ecs.setup(stage, mockedElevator);
+		stage_ = stage;
 	}
+	
+	private void startGui() throws RemoteException {
+		Platform.runLater(new Runnable() { public void run() {
+			new ElevatorControlCenter().setup(stage_, mockedElevator);
+		}});
+		try { Thread.sleep(waitUpdateInterval); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
+	}
+	
 	
 	@BeforeEach
 	void setUp() {
@@ -61,10 +70,11 @@ public class EndToEndTest {
   
 	@Test
 	public void testExample(FxRobot robot) throws RemoteException {
-		Mockito.when(mockedElevator.getElevatorSpeed(0)).thenReturn(4711);
-		Mockito.when(mockedElevator.getElevatorSpeed(1)).thenReturn(4712);
 		Mockito.when(mockedElevator.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevator.getFloorNum()).thenReturn(5);
+		Mockito.when(mockedElevator.getElevatorSpeed(0)).thenReturn(4711);
+		Mockito.when(mockedElevator.getElevatorSpeed(1)).thenReturn(4712);
+		startGui();
 		
 		try { Thread.sleep(waitUpdateInterval); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
 		
