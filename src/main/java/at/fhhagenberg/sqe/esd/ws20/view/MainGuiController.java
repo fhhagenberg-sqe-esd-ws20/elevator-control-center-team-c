@@ -35,9 +35,10 @@ import javafx.stage.Stage;
 /**
  * Main Controller for the MainGui.fxml.
  * Also handles checkbox/button events.
+ * The register method has to be called before any interaction with the gui is possible!
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2021-01-01 05:19
+ * @since 2021-01-03 04:06
  */
 public class MainGuiController {
 
@@ -114,13 +115,19 @@ public class MainGuiController {
         assert label_position_text != null : "fx:id=\"label_position_text\" was not injected: check your FXML file 'MainGui.fxml'.";
         assert checkbox_manual_mode != null : "fx:id=\"checkbox_manual_mode\" was not injected: check your FXML file 'MainGui.fxml'.";
         
+        //my own initialization after the one from fxml loader are finished
         setup();
     }
     
+    /**
+     * Checkbox handler that gets called on interaction with the checkbox
+     * 
+     * @param event
+     */
     @FXML
     void checkboxManualAutomatic(ActionEvent event) {
     	if (autoModeAlgo == null) {
-    		throw new NullPointerException("MainGuiController.checkboxManualAutomatic() setDisable");
+    		throw new NullPointerException("MainGuiController.checkboxManualAutomatic() autoModeAlgo == null");
     	}
     	
     	//check checkbox state, if checked enable button, otherwise disable. The elevator can only be sent to a floor if in manual mode. 
@@ -128,20 +135,29 @@ public class MainGuiController {
     		//disable the automatic mode -> enable manual mode
     		autoModeAlgo.disable(selectedElevator);
     		button_send_to_floor.setDisable(false);
+    		//System.out.println("After checkbox isSelected 1");
     	}
     	else {
     		autoModeAlgo.enable(selectedElevator);
     		button_send_to_floor.setDisable(true);
+    		//System.out.println("After checkbox isSelected 2");
     	}
     }
     
+    /**
+     * Button handler that gets called on interaction with the button
+     * 
+     * @param event
+     */
     @FXML
     void buttonSendToFloor(ActionEvent event) {
+    	//System.out.println("Entering button handler");
     	//get floor number from textfield
     	int floorNumber;
     	try {
     		floorNumber = Integer.parseInt(textfield_floor_number.getText());
     	} catch (NumberFormatException e) {
+    		//System.out.println("Alert floor text->int parse error");
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
@@ -151,7 +167,16 @@ public class MainGuiController {
     	
     	//check if in range of available floors
     	if(floorNumber > numFloorsInBuilding) {
-    		Alert alert = new Alert(AlertType.ERROR, "Entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ") !");
+    		//System.out.println("Alert floorNumber > numFloorsInBuilding");
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			alert.showAndWait();
+			return;
+    	}
+    	if(floorNumber <= 0) {
+    		//System.out.println("Alert floorNumber <= 0");
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
 			alert.showAndWait();
@@ -160,12 +185,18 @@ public class MainGuiController {
     	
     	//send to UpdateData and set as new floor
     	if(updateData == null) {
+    		//System.out.println("Alert updateData == null");
 			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
 		}
+    	//System.out.println("Before updateData.setTarget(floorNumber)");
     	updateData.setTarget(floorNumber);
+    	//System.out.println("After updateData.setTarget(floorNumber)");
     }
     
     
+	/**
+	 * Sets up a formatter for the textfield and registers a listener for the elevator listview
+	 */
 	private void setup() {
 		//only allow integers without decimal separator in textfield
 		DecimalFormat format = new DecimalFormat("#");
@@ -193,7 +224,7 @@ public class MainGuiController {
 				if(updateData == null) {
 					throw new NullPointerException("MainGuiController.setup()");
 				}
-				//getSelectedIndex() returned -1 if no line is selected
+				//getSelectedIndex() returns -1 if no line is selected
 				if(selectedElevator < 0) {
 					return;
 				}
@@ -209,6 +240,13 @@ public class MainGuiController {
     private Integer numFloorsInBuilding = 0;
     private int selectedElevator = -1;
     
+    
+    /**
+     * Updates the gui with information from the provided objects
+     * 
+     * @param floor		All information about the floors in the building
+     * @param elevator	The informatino about a elevator that should be displayed in the gui
+     */
     public void update(IFloorModel floor, IElevatorModel elevator) {
     	if(floor == null || elevator == null) {
     		throw new NullPointerException("MainGuiController.update()");
@@ -293,6 +331,16 @@ public class MainGuiController {
 		}
 	}
 
+    
+	/**
+	 * Register needed objects in the controller that don't change any more. See update(...) for updates with objects that change during operation.
+	 * Must be called before interacting with any other function in this module!
+	 * 
+	 * @param updater				Interaction on selection changes from the user in the gui
+	 * @param building				Information about the building that should be displayed
+	 * @param statusAlert			Binding to new status messages
+	 * @param autoModeAlgorithm		Enable/disable elevators for automatic/manual mode
+	 */
 	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert, AutoModeSimpleAlgo autoModeAlgorithm) {
 		if(updater == null || building == null || statusAlert == null || autoModeAlgorithm == null) {
 			throw new NullPointerException("MainGuiController.register()");
@@ -311,6 +359,10 @@ public class MainGuiController {
 		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
 		//for(int i = 1; i < 5 + 1; ++i) {
 			listview_elevators.getItems().add("Elevator " + i);
+		}
+		//enable the default disabled checkbox if elevators are in the list/building
+		if(!listview_elevators.getItems().isEmpty()) {
+			checkbox_manual_mode.setDisable(false);
 		}
 		//automatically select the first elevator. If the list is empty no item will be selected.
 		listview_elevators.getFocusModel().focus(0);
