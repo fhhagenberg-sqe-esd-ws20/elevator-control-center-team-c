@@ -8,6 +8,8 @@ import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 
@@ -17,7 +19,8 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
  * 
  * Represents the updater, which refreshes all data of the elevator every 10 ms
  *
- */public class UpdateData extends TimerTask {
+ */
+public class UpdateData extends TimerTask {
 
 	/**
 	 * Constructor initializes the number of floors and elevators
@@ -31,7 +34,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	 * @throws RemoteException
 	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
+			MainGuiController guiController, StatusAlert statusAlert)
 	{
 		
 		if(sqbuilding == null || building == null || floor == null 
@@ -49,7 +52,15 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 		GuiController = guiController;
 		StatusAlert = statusAlert;
 		
-		initializeBuilding();
+		try
+		{
+			initializeBuilding();
+		}
+		catch(RemoteException e)
+		{
+			StatusAlert.Status.set("Exception in initializeBuilding of UpdateData()");
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -70,7 +81,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 	 * Set service floor for each elevator in the building
 	 * @throws RemoteException
 	 */
-	public void initializeServicedFloors() throws RemoteException
+	public void initializeServicedFloors()
 	{
 		//check if the number of stored elevators is the same as the number of 
 		//elevators in the building
@@ -84,7 +95,15 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 		{
 			for(int floor = 0; floor < Building.getNumFloors(); floor++)
 			{
-				if(!Sqelevator.getServicesFloors(elevator, floor))
+				boolean floor_serviced = false;
+				try {
+					floor_serviced = Sqelevator.getServicesFloors(elevator, floor);
+				} catch (RemoteException e) {
+					StatusAlert.Status.set("Exception in getServicesFloors() of SQElevator with floor " + floor + " and elevator " + elevator);
+					e.printStackTrace();
+				}
+				
+				if(floor_serviced)
 				{
 					Elevators.get(elevator).addIgnoredFloor(floor);
 				}
@@ -92,8 +111,6 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 		}
 	}
 	
-	
-
 	
     /**
      * Periodic task refreshes properties of the elevator periodically
@@ -149,7 +166,8 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 				try {
 					Sqelevator.setTarget(elevator, floor);
 				} catch (RemoteException e) {
-					StatusAlert.Status.set("Could not set Target " + floor + " for Elevator" + elevator);
+					StatusAlert.Status.set("Exception in setTarget of SQElevator with floor: " + floor + " for Elevator" + elevator);
+					e.printStackTrace();
 				}
 				
 				if(elevator == SelectedElevator)
@@ -176,7 +194,8 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 			try {
 				Sqelevator.setTarget(SelectedElevator, floor);
 			} catch (RemoteException e) {
-				StatusAlert.Status.set("Could not set Target " + floor);
+				StatusAlert.Status.set("Exception in setTarget of SQElevator with floor: " + floor);
+				e.printStackTrace();
 			}
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
@@ -188,17 +207,37 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
      * 
      * @throws RemoteException
      */
-    public void refreshUpDownList() throws RemoteException
+    public void refreshUpDownList()
     {
+    	boolean error = false;
+    	
     	//get current clocktick to guarantee atomar access
-    	long clocktickBeforeUpdate = Sqelevator.getClockTick();
+    	long clocktickBeforeUpdate = 0;
+		try {
+			clocktickBeforeUpdate = SqBuilding.getClockTick();
+		} catch (RemoteException e) {
+			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
+			e.printStackTrace();
+			error = true;
+		}
     	
     	refreshUpList();
     	refreshDownList();
     	
-    	long clocktick = Sqelevator.getClockTick();
+    	long clocktick = 0;
+		try {
+			clocktick = SqBuilding.getClockTick();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			error = true;
+		}
+		
     	// check, if clocktick of the sqelevator has changed in the meantime
-    	if(clocktick != clocktickBeforeUpdate)
+		if(error)
+		{
+			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
+		}
+		else if(clocktick != clocktickBeforeUpdate)
     	{
     		StatusAlert.Status.set("Out of sync with the simulator at clocktick " + clocktick);
     	}
@@ -214,7 +253,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
      * 
      * @throws RemoteException
      */
-    public void refreshUpList() throws RemoteException
+    public void refreshUpList()
     {
     	Floor.clearUpButtonsList();
     	
@@ -222,7 +261,16 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	for(int i = 0; i < Building.getNumFloors(); i++)
     	{
     		// if button up is pressed, this button will be added to the list
-    		if(SqBuilding.getFloorButtonUp(i))
+    		boolean button_pressed = false;
+    		
+    		try {
+				button_pressed = SqBuilding.getFloorButtonUp(i);
+			} catch (RemoteException e) {
+				StatusAlert.Status.set("Exception in getFloorButtonUp of SQElevator");
+				e.printStackTrace();
+			}
+    		
+    		if(button_pressed)
     		{
     			Floor.addButtonUp(i);
     		}
@@ -234,7 +282,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
      * 
      * @throws RemoteException
      */
-    public void refreshDownList() throws RemoteException
+    public void refreshDownList()
     {
     	Floor.clearDownButtonsList();
     	
@@ -242,7 +290,16 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	for(int i = 0; i < Building.getNumFloors(); i++)
     	{
     		// if down button is pressed in a floor, add id to the list
-    		if(SqBuilding.getFloorButtonDown(i))
+    		boolean button_pressed = false;
+    		
+    		try {
+				button_pressed = SqBuilding.getFloorButtonDown(i);
+			} catch (RemoteException e) {
+				StatusAlert.Status.set("Exception in getFloorButtonDown of SQElevator");
+				e.printStackTrace();
+			}
+    		
+    		if(button_pressed)
     		{
     			Floor.addButtonDown(i);
     		}
@@ -255,26 +312,30 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
      * @param elevator_idx - index of the elevator, that should be refreshed
      * @throws RemoteException
      */
-    public void refreshElevator(int elevator_idx) throws RemoteException
+    public void refreshElevator(int elevator_idx)
     {
     	if(elevator_idx < 0 || elevator_idx >= Elevators.size())
     	{
     		throw new InvalidParameterException("index of elevator out of range");
     	}
+    	Boolean error = false;
+    	
     	//get current clocktick to guarantee atomar access
-    	long clocktickBeforeUpdate = Sqelevator.getClockTick();
+    	long clocktickBeforeUpdate = 0;
+		try {
+			clocktickBeforeUpdate = Sqelevator.getClockTick();
+		} catch (RemoteException e) {
+			error = true;
+			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
+			e.printStackTrace();
+		}
     	
     	// store values to temp elevator. Necessary to do not overwrite the real elevator with corrupted data, if we are out of sync
     	IElevatorModel tempElevator = new ElevatorModel();
     	Boolean validValues = true;
     	
     	// refresh all fields in the elevator
-    	tempElevator.setTarget(Sqelevator.getTarget(elevator_idx));
-    	tempElevator.setDoors(Sqelevator.getElevatorDoorStatus(elevator_idx));
-    	tempElevator.setPosition(Sqelevator.getElevatorFloor(elevator_idx));
-    	tempElevator.setSpeed(Sqelevator.getElevatorSpeed(elevator_idx));
-    	tempElevator.setPayload(Sqelevator.getElevatorWeight(elevator_idx));
-    	tempElevator.setDirection(Sqelevator.getCommittedDirection(elevator_idx));
+    	refreshlevatorFields(tempElevator, elevator_idx);
     	
     	// sanity checks
     	if(tempElevator.getTarget() > Building.getNumFloors())
@@ -293,41 +354,135 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     	// get pressed stops for all floors
     	for(int i = 0; i < Building.getNumFloors(); i++)
     	{
+    		boolean button_pressed = false;
     		// if stop button was pressed in this elevator, add it to the list
-    		if(Sqelevator.getElevatorButton(elevator_idx, i))
+    		try {
+				button_pressed = Sqelevator.getElevatorButton(elevator_idx, i);
+			} catch (RemoteException e) {
+				error = true;
+				StatusAlert.Status.set("Exception in getTarget() of SQElevator");
+				e.printStackTrace();
+			}
+    		
+    		if(button_pressed)
     		{
     			Stops.add(i);
     		}
     	}
     	
+    	long clockTickAfterUpdate = 0;
+    	try {
+    		clockTickAfterUpdate = Sqelevator.getClockTick();
+		} catch (RemoteException e) {
+			error = true;
+			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
+			e.printStackTrace();
+		}
     	
-    	// check, if clocktick of the sqelevator has changed in the meantime
-    	if(Sqelevator.getClockTick() != clocktickBeforeUpdate)
+    	if(!error)
     	{
-    		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
-    	}
-    	else if(validValues == false) // sanity checks failes
-    	{
-    		StatusAlert.Status.set("Sanity Check failed in UpdateData.refreshElevator()");
-    	}
-    	else
-    	{
-    		// everything is okay. update the elevator and notify the gui, if this is the selected elevator
-    		Elevators.set(elevator_idx, tempElevator);
-    		if(elevator_idx == SelectedElevator)
-    		{
-    			GuiController.update(Floor, Elevators.get(SelectedElevator));
-    		}
+	    	// check, if clocktick of the sqelevator has changed in the meantime
+	    	if(clockTickAfterUpdate != clocktickBeforeUpdate)
+	    	{
+	    		StatusAlert.Status.set("Out of sync with the simulator when getting updownlist");
+	    	}
+	    	else if(validValues == false) // sanity checks failes
+	    	{
+	    		StatusAlert.Status.set("Sanity Check failed in UpdateData.refreshElevator()");
+	    	}
+	    	else
+	    	{
+	    		// everything is okay. update the elevator and notify the gui, if this is the selected elevator
+	    		Elevators.set(elevator_idx, tempElevator);
+	    		if(elevator_idx == SelectedElevator)
+	    		{
+	    			GuiController.update(Floor, Elevators.get(SelectedElevator));
+	    		}
+	    	}
     	}
     }
     
     /**
-     * returns list of elevators
+     * Refresh all fields of this elevator
+     * 
+     * @param tempElevator temp elevator
+     * @param elevator_idx index of current updated elevator
+     * @return
      */
-    public List<IElevatorModel> getElevators()
+    private Boolean refreshlevatorFields(IElevatorModel tempElevator, int elevator_idx)
     {
-		return Elevators;
+    	Boolean error = false;
+    	int target = 0;
+    	ElevatorDoorStatus door_status = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
+    	int position = 0;
+    	int speed = 0;
+    	int payload = 0;
+    	ElevatorDirection direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
+    	
+    	try{
+    		target = Sqelevator.getTarget(elevator_idx);
+    	}
+    	catch(RemoteException e){
+    		error = true;
+    		StatusAlert.Status.set("Exception in getTarget() of SQElevator");
+    		e.printStackTrace();
+    	}
+    	try{
+    		door_status = Sqelevator.getElevatorDoorStatus(elevator_idx);
+    	}
+    	catch(RemoteException e){
+    		error = true;
+    		StatusAlert.Status.set("Exception in getElevatorDoorStatus() of SQElevator");
+    		e.printStackTrace();
+    	}
+    	try{
+    		position = Sqelevator.getElevatorFloor(elevator_idx);
+    	}
+    	catch(RemoteException e){
+    		error = true;
+    		StatusAlert.Status.set("Exception in getElevatorFloor() of SQElevator");
+    		e.printStackTrace();
+    	}    	
+    	try{
+    		speed = Sqelevator.getElevatorSpeed(elevator_idx);
+    	}
+    	catch(RemoteException e){
+    		error = true;
+    		StatusAlert.Status.set("Exception in getElevatorSpeed() of SQElevator");
+    		e.printStackTrace();
+    	}
+    	try{
+    		payload = Sqelevator.getElevatorWeight(elevator_idx);
+    	}
+    	catch(RemoteException e){
+    		error = true;
+    		StatusAlert.Status.set("Exception in getElevatorWeight() of SQElevator");
+    		e.printStackTrace();
+    	}
+    	try{
+    		direction = Sqelevator.getCommittedDirection(elevator_idx);
+    	}
+    	catch(RemoteException e){
+    		error = true;
+    		StatusAlert.Status.set("Exception in getCommittedDirection() of SQElevator");
+    		e.printStackTrace();
+    	}
+    	
+
+    	if(error == false)
+    	{
+	    	tempElevator.setTarget(target);
+	    	tempElevator.setDoors(door_status);
+	    	tempElevator.setPosition(position);
+	    	tempElevator.setSpeed(speed);
+	    	tempElevator.setPayload(payload);
+	    	tempElevator.setDirection(direction);
+    	}
+		return error;
+    	
     }
+    
+    
     
     /**
      * returns the index of the current selected elevator

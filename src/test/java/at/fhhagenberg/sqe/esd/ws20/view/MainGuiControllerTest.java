@@ -37,6 +37,7 @@ import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -75,6 +76,7 @@ public class MainGuiControllerTest {
 	private StatusAlert statusAlert = null; 
 	private MainGuiController mainGuiController = null;
 	private String uiDefaultLabelText = "...";
+	private final int uiUpdateWaitDelay = 200;
 	
 	
 	/**
@@ -150,6 +152,18 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
+	public void testHandlersBeforeRegisterManualCall(FxRobot robot) {
+		//this tests doesn't click the ui, but calls the handlers manually. This is to check if the null checks work.
+		
+		assertThrows(NullPointerException.class, () -> {
+			mainGuiController.checkboxManualAutomatic(new ActionEvent());
+		});
+		assertThrows(NullPointerException.class, () -> {
+			mainGuiController.buttonSendToFloor(new ActionEvent());
+		});
+	}
+	
+	@Test
 	public void testUpdateBeforeRegister() {
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
@@ -175,7 +189,7 @@ public class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(0);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
 		//ui should not change from default as no elevators are available
@@ -197,7 +211,7 @@ public class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		//nothing should change from the default
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
@@ -230,7 +244,7 @@ public class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -266,7 +280,7 @@ public class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
@@ -337,7 +351,7 @@ public class MainGuiControllerTest {
 		Mockito.when(mockedElevator.getDoors()).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING, ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -352,7 +366,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("#listview_elevators");
 		robot.type(KeyCode.DOWN);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
@@ -369,7 +383,7 @@ public class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("25"));
 	}
@@ -379,7 +393,7 @@ public class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		statusAlert.Status.set("moinmoin");
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("moinmoin"));
 	}
@@ -426,7 +440,7 @@ public class MainGuiControllerTest {
 		robot.clickOn("#listview_elevators");
 		robot.type(KeyCode.DOWN);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
+		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 	}
@@ -529,7 +543,22 @@ public class MainGuiControllerTest {
 		robot.type(KeyCode.ESCAPE);
 	}
 	
-	
+	@Disabled
+	@Test
+	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) {
+		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
+		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
+		
+		robot.clickOn("#checkbox_manual_mode");
+		robot.doubleClickOn("#textfield_floor_number").write("");
+		robot.clickOn("#button_send_to_floor");
+		
+		Mockito.verify(mockedUpdater).setSelectedElevator(0);
+		Mockito.verifyNoMoreInteractions(mockedUpdater);
+		verifyAlertDialogHasHeader("Error");
+		robot.clickOn("OK");
+	}
 	
 	
 	

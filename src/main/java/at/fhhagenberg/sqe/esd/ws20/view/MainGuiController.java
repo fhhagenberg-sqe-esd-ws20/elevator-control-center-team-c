@@ -152,6 +152,11 @@ public class MainGuiController {
     @FXML
     void buttonSendToFloor(ActionEvent event) {
     	//System.out.println("Entering button handler");
+    	if(updateData == null) {
+    		//System.out.println("Alert updateData == null");
+    		throw new NullPointerException("MainGuiController.buttonSendToFloor()");
+    	}
+    	
     	//get floor number from textfield
     	int floorNumber;
     	try {
@@ -184,10 +189,6 @@ public class MainGuiController {
     	}
     	
     	//send to UpdateData and set as new floor
-    	if(updateData == null) {
-    		//System.out.println("Alert updateData == null");
-			throw new NullPointerException("MainGuiController.buttonSendToFloor()");
-		}
     	//System.out.println("Before updateData.setTarget(floorNumber)");
     	updateData.setTarget(floorNumber);
     	//System.out.println("After updateData.setTarget(floorNumber)");
