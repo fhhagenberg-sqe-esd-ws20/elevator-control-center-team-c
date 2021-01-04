@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,8 +19,8 @@ public class AutoModeTest extends AutoMode {
 
 
 	@Override
-	public int doGetNext() {
-		return 0;
+	protected int doGetNext(int elevator) {
+		return elevator;
 	}
 	
 	
@@ -40,6 +41,9 @@ public class AutoModeTest extends AutoMode {
 	StatusAlert StatusAlert;
 	
 	@Mock
+	UpdateData updateData;
+	
+	@Mock
 	List<IElevatorModel> MockedElevators;
 	
 	//elevators.add(Elevator1);
@@ -48,7 +52,7 @@ public class AutoModeTest extends AutoMode {
 	
 	@BeforeEach
 	public void setup() {
-		this.Init(MockedBuilding, Mockedfloor, MockedElevators, StatusAlert);
+		this.Init(MockedBuilding, Mockedfloor, MockedElevators, StatusAlert, updateData);
 	}
 		
 		
@@ -99,6 +103,18 @@ public class AutoModeTest extends AutoMode {
     }
     
     
+    @Test
+    void testUpdateElevatorTargets() {  	
+    	this.enable(1);
+    	this.enable(2);
+    	this.enable(4);
+
+    	Mockito.verify(updateData).setTarget(1, 1);
+    	Mockito.verify(updateData).setTarget(2, 2);
+    	Mockito.verify(updateData).setTarget(4, 4);
+    	Mockito.verifyNoMoreInteractions(updateData);
+
+    }
     
 	
 }

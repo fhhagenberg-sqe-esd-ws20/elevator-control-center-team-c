@@ -111,8 +111,7 @@ public class ElevatorControlCenter extends Application {
         	//as all elevators start in automatic mode -> add all elevators to automode algorithm.
         	autoModeAlgorithm.enable(i);
         }
-        
-        autoModeAlgorithm.Init(building, floor, elevators, statusAlert);
+
                 
         // Create Scheduler
         scheduler = new Timer();
@@ -126,6 +125,8 @@ public class ElevatorControlCenter extends Application {
 
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
+        
+        autoModeAlgorithm.Init(building, floor, elevators, statusAlert, updater);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);

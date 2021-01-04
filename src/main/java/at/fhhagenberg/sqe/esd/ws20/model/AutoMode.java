@@ -14,6 +14,7 @@ public abstract class AutoMode {
 	
 	protected IBuildingModel Building;
 	protected IFloorModel Floor;
+	protected UpdateData Updater;
 	protected List<IElevatorModel> Elevators;
 	protected StatusAlert StatusAlert;
 	
@@ -26,9 +27,9 @@ public abstract class AutoMode {
 	 * @param statusAlert - status alert
 	 * @throws RemoteException
 	 */
-	public void Init(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, StatusAlert statusAlert)
+	public void Init(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, StatusAlert statusAlert, UpdateData updater)
 	{
-		if(building == null || floor == null || elevators == null || statusAlert == null )
+		if(building == null || floor == null || elevators == null || statusAlert == null || updater == null)
 		{
 			throw new NullPointerException("Nullpointer in AutoMode!");
 		}
@@ -62,6 +63,19 @@ public abstract class AutoMode {
 		return false;
 	}
 	
-	//TODO remove this and replace by real algo
-	public abstract int doGetNext();
+
+	public void UpdateElevatorTargets() {
+		for (int i = 0; i < Elevators.size(); i++) {
+			Updater.setTarget(doGetNext(i), i);
+		}
+	}
+	
+	
+	
+	/**
+	 * Replace with algorithm to get the next floor
+	 * @param elevator number of elevator to update
+	 * @return number of the next target floor
+	 */
+	protected abstract int doGetNext(int elevator);
 }
