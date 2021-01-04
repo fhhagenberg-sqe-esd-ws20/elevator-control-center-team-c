@@ -17,6 +17,8 @@ import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -292,44 +294,58 @@ public class MainGuiController {
 	    	doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
 	    	label_doors_text.setText(doorsState);
 		}});
+    	//Platform.setImplicitExit(false);
     	
     	//stops
     	List<Integer> stops = elevator.getStopsList();
-    	listview_stops.getItems().clear();
 		if (stops == null) {
 			throw new NullPointerException("MainGuiController.update() stops");
 		}
+		ObservableList<String> stopsOl = FXCollections.observableArrayList();
 		for (Integer e : stops) {
-			listview_stops.getItems().add("Floor " + e);
+			stopsOl.add("Floor " + e);
 		}
+		//Platform.runLater(new Runnable() { public void run() {
+			listview_stops.getItems().setAll(stopsOl);
+		//}});
     	
 		//not serviced floors
-		List<Integer> serviceFloorsInteger = elevator.getIgnoredFloorsList();
-		if (serviceFloorsInteger == null) {
-			throw new NullPointerException("MainGuiController.register() serviceFloorsInteger");
+		List<Integer> ignoredFloors = elevator.getIgnoredFloorsList();
+		if (ignoredFloors == null) {
+			throw new NullPointerException("MainGuiController.register() ignoredFloors");
 		}
-		for (Integer e : serviceFloorsInteger) {
-			listview_no_service.getItems().add("Floor " + e);
+		ObservableList<String> ignoredFloorsOl = FXCollections.observableArrayList();
+		for (Integer e : ignoredFloors) {
+			ignoredFloorsOl.add("Floor " + e);
 		}
+		//Platform.runLater(new Runnable() { public void run() {
+			listview_no_service.getItems().setAll(ignoredFloorsOl);
+		//}});
 		
     	//calls
     	List<Integer> callsUp = floor.getUpButtonsList();
-    	listview_calls_up.getItems().clear();
 		if (callsUp == null) {
 			throw new NullPointerException("MainGuiController.update() callsUp");
 		}
+		ObservableList<String> callsUpOl = FXCollections.observableArrayList();
 		for (Integer e : callsUp) {
-			listview_calls_up.getItems().add("Floor " + e);
+			callsUpOl.add("Floor " + e);
 		}
+		//Platform.runLater(new Runnable() { public void run() {
+			listview_calls_up.getItems().setAll(callsUpOl);
+		//}});
 		
 		List<Integer> callsDown = floor.getDownButtonsList();
-		listview_calls_down.getItems().clear();
 		if (callsDown == null) {
 			throw new NullPointerException("MainGuiController.update() callsDown");
 		}
+		ObservableList<String> callsDownOl = FXCollections.observableArrayList();
 		for (Integer e : callsDown) {
-			listview_calls_down.getItems().add("Floor " + e);
+			callsDownOl.add("Floor " + e);
 		}
+		//Platform.runLater(new Runnable() { public void run() {
+			listview_calls_down.getItems().setAll(callsDownOl);
+		//}});
 	}
 
     

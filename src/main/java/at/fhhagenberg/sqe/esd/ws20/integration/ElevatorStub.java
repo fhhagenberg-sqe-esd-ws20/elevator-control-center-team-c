@@ -16,12 +16,12 @@ public class ElevatorStub implements IElevator {
 
 	public boolean getElevatorButton(int elevatorNumber, int floor) throws java.rmi.RemoteException
 	{
-		return false;
+		return true;
 	}
 	
 	public int getElevatorDoorStatus(int elevatorNumber) throws java.rmi.RemoteException
 	{
-		return 0;
+		return 1;
 	}
 	
 	public int getElevatorFloor(int elevatorNumber) throws java.rmi.RemoteException
@@ -56,12 +56,12 @@ public class ElevatorStub implements IElevator {
 	
 	public boolean getFloorButtonDown(int floor) throws java.rmi.RemoteException
 	{
-		return false;
+		return true;
 	}
 	
 	public boolean getFloorButtonUp(int floor) throws java.rmi.RemoteException
 	{
-		return false;
+		return true;
 	}
 	
 	public int getFloorHeight() throws java.rmi.RemoteException

@@ -129,7 +129,7 @@ public class UpdateData extends TimerTask {
 
         	
         } catch (Exception ex) {
-        	StatusAlert.Status.set("Exception when getting values from SQelevator");
+        	StatusAlert.Status.set("Exception when getting values from SQelevator: " + ex.getLocalizedMessage());
         }
     }
     
