@@ -233,7 +233,6 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
-	
 	@Test
 	public void testInternalTargetGreaterNumFloors(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -247,7 +246,7 @@ public class EndToEndTest {
 		});
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -263,7 +262,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -279,7 +278,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
