@@ -34,7 +34,7 @@ public class UpdateData extends TimerTask {
 	 * @throws RemoteException
 	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController, StatusAlert statusAlert) throws RemoteException
+			MainGuiController guiController, StatusAlert statusAlert)
 	{
 		
 		if(sqbuilding == null || building == null || floor == null 
