@@ -295,7 +295,7 @@ public class EndToEndTest {
 	}
 	
 	
-	
+	//TODO add test for manual floor set with button when automatic/manual mode work as intended.
 	
 	
 	

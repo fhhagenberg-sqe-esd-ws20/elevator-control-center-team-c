@@ -562,7 +562,7 @@ public class MainGuiControllerTest {
 	}
 	
 	
-	
+	//TODO add test for setTarget when automatic/manual mode work as intended.
 	
 	
 	
