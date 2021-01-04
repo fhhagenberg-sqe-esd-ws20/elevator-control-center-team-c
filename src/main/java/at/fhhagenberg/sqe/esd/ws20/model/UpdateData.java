@@ -334,8 +334,11 @@ public class UpdateData extends TimerTask {
     	IElevatorModel tempElevator = new ElevatorModel();
     	Boolean validValues = true;
     	
+    	// the old serviced floors must be copied to the updated elevator
+    	tempElevator.setIgnoredFloors(Elevators.get(elevator_idx).getIgnoredFloorsList());
+    	
     	// refresh all fields in the elevator
-    	refreshlevatorFields(tempElevator, elevator_idx);
+    	error = refreshlevatorFields(tempElevator, elevator_idx);
     	
     	// sanity checks
     	if(tempElevator.getTarget() > Building.getNumFloors())
