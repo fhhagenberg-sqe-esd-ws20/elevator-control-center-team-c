@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,14 +17,41 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class AutoModeTest extends AutoMode {
 
 
-
-
-		@Override
-		public int doGetNext() {
-			return 0;
-		}
-
+	@Override
+	public int doGetNext() {
+		return 0;
+	}
 	
+	
+
+	@Mock
+	IBuildingModel MockedBuilding;
+	@Mock
+	IFloorModel Mockedfloor;
+	
+	@Mock 
+	IElevatorModel Elevator1;
+	@Mock 
+	IElevatorModel Elevator2;
+	@Mock 
+	IElevatorModel Elevator3;
+	
+	@Mock
+	StatusAlert StatusAlert;
+	
+	@Mock
+	List<IElevatorModel> MockedElevators;
+	
+	//elevators.add(Elevator1);
+	//elevators.add(Elevator2);
+	//elevators.add(Elevator3);
+	
+	@BeforeEach
+	public void setup() {
+		this.Init(MockedBuilding, Mockedfloor, MockedElevators, StatusAlert);
+	}
+		
+		
     @Test
     void testEnable() {  	
     	this.enable(1);

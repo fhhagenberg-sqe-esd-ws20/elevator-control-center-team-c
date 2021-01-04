@@ -103,7 +103,6 @@ public class ElevatorControlCenter extends Application {
         ElevatorWrapper elevatorWrapper = new ElevatorWrapper(elevator);
         AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo(elevatorWrapper.getElevatorNum());	
         
-        
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
         for(int i = 0; i < elevatorWrapper.getElevatorNum(); i++)
@@ -113,6 +112,7 @@ public class ElevatorControlCenter extends Application {
         	autoModeAlgorithm.enable(i);
         }
         
+        autoModeAlgorithm.Init(building, floor, elevators, statusAlert);
                 
         // Create Scheduler
         scheduler = new Timer();
