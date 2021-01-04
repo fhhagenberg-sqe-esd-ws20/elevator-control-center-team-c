@@ -1,11 +1,9 @@
-package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
+package at.fhhagenberg.sqe.esd.ws20.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.atLeastOnce;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -19,14 +17,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import at.fhhagenberg.sqe.esd.ws20.model.BuildingModel;
-import at.fhhagenberg.sqe.esd.ws20.model.ElevatorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.FloorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
-import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
-import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
@@ -38,9 +30,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
  */
 @ExtendWith(MockitoExtension.class)
 
-//TODO: Tests ueberlegen und erstellen
-
-public class UpdateDataStubTest {
+public class UpdateDataTest {
 
 	@Mock
 	IBuildingModel MockedBuilding;
@@ -60,10 +50,6 @@ public class UpdateDataStubTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		StatusAlert = new StatusAlert();
-		//Mockedbuilding = new BuildingModel(); 
-		//Mockedfloor = new FloorModel();
-		//MockedElevatorWrapper = new ElevatorWrapperStub();
-		//MockedmainGuiControler = new MainGuiController();
 		Elevators = new ArrayList<IElevatorModel>();
 	}
 	
@@ -423,6 +409,34 @@ public class UpdateDataStubTest {
 	}		
 	
 	@Test
+    public void testRefreshUpDownListTimeout() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		
+		Mockito.when(MockedBuildingWrapper.getClockTick()).thenReturn((long) 4, (long)5);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(0)).thenReturn(false);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(1)).thenReturn(true);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(2)).thenReturn(false);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(true);	
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(0)).thenReturn(true);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(3)).thenReturn(false);
+
+		coreUpdater = new UpdateData(MockedBuildingWrapper, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		AddEmptyElevators(2);
+		coreUpdater.initializeServicedFloors();
+		coreUpdater.refreshUpDownList();
+		
+		Mockito.verify(Mockedfloor, times(1)).addButtonUp(1);
+		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
+		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
+		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
+		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(0));
+		assertEquals("Out of sync with the simulator at clocktick " + 5, StatusAlert.Status.get());
+	}			
+	
+	@Test
     public void testRefreshElevatorInvalidIndex() throws RemoteException {
 
 		coreUpdater = new UpdateData(MockedBuildingWrapper, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
@@ -511,7 +525,6 @@ public class UpdateDataStubTest {
 		assertEquals(4712 , Elevators.get(0).getPayload());
 		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UP , Elevators.get(0).getDirection());
 		
-		List<Integer> stops = Elevators.get(0).getStopsList();
 		assertEquals(0 , Elevators.get(0).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(0).getStopsList().get(1));
 	}				
@@ -549,7 +562,6 @@ public class UpdateDataStubTest {
 		assertEquals(4712 , Elevators.get(1).getPayload());
 		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UP , Elevators.get(1).getDirection());
 		
-		List<Integer> stops = Elevators.get(1).getStopsList();
 		assertEquals(0 , Elevators.get(1).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(1).getStopsList().get(1));
 	}		
@@ -579,6 +591,101 @@ public class UpdateDataStubTest {
 		
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
 	}			
+	
+	
+	@Test
+    public void testRefreshElevatorTimeout() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long) 4, (long)5);
+
+		
+		coreUpdater = new UpdateData(MockedBuildingWrapper, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		AddEmptyElevators(2);
+		coreUpdater.initializeServicedFloors();
+		coreUpdater.refreshElevator(0);
+		
+		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
+		
+		assertEquals("Out of sync with the simulator when getting updownlist", StatusAlert.Status.get());
+		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(0));
+	}			
+	
+	@Test
+    public void testRunMethode() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		
+		// elevator0
+		Mockito.when(MockedElevatorWrapper.getTarget(0)).thenReturn(1);
+		Mockito.when(MockedElevatorWrapper.getElevatorDoorStatus(0)).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_OPEN);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(2);
+		Mockito.when(MockedElevatorWrapper.getElevatorSpeed(0)).thenReturn(4711);
+		Mockito.when(MockedElevatorWrapper.getElevatorWeight(0)).thenReturn(4712);
+		Mockito.when(MockedElevatorWrapper.getCommittedDirection(0)).thenReturn(ElevatorDirection.ELEVATOR_DIRECTION_UP);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 0)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 1)).thenReturn(false);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 2)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 3)).thenReturn(false);
+
+		// elevator1
+		Mockito.when(MockedElevatorWrapper.getTarget(1)).thenReturn(2);
+		Mockito.when(MockedElevatorWrapper.getElevatorDoorStatus(1)).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(1)).thenReturn(1);
+		Mockito.when(MockedElevatorWrapper.getElevatorSpeed(1)).thenReturn(32);
+		Mockito.when(MockedElevatorWrapper.getElevatorWeight(1)).thenReturn(33);
+		Mockito.when(MockedElevatorWrapper.getCommittedDirection(1)).thenReturn(ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 0)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 1)).thenReturn(true);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 2)).thenReturn(false);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 3)).thenReturn(false);
+		
+		//updownlist
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(0)).thenReturn(false);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(1)).thenReturn(true);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(2)).thenReturn(false);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(true);	
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(0)).thenReturn(true);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(3)).thenReturn(false);
+		
+		
+		coreUpdater = new UpdateData(MockedBuildingWrapper, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		AddEmptyElevators(2);
+		coreUpdater.initializeServicedFloors();
+		
+		//update
+		coreUpdater.run();
+		
+		// elevator0
+		Mockito.verify(MockedmainGuiControler, times(1)).update(Mockedfloor, Elevators.get(0));
+		assertEquals(1 , Elevators.get(0).getTarget());
+		assertEquals(ElevatorDoorStatus.ELEVATOR_DOORS_OPEN , Elevators.get(0).getDoors());
+		assertEquals(2 , Elevators.get(0).getPosition());
+		assertEquals(4711 , Elevators.get(0).getSpeed());
+		assertEquals(4712 , Elevators.get(0).getPayload());
+		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UP , Elevators.get(0).getDirection());
+		assertEquals(0 , Elevators.get(0).getStopsList().get(0));
+		assertEquals(2 , Elevators.get(0).getStopsList().get(1));
+		
+		// elevator1
+		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
+		assertEquals(2 , Elevators.get(1).getTarget());
+		assertEquals(ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING , Elevators.get(1).getDoors());
+		assertEquals(1 , Elevators.get(1).getPosition());
+		assertEquals(32 , Elevators.get(1).getSpeed());
+		assertEquals(33 , Elevators.get(1).getPayload());
+		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED , Elevators.get(1).getDirection());
+		assertEquals(0 , Elevators.get(1).getStopsList().get(0));
+		assertEquals(1 , Elevators.get(1).getStopsList().get(1));
+		
+		// updownlist
+		Mockito.verify(Mockedfloor, times(1)).addButtonUp(1);
+		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
+		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
+		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
+	}		
 	
 	
 	void AddEmptyElevators(int numElevators)
