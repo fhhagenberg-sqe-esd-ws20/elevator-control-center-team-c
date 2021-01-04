@@ -1,11 +1,19 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
+import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
+
 public abstract class AutoMode {
 
-	private List<Integer> autoModeEnabledFloors = new ArrayList<Integer>();
+	protected List<Integer> autoModeEnabledFloors = new ArrayList<Integer>();
+	
+
+	
 	
 	public boolean enable(Integer floor) {
 		if(!autoModeEnabledFloors.contains(floor)) {
