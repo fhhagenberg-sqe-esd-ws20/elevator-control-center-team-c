@@ -191,12 +191,12 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     public void refreshUpDownList() throws RemoteException
     {
     	//get current clocktick to guarantee atomar access
-    	long clocktickBeforeUpdate = Sqelevator.getClockTick();
+    	long clocktickBeforeUpdate = SqBuilding.getClockTick();
     	
     	refreshUpList();
     	refreshDownList();
     	
-    	long clocktick = Sqelevator.getClockTick();
+    	long clocktick = SqBuilding.getClockTick();
     	// check, if clocktick of the sqelevator has changed in the meantime
     	if(clocktick != clocktickBeforeUpdate)
     	{
@@ -319,14 +319,6 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
     			GuiController.update(Floor, Elevators.get(SelectedElevator));
     		}
     	}
-    }
-    
-    /**
-     * returns list of elevators
-     */
-    public List<IElevatorModel> getElevators()
-    {
-		return Elevators;
     }
     
     /**
