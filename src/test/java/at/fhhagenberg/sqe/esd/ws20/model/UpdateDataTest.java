@@ -58,8 +58,6 @@ public class UpdateDataTest {
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater = new UpdateData(null, MockedElevatorWrapper, MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert));
-
-		//CreateEmptyElevators(stub.getElevatorNum());
     }
 	
 	@Test
@@ -155,7 +153,7 @@ public class UpdateDataTest {
 	}			
 	
 	@Test
-    public void testInitializeTreeServicedFloorsInTwoElevators() throws RemoteException {
+    public void testInitializeThreeServicedFloorsInTwoElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(3);
 		
@@ -169,15 +167,10 @@ public class UpdateDataTest {
 		coreUpdater.initializeServicedFloors();
 		
 		List<Integer> ignoredFloors0 = Elevators.get(0).getIgnoredFloorsList();
-		List<Integer> ignoredFloors1 = Elevators.get(0).getIgnoredFloorsList();
+		List<Integer> ignoredFloors1 = Elevators.get(1).getIgnoredFloorsList();
 
-		assertEquals(0, ignoredFloors0.get(0));
-		assertEquals(1, ignoredFloors0.get(1));
-		assertEquals(2, ignoredFloors0.get(2));
-
-		assertEquals(0, ignoredFloors1.get(0));
-		assertEquals(1, ignoredFloors1.get(1));
-		assertEquals(2, ignoredFloors1.get(2));
+		assertEquals(0, ignoredFloors0.size());
+		assertEquals(0, ignoredFloors1.size());
 
 	}		
 	
