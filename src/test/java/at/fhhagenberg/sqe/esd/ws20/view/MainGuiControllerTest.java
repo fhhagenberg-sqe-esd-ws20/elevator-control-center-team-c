@@ -530,7 +530,22 @@ public class MainGuiControllerTest {
 		robot.type(KeyCode.ESCAPE);
 	}
 	
-	
+	@Disabled
+	@Test
+	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) {
+		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
+		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
+		
+		robot.clickOn("#checkbox_manual_mode");
+		robot.doubleClickOn("#textfield_floor_number").write("");
+		robot.clickOn("#button_send_to_floor");
+		
+		Mockito.verify(mockedUpdater).setSelectedElevator(0);
+		Mockito.verifyNoMoreInteractions(mockedUpdater);
+		verifyAlertDialogHasHeader("Error");
+		robot.clickOn("OK");
+	}
 	
 	
 	
