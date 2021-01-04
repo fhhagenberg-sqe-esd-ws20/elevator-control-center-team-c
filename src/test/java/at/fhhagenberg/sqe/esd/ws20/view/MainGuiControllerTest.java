@@ -37,6 +37,7 @@ import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -148,6 +149,18 @@ public class MainGuiControllerTest {
 		robot.clickOn("#button_send_to_floor");
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+	}
+	
+	@Test
+	public void testHandlersBeforeRegisterManualCall(FxRobot robot) {
+		//this tests doesn't click the ui, but calls the handlers manually. This is to check if the null checks work.
+		
+		assertThrows(NullPointerException.class, () -> {
+			mainGuiController.checkboxManualAutomatic(new ActionEvent());
+		});
+		assertThrows(NullPointerException.class, () -> {
+			mainGuiController.buttonSendToFloor(new ActionEvent());
+		});
 	}
 	
 	@Test
