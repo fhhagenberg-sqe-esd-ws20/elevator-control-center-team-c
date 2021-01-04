@@ -117,7 +117,7 @@ public class UpdateData extends TimerTask {
      */
     @Override
     public void run() {
-        try {        	
+        try {
         	// refresh list with the up and down buttons of the floors
         	refreshUpDownList();
         	
@@ -127,9 +127,9 @@ public class UpdateData extends TimerTask {
         		refreshElevator(i);
         	}
 
-        	
+        //catch everything else that was not dealt with before, therefore this message is more verbose
         } catch (Exception ex) {
-        	StatusAlert.Status.set("Exception when getting values from SQelevator: " + ex.getLocalizedMessage());
+        	StatusAlert.Status.set("Exception when getting values from SQelevator: " + ex.getClass() + ": " + ex.getLocalizedMessage());
         }
     }
     

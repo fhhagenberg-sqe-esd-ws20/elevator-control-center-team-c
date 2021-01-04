@@ -57,7 +57,7 @@ public class AutoModeTest extends AutoMode {
 		
 		
     @Test
-    void testEnable() {  	
+    void testEnable() {
     	this.enable(1);
     	this.enable(3);
     	this.enable(5);
@@ -71,7 +71,7 @@ public class AutoModeTest extends AutoMode {
     
     
     @Test
-    void testDisable() {  	
+    void testDisable() {
     	this.enable(1);
     	this.enable(2);
     	this.enable(3);
@@ -90,7 +90,7 @@ public class AutoModeTest extends AutoMode {
     
     
     @Test
-    void testCheckIfInAutoMode() {  	
+    void testCheckIfInAutoMode() {
     	this.enable(1);
     	this.enable(2);
     	this.enable(4);
@@ -104,7 +104,7 @@ public class AutoModeTest extends AutoMode {
     
     
     @Test
-    void testUpdateElevatorTargets() {  	
+    void testUpdateElevatorTargets() {
     	this.enable(1);
     	this.enable(2);
     	this.enable(4);
