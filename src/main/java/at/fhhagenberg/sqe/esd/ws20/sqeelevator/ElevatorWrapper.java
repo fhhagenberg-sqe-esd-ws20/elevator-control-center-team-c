@@ -91,6 +91,8 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
 	@Override
 	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
         switch(elevatorInterface.getElevatorDoorStatus(elevatorNumber)){
+        case 0:
+        	return ElevatorDoorStatus.ELEVATOR_DOORS_UNKNOWN;
         case IElevator.ELEVATOR_DOORS_OPEN:
         	return ElevatorDoorStatus.ELEVATOR_DOORS_OPEN;
         case IElevator.ELEVATOR_DOORS_CLOSED:
