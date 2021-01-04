@@ -30,8 +30,6 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
  */
 @ExtendWith(MockitoExtension.class)
 
-//TODO: Tests ueberlegen und erstellen
-
 public class UpdateDataTest {
 
 	@Mock
@@ -52,10 +50,6 @@ public class UpdateDataTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		StatusAlert = new StatusAlert();
-		//Mockedbuilding = new BuildingModel(); 
-		//Mockedfloor = new FloorModel();
-		//MockedElevatorWrapper = new ElevatorWrapperStub();
-		//MockedmainGuiControler = new MainGuiController();
 		Elevators = new ArrayList<IElevatorModel>();
 	}
 	
@@ -531,7 +525,6 @@ public class UpdateDataTest {
 		assertEquals(4712 , Elevators.get(0).getPayload());
 		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UP , Elevators.get(0).getDirection());
 		
-		List<Integer> stops = Elevators.get(0).getStopsList();
 		assertEquals(0 , Elevators.get(0).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(0).getStopsList().get(1));
 	}				
@@ -569,7 +562,6 @@ public class UpdateDataTest {
 		assertEquals(4712 , Elevators.get(1).getPayload());
 		assertEquals(ElevatorDirection.ELEVATOR_DIRECTION_UP , Elevators.get(1).getDirection());
 		
-		List<Integer> stops = Elevators.get(1).getStopsList();
 		assertEquals(0 , Elevators.get(1).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(1).getStopsList().get(1));
 	}		
