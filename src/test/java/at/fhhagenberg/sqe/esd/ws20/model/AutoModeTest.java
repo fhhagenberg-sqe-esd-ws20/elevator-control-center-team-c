@@ -66,7 +66,7 @@ public class AutoModeTest extends AutoMode {
     	expectedFloors.add(1);
     	expectedFloors.add(3);
     	expectedFloors.add(5);
-    	assertEquals(expectedFloors, this.autoModeEnabledFloors);
+    	assertEquals(expectedFloors, this.autoModeEnabledElevators);
     }
     
     
@@ -85,7 +85,7 @@ public class AutoModeTest extends AutoMode {
     	expectedFloors.add(1);
     	expectedFloors.add(2);
     	expectedFloors.add(4);
-    	assertEquals(expectedFloors, this.autoModeEnabledFloors);
+    	assertEquals(expectedFloors, this.autoModeEnabledElevators);
     }
     
     
@@ -105,9 +105,12 @@ public class AutoModeTest extends AutoMode {
     
     @Test
     void testUpdateElevatorTargets() {
+    	Mockito.when(MockedElevators.size()).thenReturn(6);
     	this.enable(1);
     	this.enable(2);
     	this.enable(4);
+    	
+    	this.UpdateElevatorTargets();
 
     	Mockito.verify(updateData).setTarget(1, 1);
     	Mockito.verify(updateData).setTarget(2, 2);

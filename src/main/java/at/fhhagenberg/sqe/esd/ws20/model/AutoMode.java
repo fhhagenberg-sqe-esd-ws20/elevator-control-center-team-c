@@ -10,7 +10,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 public abstract class AutoMode {
 
-	protected List<Integer> autoModeEnabledFloors = new ArrayList<Integer>();
+	protected List<Integer> autoModeEnabledElevators = new ArrayList<Integer>();
 	
 	protected IBuildingModel Building;
 	protected IFloorModel Floor;
@@ -39,25 +39,26 @@ public abstract class AutoMode {
 		Floor = floor;
 		Elevators = elevators;
 		StatusAlert = statusAlert;
+		Updater = updater;
 	}
 	
 	
-	public boolean enable(Integer floor) {
-		if(!autoModeEnabledFloors.contains(floor)) {
-			autoModeEnabledFloors.add(floor);
+	public boolean enable(Integer elevatorNr) {
+		if(!autoModeEnabledElevators.contains(elevatorNr)) {
+			autoModeEnabledElevators.add(elevatorNr);
 			return true;
 		}
 		return false;
 	}
-	public boolean disable(Integer floor) {
-		if(autoModeEnabledFloors.contains(floor)) {
-			autoModeEnabledFloors.remove(floor);	//if floor:int remove at index floor, if floor:Integer remove Object floor
+	public boolean disable(Integer elevatorNr) {
+		if(autoModeEnabledElevators.contains(elevatorNr)) {
+			autoModeEnabledElevators.remove(elevatorNr);	//if floor:int remove at index floor, if floor:Integer remove Object floor
 			return true;
 		}
 		return false;
 	}
-	public boolean checkIfInAutoMode(Integer floor) {
-		if(autoModeEnabledFloors.contains(floor)) {
+	public boolean checkIfInAutoMode(Integer elevatorNr) {
+		if(autoModeEnabledElevators.contains(elevatorNr)) {
 			return true;
 		}
 		return false;
@@ -66,7 +67,9 @@ public abstract class AutoMode {
 
 	public void UpdateElevatorTargets() {
 		for (int i = 0; i < Elevators.size(); i++) {
-			Updater.setTarget(doGetNext(i), i);
+			if(autoModeEnabledElevators.contains(i)) {
+				Updater.setTarget(doGetNext(i), i);
+			}	
 		}
 	}
 	
