@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +35,6 @@ import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
-import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -75,8 +73,8 @@ public class MainGuiControllerTest {
 	
 	private StatusAlert statusAlert = null; 
 	private MainGuiController mainGuiController = null;
-	private String uiDefaultLabelText = "...";
-	private final int uiUpdateWaitDelay = 200;
+	private final static String uiDefaultLabelText = "...";
+	private final static int uiUpdateWaitDelay = 200;
 	
 	
 	/**
@@ -168,6 +166,7 @@ public class MainGuiControllerTest {
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
 		//nothing should change from the default
+		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText(uiDefaultLabelText));
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(uiDefaultLabelText));
 		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
 		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
@@ -193,6 +192,7 @@ public class MainGuiControllerTest {
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
 		//ui should not change from default as no elevators are available
+		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("0"));
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
 		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
@@ -214,6 +214,7 @@ public class MainGuiControllerTest {
 		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
 		
 		//nothing should change from the default
+		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("0"));
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
 		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
@@ -561,7 +562,7 @@ public class MainGuiControllerTest {
 	}
 	
 	
-	
+	//TODO add test for setTarget when automatic/manual mode work as intended.
 	
 	
 	

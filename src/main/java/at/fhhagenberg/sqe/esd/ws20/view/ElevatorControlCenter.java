@@ -8,17 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-import at.fhhagenberg.sqe.esd.ws20.model.AutoModeSimpleAlgo;
-import at.fhhagenberg.sqe.esd.ws20.model.BuildingModel;
-import at.fhhagenberg.sqe.esd.ws20.model.ElevatorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.FloorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
-import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
-import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
-import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapperStub;
+import at.fhhagenberg.sqe.esd.ws20.integration.ElevatorStub;
+import at.fhhagenberg.sqe.esd.ws20.model.*;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -41,6 +33,17 @@ public class ElevatorControlCenter extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
+		//TODO: use real Simulator instead of Mock
+		IElevator elevator = new ElevatorStub();
+		setup(stage, elevator);
+	}
+	
+	/**
+	 * Set up app structure and show gui
+	 * @param stage the stage for the gui
+	 * @param elevator elevator simulator or mock object for elevator
+	 */
+	public void setup(Stage stage, IElevator elevator) {
 		Parent root = null;
 		FXMLLoader loader;
 		try {
@@ -69,12 +72,14 @@ public class ElevatorControlCenter extends Application {
 		
 		// Setup and connect objects, which are necessary for the MVC Pattern
 		try {
-			SetupMVC();
+			SetupMVC(elevator);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	
 
     public static void main(String[] args) {
         
@@ -88,41 +93,40 @@ public class ElevatorControlCenter extends Application {
      * Create models and Controller and connect them with each other
      * @throws RemoteException 
      */
-    public void SetupMVC() throws RemoteException
+    public void SetupMVC(IElevator elevator) throws RemoteException
     {
         // Creating models
         StatusAlert statusAlert = new StatusAlert();
         IBuildingModel building = new BuildingModel();
         IFloorModel floor = new FloorModel();
-        //ElevatorWrapper sqelevator = new ElevatorWrapper(null);				//TODO: use real Simulator instead of Mock
-        ElevatorWrapperStub stub = new ElevatorWrapperStub();
-        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo(stub.getElevatorNum());	//TODO: use real Simulator instead of Mock
-        
+        //ElevatorWrapper sqelevator = new ElevatorWrapper(null);				
+        ElevatorWrapper elevatorWrapper = new ElevatorWrapper(elevator);
+        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo(elevatorWrapper.getElevatorNum());	
         
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
-        for(int i = 0; i < stub.getElevatorNum(); i++)							//TODO: use real simulator instead of stub
+        for(int i = 0; i < elevatorWrapper.getElevatorNum(); i++)
         {
         	elevators.add(new ElevatorModel());
         	//as all elevators start in automatic mode -> add all elevators to automode algorithm.
         	autoModeAlgorithm.enable(i);
         }
-        
-        
 
                 
         // Create Scheduler
         scheduler = new Timer();
 
-
+        
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(stub, stub, building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
+        UpdateData updater = new UpdateData(elevatorWrapper, elevatorWrapper, building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
         
         // set service floors for each elevator
         updater.initializeServicedFloors();
 
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
+        
+        autoModeAlgorithm.Init(building, floor, elevators, statusAlert, updater);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);

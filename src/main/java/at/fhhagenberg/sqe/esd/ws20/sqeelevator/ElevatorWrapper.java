@@ -70,7 +70,7 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
         	elevatorInterface.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
             break;
         default:
-            throw new RuntimeException("Wrong commited direction");
+            throw new RuntimeException("Wrong commited direction (set)");
         }			
 	}
 
@@ -84,13 +84,15 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
         case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
         	return ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
         default:
-            throw new RuntimeException("Wrong commited direction");
+            throw new RuntimeException("Wrong commited direction (get)");
         }
 	}
 
 	@Override
 	public ElevatorDoorStatus getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
         switch(elevatorInterface.getElevatorDoorStatus(elevatorNumber)){
+        case 0:
+        	return ElevatorDoorStatus.ELEVATOR_DOORS_UNKNOWN;
         case IElevator.ELEVATOR_DOORS_OPEN:
         	return ElevatorDoorStatus.ELEVATOR_DOORS_OPEN;
         case IElevator.ELEVATOR_DOORS_CLOSED:
@@ -100,7 +102,7 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
         case IElevator.ELEVATOR_DOORS_CLOSING:
         	return ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING;
         default:
-            throw new RuntimeException("Wrong commited direction");
+            throw new RuntimeException("Wrong door status");
         }
 	}
 

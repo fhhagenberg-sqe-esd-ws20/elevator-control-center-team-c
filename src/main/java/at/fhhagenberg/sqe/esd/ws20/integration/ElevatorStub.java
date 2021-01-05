@@ -1,4 +1,6 @@
-package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
+package at.fhhagenberg.sqe.esd.ws20.integration;
+
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
 
 public class ElevatorStub implements IElevator {	
 	
@@ -19,7 +21,7 @@ public class ElevatorStub implements IElevator {
 	
 	public int getElevatorDoorStatus(int elevatorNumber) throws java.rmi.RemoteException
 	{
-		return 0;
+		return 1;
 	}
 	
 	public int getElevatorFloor(int elevatorNumber) throws java.rmi.RemoteException
@@ -54,7 +56,7 @@ public class ElevatorStub implements IElevator {
 	
 	public boolean getFloorButtonDown(int floor) throws java.rmi.RemoteException
 	{
-		return false;
+		return true;
 	}
 	
 	public boolean getFloorButtonUp(int floor) throws java.rmi.RemoteException
