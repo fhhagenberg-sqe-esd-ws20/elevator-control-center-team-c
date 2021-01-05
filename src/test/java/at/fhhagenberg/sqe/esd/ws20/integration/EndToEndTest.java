@@ -530,7 +530,7 @@ public class EndToEndTest {
 		startGui();
 		
 		try {
-			Thread.sleep(200);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			System.out.println("Error in Thread.sleep()");
 			e.printStackTrace();
@@ -570,7 +570,7 @@ public class EndToEndTest {
 		startGui();
 		
 		try {
-			Thread.sleep(200);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			System.out.println("Error in Thread.sleep()");
 			e.printStackTrace();
@@ -598,7 +598,7 @@ public class EndToEndTest {
 		startGui();
 		
 		try {
-			Thread.sleep(200);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			System.out.println("Error in Thread.sleep()");
 			e.printStackTrace();
@@ -630,7 +630,7 @@ public class EndToEndTest {
 		startGui();
 		
 		try {
-			Thread.sleep(200);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			System.out.println("Error in Thread.sleep()");
 			e.printStackTrace();
