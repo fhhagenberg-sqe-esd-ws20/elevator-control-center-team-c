@@ -216,6 +216,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 	}
 	
+	@Disabled
 	@Test
 	public void testButtonDisabledWithCheckboxNotChecked() throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -224,6 +225,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 	}
 	
+	@Disabled
 	@Test
 	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -299,14 +301,7 @@ public class EndToEndTest {
 	
 	//TODO add test for manual floor set with button when automatic/manual mode work as intended.
 	
-	@Test
-	public void testElevatorListHasNoElementsAfterStartup(FxRobot robot) throws RemoteException {
-		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
-		
-		startGui();
-		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(0));
-	}		
+
 	
 	@Test
 	public void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException {
@@ -426,7 +421,6 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
 	}		
 	
-	
 	@Test
 	public void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
 		
@@ -448,7 +442,6 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
 	}		
-	
 	
 	@Test
 	public void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
