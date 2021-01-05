@@ -305,9 +305,9 @@ public class MainGuiController {
 		for (Integer e : stops) {
 			stopsOl.add("Floor " + e);
 		}
-		//Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(new Runnable() { public void run() {
 			listview_stops.getItems().setAll(stopsOl);
-		//}});
+		}});
     	
 		//not serviced floors
 		List<Integer> ignoredFloors = elevator.getIgnoredFloorsList();
