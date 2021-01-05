@@ -305,9 +305,9 @@ public class MainGuiController {
 		for (Integer e : stops) {
 			stopsOl.add("Floor " + e);
 		}
-		//Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(new Runnable() { public void run() {
 			listview_stops.getItems().setAll(stopsOl);
-		//}});
+		}});
     	
 		//not serviced floors
 		List<Integer> ignoredFloors = elevator.getIgnoredFloorsList();
@@ -331,9 +331,9 @@ public class MainGuiController {
 		for (Integer e : callsUp) {
 			callsUpOl.add("Floor " + e);
 		}
-		//Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(new Runnable() { public void run() {
 			listview_calls_up.getItems().setAll(callsUpOl);
-		//}});
+		}});
 		
 		List<Integer> callsDown = floor.getDownButtonsList();
 		if (callsDown == null) {
@@ -343,9 +343,9 @@ public class MainGuiController {
 		for (Integer e : callsDown) {
 			callsDownOl.add("Floor " + e);
 		}
-		//Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(new Runnable() { public void run() {
 			listview_calls_down.getItems().setAll(callsDownOl);
-		//}});
+		}});
 	}
 
     
