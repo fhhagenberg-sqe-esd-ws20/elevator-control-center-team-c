@@ -611,6 +611,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 3"));
 	}	
 	
+	@Disabled
 	@Test
 	public void testUpsAndDownsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException {
 		
