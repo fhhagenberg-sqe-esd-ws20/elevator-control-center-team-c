@@ -299,14 +299,222 @@ public class EndToEndTest {
 	
 	//TODO add test for manual floor set with button when automatic/manual mode work as intended.
 	
+	@Test
+	public void testElevatorListHasNoElementsAfterStartup(FxRobot robot) throws RemoteException {
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
+		
+		startGui();
+		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(0));
+	}		
+	
+	@Test
+	public void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException {
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(3);
+		
+		startGui();
+		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(3));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 3"));
+	}	
+	
+	@Test
+	public void testServicedFloorListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(3);
+		// elevator1
+		Mockito.when(mockedElevators.getServicesFloors(0, 0)).thenReturn(true);
+		Mockito.when(mockedElevators.getServicesFloors(0, 1)).thenReturn(false);		
+		Mockito.when(mockedElevators.getServicesFloors(0, 2)).thenReturn(true);
+		//elevator2
+		Mockito.when(mockedElevators.getServicesFloors(1, 0)).thenReturn(true);
+		Mockito.when(mockedElevators.getServicesFloors(1, 1)).thenReturn(true);
+		Mockito.when(mockedElevators.getServicesFloors(1, 2)).thenReturn(true);
+
+		startGui();
+		
+		// elavator1
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 0"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 2"));
+		// change view	
+		robot.clickOn("#listview_elevators");
+		robot.type(KeyCode.DOWN);
+		//elevator2
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(3));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 0"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 2"));
+	}	
+	
+	@Test
+	public void testStopListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		Mockito.when(mockedElevators.getElevatorButton(0, 0)).thenReturn(false);
+		Mockito.when(mockedElevators.getElevatorButton(0, 1)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(0, 2)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(0, 3)).thenReturn(false);
+		
+		Mockito.when(mockedElevators.getElevatorButton(1, 0)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(1, 1)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(1, 2)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(1, 3)).thenReturn(true);
+
+
+		startGui();
+		
+		// elavator1
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
+		// change view	
+		robot.clickOn("#listview_elevators");
+		robot.type(KeyCode.DOWN);
+		//elevator2
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 0"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));		
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
+	}	
+	
+	@Test
+	public void testStopListContainsCorrectItemsWhenChangingBetweenElevators(FxRobot robot) throws RemoteException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		Mockito.when(mockedElevators.getElevatorButton(0, 0)).thenReturn(false);
+		Mockito.when(mockedElevators.getElevatorButton(0, 1)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(0, 2)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(0, 3)).thenReturn(false);
+		
+		Mockito.when(mockedElevators.getElevatorButton(1, 0)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(1, 1)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(1, 2)).thenReturn(true);
+		Mockito.when(mockedElevators.getElevatorButton(1, 3)).thenReturn(true);
+
+
+		startGui();
+		
+		// elavator1
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
+		// change view	
+		robot.clickOn("#listview_elevators");
+		robot.type(KeyCode.DOWN);
+		//elevator2
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 0"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));		
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
+	}		
 	
 	
+	@Test
+	public void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		Mockito.when(mockedElevators.getFloorButtonUp(0)).thenReturn(false);
+		Mockito.when(mockedElevators.getFloorButtonUp(1)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonUp(2)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonUp(3)).thenReturn(false);
+
+
+		startGui();
+		
+		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
+	}		
 	
 	
+	@Test
+	public void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		Mockito.when(mockedElevators.getFloorButtonDown(0)).thenReturn(false);
+		Mockito.when(mockedElevators.getFloorButtonDown(1)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonDown(2)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonDown(3)).thenReturn(false);
+
+
+		startGui();
+		
+		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
+	}	
 	
-	
-	
-	
+	@Test
+	public void testUpsAndDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		Mockito.when(mockedElevators.getFloorButtonUp(0)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonUp(1)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonUp(2)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonUp(3)).thenReturn(true);		
+		Mockito.when(mockedElevators.getFloorButtonDown(0)).thenReturn(false);
+		Mockito.when(mockedElevators.getFloorButtonDown(1)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonDown(2)).thenReturn(true);
+		Mockito.when(mockedElevators.getFloorButtonDown(3)).thenReturn(false);
+
+
+		startGui();
+		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));		
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 0"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 3"));		
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
+		
+		// change view	(values must also be set after changing to other view)
+		robot.clickOn("#listview_elevators");
+		robot.type(KeyCode.DOWN);
+		
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));		
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 0"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 3"));		
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));		
+	}		
 	
 	
 	
