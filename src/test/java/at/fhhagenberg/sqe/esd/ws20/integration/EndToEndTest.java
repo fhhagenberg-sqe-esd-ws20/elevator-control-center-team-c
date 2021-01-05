@@ -73,7 +73,7 @@ public class EndToEndTest {
 	void setUp() {
 	}
 	
-	
+	@Disabled
 	@Test
 	public void testNoElevators(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
@@ -174,6 +174,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("25"));
 	}
 	
+	@Disabled
 	@Test
 	public void testCheckboxDisabledOnNoElevators() throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
