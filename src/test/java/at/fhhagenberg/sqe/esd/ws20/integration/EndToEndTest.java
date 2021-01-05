@@ -234,6 +234,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
+	@Disabled
 	@Test
 	public void testInternalTargetGreaterNumFloors(FxRobot robot) throws RemoteException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
