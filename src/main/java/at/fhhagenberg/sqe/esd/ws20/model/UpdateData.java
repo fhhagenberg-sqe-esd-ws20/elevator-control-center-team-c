@@ -31,7 +31,7 @@ public class UpdateData extends TimerTask {
 	 * @param floor - the internal model for the floors
 	 * @param elevators - the internal list with the models for the elevators
 	 * @param guiController - the controller, which controls the gui
-	 * @throws RemoteException
+	 * @throws RemoteException 
 	 */
 	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
 			MainGuiController guiController, StatusAlert statusAlert)
