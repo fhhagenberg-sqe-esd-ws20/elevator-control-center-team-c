@@ -2,6 +2,8 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import java.rmi.RemoteException;
 
+import sqelevator.IElevator;
+
 /**
  * Class to connect the provided interfaces with the elevator interface provided 
  * by the elevator manufacturer.

@@ -21,7 +21,6 @@ import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
 import javafx.scene.control.DialogPane;
@@ -29,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import sqelevator.IElevator;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;

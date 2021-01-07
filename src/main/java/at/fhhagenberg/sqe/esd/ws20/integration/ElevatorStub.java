@@ -1,6 +1,6 @@
 package at.fhhagenberg.sqe.esd.ws20.integration;
 
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevator;
+import sqelevator.IElevator;
 
 public class ElevatorStub implements IElevator {	
 	
