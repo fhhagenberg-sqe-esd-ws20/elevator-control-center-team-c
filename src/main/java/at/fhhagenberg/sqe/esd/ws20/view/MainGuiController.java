@@ -137,12 +137,10 @@ public class MainGuiController {
     		//disable the automatic mode -> enable manual mode
     		autoModeAlgo.disable(selectedElevator);
     		button_send_to_floor.setDisable(false);
-    		//System.out.println("After checkbox isSelected 1");
     	}
     	else {
     		autoModeAlgo.enable(selectedElevator);
     		button_send_to_floor.setDisable(true);
-    		//System.out.println("After checkbox isSelected 2");
     	}
     }
     
@@ -153,9 +151,7 @@ public class MainGuiController {
      */
     @FXML
     void buttonSendToFloor(ActionEvent event) {
-    	//System.out.println("Entering button handler");
     	if(updateData == null) {
-    		//System.out.println("Alert updateData == null");
     		throw new NullPointerException("MainGuiController.buttonSendToFloor()");
     	}
     	
@@ -164,7 +160,6 @@ public class MainGuiController {
     	try {
     		floorNumber = Integer.parseInt(textfield_floor_number.getText());
     	} catch (NumberFormatException e) {
-    		//System.out.println("Alert floor text->int parse error");
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
@@ -174,7 +169,6 @@ public class MainGuiController {
     	
     	//check if in range of available floors
     	if(floorNumber > numFloorsInBuilding) {
-    		//System.out.println("Alert floorNumber > numFloorsInBuilding");
     		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
@@ -182,7 +176,6 @@ public class MainGuiController {
 			return;
     	}
     	if(floorNumber <= 0) {
-    		//System.out.println("Alert floorNumber <= 0");
     		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
@@ -191,9 +184,8 @@ public class MainGuiController {
     	}
     	
     	//send to UpdateData and set as new floor
-    	//System.out.println("Before updateData.setTarget(floorNumber)");
-    	updateData.setTarget(floorNumber);
-    	//System.out.println("After updateData.setTarget(floorNumber)");
+    	//internal the floors are in range 0 to numFloorsInBuilding-1. But the user enters 1 to numFloorsInBuilding. To be have to subtract 1 here to convert the ranges.
+    	updateData.setTarget(floorNumber-1);
     }
     
     
@@ -278,8 +270,10 @@ public class MainGuiController {
     	//update gui with new values from the given elevator
     	//elevator data
     	Platform.runLater(new Runnable() { public void run() {
-			label_target_text.setText(elevator.getTarget().toString());
-	    	label_position_text.setText(elevator.getPosition().toString());
+    		Integer targetReranged = elevator.getTarget() + 1;
+			label_target_text.setText(targetReranged.toString());
+			Integer positionReranged = elevator.getPosition() + 1;
+	    	label_position_text.setText(positionReranged.toString());
 	    	
 	    	String direction = elevator.getDirection().toString();
 	    	direction = direction.substring(direction.lastIndexOf('_') + 1);
@@ -287,14 +281,14 @@ public class MainGuiController {
 	    	label_direction_text.setText(direction);
 	    	
 	    	label_payload_text.setText(elevator.getPayload().toString());
-	    	label_speed_text.setText(elevator.getSpeed().toString());
+	    	Integer speedAbs = Math.abs(elevator.getSpeed());
+	    	label_speed_text.setText(speedAbs.toString());
 	    	
 	    	String doorsState = elevator.getDoors().toString();
 	    	doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
 	    	doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
 	    	label_doors_text.setText(doorsState);
 		}});
-    	//Platform.setImplicitExit(false);
     	
     	//stops
     	List<Integer> stops = elevator.getStopsList();
