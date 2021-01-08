@@ -30,44 +30,29 @@ public class UpdateData extends TimerTask {
 	/**
 	 * Constructor initializes the number of floors and elevators
 	 * 
-	 * @param sqbuilding - the simulator for the building
-	 * @param sqelevator - the simulator for the elevators
+	 * @param sqbuilding - the simulator for the building, can be null
+	 * @param sqelevator - the simulator for the elevators, can be null
 	 * @param building - the internal model of the building
 	 * @param floor - the internal model for the floors
 	 * @param elevators - the internal list with the models for the elevators
 	 * @param guiController - the controller, which controls the gui
 	 * @throws RemoteException 
 	 */
-	public UpdateData(IBuildingWrapper sqbuilding, IElevatorWrapper sqelevator,IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, 
-			MainGuiController guiController, StatusAlert statusAlert)
+	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert)
 	{
 		
-		if(sqbuilding == null || building == null || floor == null 
-				|| elevators == null || sqelevator == null || guiController == null || statusAlert == null )
+		//sqbuilding, sqelevator can be null -> next update cycle a reconnect will be done
+		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null )
 		{
 			throw new NullPointerException("Nullpointer in UpdateData!");
 		}
 		
 		// assign models to the internal fields
-		SqBuilding = sqbuilding;
 		Building = building;
 		Floor = floor;
 		Elevators = elevators;
-		Sqelevator = sqelevator;
 		GuiController = guiController;
 		StatusAlert = statusAlert;
-		
-		try
-		{
-			initializeBuilding();
-			initializeElevators();
-			initializeServicedFloors();
-		}
-		catch(RemoteException e)
-		{
-			StatusAlert.Status.set("Exception in initializeBuilding of UpdateData()");
-			e.printStackTrace();
-		}
 	}
 	
 
@@ -142,17 +127,35 @@ public class UpdateData extends TimerTask {
     @Override
     public void run() {
         try {
-        	// refresh list with the up and down buttons of the floors
-        	refreshUpDownList();
         	
-        	// refresh the fields of all elevators
-        	for(int i = 0; i < Elevators.size(); i++)
-        	{
-        		refreshElevator(i);
+        	if(Sqelevator != null && SqBuilding != null) {
+        	
+            	boolean error = false;
+            	// refresh list with the up and down buttons of the floors
+            	error |= refreshUpDownList();
+            	
+            	// refresh the fields of all elevators
+            	for(int i = 0; i < Elevators.size(); i++)
+            	{
+            		error |= refreshElevator(i);
+            	}
+
+            	if(error) {
+            		//try to reinitialize rmi
+            		ReconnectRMI();
+            	}
+        		
         	}
+        	else 
+        	{
+        		//try to reinitialize rmi
+        		ReconnectRMI();
+        	}
+        	
 
         //catch everything else that was not dealt with before, therefore this message is more verbose
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) {
         	StatusAlert.Status.set("Exception when getting values from SQelevator: " + ex.getClass() + ": " + ex.getLocalizedMessage());
         }
     }
@@ -228,10 +231,9 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed up and down buttons and notify the gui to show them
-     * 
-     * @throws RemoteException
+     * @return success ... true, false ... error
      */
-    public void refreshUpDownList()
+    public boolean refreshUpDownList()
     {
     	boolean error = false;
     	
@@ -242,24 +244,26 @@ public class UpdateData extends TimerTask {
 		} catch (RemoteException e) {
 			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
 			e.printStackTrace();
+			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
 			error = true;
 		}
     	
-    	refreshUpList();
-    	refreshDownList();
+		error |= refreshUpList();
+		error |= refreshDownList();
     	
     	long clocktick = 0;
 		try {
 			clocktick = SqBuilding.getClockTick();
 		} catch (RemoteException e) {
 			e.printStackTrace();
+			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
 			error = true;
 		}
 		
     	// check, if clocktick of the sqelevator has changed in the meantime
 		if(error)
 		{
-			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
+			
 		}
 		else if(clocktick != clocktickBeforeUpdate)
     	{
@@ -270,15 +274,19 @@ public class UpdateData extends TimerTask {
     		// everything is okay. Notify the Controller, that updownlist has been updated
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
+		
+		return error;
     }
     
     /**
      * Refresh list with pressed up buttons
      * 
+     * @return success ... true, false ... error
      * @throws RemoteException
      */
-    public void refreshUpList()
+    public boolean refreshUpList()
     {
+    	boolean error = false;
     	Floor.clearUpButtonsList();
     	
     	// check the up buttons of the floors
@@ -292,6 +300,7 @@ public class UpdateData extends TimerTask {
 			} catch (RemoteException e) {
 				StatusAlert.Status.set("Exception in getFloorButtonUp of SQElevator");
 				e.printStackTrace();
+				error = true;
 			}
     		
     		if(button_pressed)
@@ -299,15 +308,19 @@ public class UpdateData extends TimerTask {
     			Floor.addButtonUp(i);
     		}
     	}
+    	
+    	return error;
     }
     
     /**
      * Refresh list with pressed down buttons
-     * 
+     
+     * @return success ... true, false ... error
      * @throws RemoteException
      */
-    public void refreshDownList()
+    public boolean refreshDownList()
     {
+    	boolean error = false;
     	Floor.clearDownButtonsList();
     	
     	// Check the down buttons of the floors
@@ -328,15 +341,18 @@ public class UpdateData extends TimerTask {
     			Floor.addButtonDown(i);
     		}
     	}
+    	
+    	return error;
     }
     
     /**
      * Refresh whole content of an elevator
      * 
      * @param elevator_idx - index of the elevator, that should be refreshed
+     * @return success ... true, false ... error
      * @throws RemoteException
      */
-    public void refreshElevator(int elevator_idx)
+    public boolean refreshElevator(int elevator_idx)
     {
     	if(elevator_idx < 0 || elevator_idx >= Elevators.size())
     	{
@@ -427,6 +443,8 @@ public class UpdateData extends TimerTask {
 	    		}
 	    	}
     	}
+    	
+    	return error;
     }
     
     /**
@@ -526,6 +544,15 @@ public class UpdateData extends TimerTask {
 	    IElevator elevator = null;
 		try {
 			elevator = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+			SetRMIs(elevator);
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			StatusAlert.Status.set("No Elevator Connection");
+		}
+    }
+    
+    public void SetRMIs(IElevator elevator) throws RemoteException {
 			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
 			SqBuilding = wrap;
 			Sqelevator = wrap;
@@ -533,13 +560,7 @@ public class UpdateData extends TimerTask {
 			initializeBuilding();
 			initializeElevators();
 			initializeServicedFloors();
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			StatusAlert.Status.set("No Elevator Connection");
-		}
-
-
+			GuiController.reUpdate();
     }
     
     

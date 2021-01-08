@@ -628,5 +628,10 @@ public class UpdateDataTest {
 
 		assertEquals(2 , Elevators.size());		
 	}
+	
+	//ToDo: Test RMI connection
+	//ToDo: Test return bool values
+	//ToDo: Test nullptr for sqelevator and sqbuilding
+	//ToDo: SetRMIs, Construktor, ReconnectRMI
 }
 	

@@ -390,4 +390,30 @@ public class MainGuiController {
 			label_status_text.textProperty().bind(statusAlert.Status);
 		}});
 	}
+	
+	
+	/**
+	 * Update static data that normally don't change any more. See update(...) for updates with objects that change during operation.
+	 * Must be called before interacting with any other function in this module!
+	 */
+	public void reUpdate() {	
+		//set/initialize elements that don't change anymore
+		numFloorsInBuilding = iBuildingModel.getNumFloors();
+		Platform.runLater(new Runnable() { public void run() {
+			label_floors_text.setText(numFloorsInBuilding.toString());
+		}});
+		
+		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
+		//for(int i = 1; i < 5 + 1; ++i) {
+			listview_elevators.getItems().add("Elevator " + i);
+		}
+		//enable the default disabled checkbox if elevators are in the list/building
+		if(!listview_elevators.getItems().isEmpty()) {
+			checkbox_manual_mode.setDisable(false);
+		}
+		//automatically select the first elevator. If the list is empty no item will be selected.
+		listview_elevators.getFocusModel().focus(0);
+		listview_elevators.getSelectionModel().select(0);
+		
+	}
 }

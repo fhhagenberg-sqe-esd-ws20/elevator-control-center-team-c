@@ -620,4 +620,6 @@ public class MainGuiControllerTest {
 
 		return (Stage) allWindows.stream().filter(window -> window instanceof Stage).findFirst().orElse(null);
 	}
+	
+	//ToDo: Test reUpdate
 }

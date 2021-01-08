@@ -35,7 +35,8 @@ public class ElevatorControlCenter extends Application {
 	@Override
 	public void start(Stage stage) {
 		//TODO: use real Simulator instead of Mock
-		IElevator elevator = new ElevatorStub();
+		//IElevator elevator = new ElevatorStub();
+		IElevator elevator = null;
 		setup(stage, elevator);
 	}
 	
@@ -102,10 +103,9 @@ public class ElevatorControlCenter extends Application {
         // Creating models
         StatusAlert statusAlert = new StatusAlert();
         IBuildingModel building = new BuildingModel();
-        IFloorModel floor = new FloorModel();
-        //ElevatorWrapper sqelevator = new ElevatorWrapper(null);				
-        ElevatorWrapper elevatorWrapper = new ElevatorWrapper(elevator);
-        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo(elevatorWrapper.getElevatorNum());	
+        IFloorModel floor = new FloorModel();				
+
+        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo();	
         
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
@@ -116,20 +116,19 @@ public class ElevatorControlCenter extends Application {
 
         
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(elevatorWrapper, elevatorWrapper, building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
-
+        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
+        
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
+        
+        if(elevator != null) {
+        	updater.SetRMIs(elevator);
+        }
         
         autoModeAlgorithm.Init(building, floor, elevators, statusAlert, updater);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);
-        
-        if(elevator == null) {
-        	updater.ReconnectRMI();
-        }
-        
     }
 
 }
