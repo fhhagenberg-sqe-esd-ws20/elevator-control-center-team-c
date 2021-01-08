@@ -120,7 +120,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("4"));
 		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("5"));
 		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closed"));
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Test

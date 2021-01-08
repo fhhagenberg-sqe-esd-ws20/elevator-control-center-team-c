@@ -95,7 +95,7 @@ public class UpdateData extends TimerTask {
 					floor_serviced = Sqelevator.getServicesFloors(elevator, floor);
 				} catch (RemoteException e) {
 					StatusAlert.Status.set("Exception in getServicesFloors() of SQElevator with floor " + floor + " and elevator " + elevator);
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				
 				if(floor_serviced)
@@ -194,7 +194,7 @@ public class UpdateData extends TimerTask {
 					Sqelevator.setTarget(elevator, floor);
 				} catch (RemoteException e) {
 					StatusAlert.Status.set("Exception in setTarget of SQElevator with floor: " + floor + " for Elevator" + elevator);
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				
 				if(elevator == SelectedElevator)
@@ -222,7 +222,7 @@ public class UpdateData extends TimerTask {
 				Sqelevator.setTarget(SelectedElevator, floor);
 			} catch (RemoteException e) {
 				StatusAlert.Status.set("Exception in setTarget of SQElevator with floor: " + floor);
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
@@ -243,7 +243,7 @@ public class UpdateData extends TimerTask {
 			clocktickBeforeUpdate = SqBuilding.getClockTick();
 		} catch (RemoteException e) {
 			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
-			e.printStackTrace();
+			//e.printStackTrace();
 			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
 			error = true;
 		}
@@ -255,7 +255,7 @@ public class UpdateData extends TimerTask {
 		try {
 			clocktick = SqBuilding.getClockTick();
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
 			error = true;
 		}
@@ -299,7 +299,7 @@ public class UpdateData extends TimerTask {
 				button_pressed = SqBuilding.getFloorButtonUp(i);
 			} catch (RemoteException e) {
 				StatusAlert.Status.set("Exception in getFloorButtonUp of SQElevator");
-				e.printStackTrace();
+				//e.printStackTrace();
 				error = true;
 			}
     		
@@ -333,7 +333,7 @@ public class UpdateData extends TimerTask {
 				button_pressed = SqBuilding.getFloorButtonDown(i);
 			} catch (RemoteException e) {
 				StatusAlert.Status.set("Exception in getFloorButtonDown of SQElevator");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
     		
     		if(button_pressed)
@@ -367,7 +367,7 @@ public class UpdateData extends TimerTask {
 		} catch (RemoteException e) {
 			error = true;
 			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
     	
     	// store values to temp elevator. Necessary to do not overwrite the real elevator with corrupted data, if we are out of sync
@@ -404,7 +404,7 @@ public class UpdateData extends TimerTask {
 			} catch (RemoteException e) {
 				error = true;
 				StatusAlert.Status.set("Exception in getTarget() of SQElevator");
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
     		
     		if(button_pressed)
@@ -419,7 +419,7 @@ public class UpdateData extends TimerTask {
 		} catch (RemoteException e) {
 			error = true;
 			StatusAlert.Status.set("Exception in getClockTick() of SQElevator");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
     	
     	if(!error)
@@ -470,7 +470,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.Status.set("Exception in getTarget() of SQElevator");
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}
     	try{
     		door_status = Sqelevator.getElevatorDoorStatus(elevator_idx);
@@ -478,7 +478,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.Status.set("Exception in getElevatorDoorStatus() of SQElevator");
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}
     	try{
     		position = Sqelevator.getElevatorFloor(elevator_idx);
@@ -486,7 +486,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.Status.set("Exception in getElevatorFloor() of SQElevator");
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}    	
     	try{
     		speed = Sqelevator.getElevatorSpeed(elevator_idx);
@@ -494,7 +494,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.Status.set("Exception in getElevatorSpeed() of SQElevator");
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}
     	try{
     		payload = Sqelevator.getElevatorWeight(elevator_idx);
@@ -502,7 +502,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.Status.set("Exception in getElevatorWeight() of SQElevator");
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}
     	try{
     		direction = Sqelevator.getCommittedDirection(elevator_idx);
@@ -510,7 +510,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.Status.set("Exception in getCommittedDirection() of SQElevator");
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}
     	
 
@@ -547,15 +547,19 @@ public class UpdateData extends TimerTask {
 			SetRMIs(elevator);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			StatusAlert.Status.set("No Elevator Connection");
 		}
     }
     
     public void SetRMIs(IElevator elevator) throws RemoteException {
 			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
-			SqBuilding = wrap;
-			Sqelevator = wrap;
+			SetSqs(wrap, wrap);
+    }
+    
+    public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
+			SqBuilding = b;
+			Sqelevator = e;
 			StatusAlert.Status.set("Connected to Elevator");
 			initializeBuilding();
 			initializeElevators();

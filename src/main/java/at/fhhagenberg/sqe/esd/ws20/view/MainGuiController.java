@@ -403,8 +403,9 @@ public class MainGuiController {
 			label_floors_text.setText(numFloorsInBuilding.toString());
 		}});
 		
+		listview_elevators.getItems().clear();
 		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
-		//for(int i = 1; i < 5 + 1; ++i) {
+			//ToDo: umbauen auf setAll()
 			listview_elevators.getItems().add("Elevator " + i);
 		}
 		//enable the default disabled checkbox if elevators are in the list/building
