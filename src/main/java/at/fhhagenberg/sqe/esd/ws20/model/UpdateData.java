@@ -1,16 +1,21 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.ElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
+import sqelevator.IElevator;
 
 
 /**
@@ -92,9 +97,12 @@ public class UpdateData extends TimerTask {
 			throw new RuntimeException("Numer of stored elevators not the same as number of elevators in the building!");
 		}
 		
+		
 		// get all servicefloors of each elevator and store them in a list
 		for(int elevator = 0; elevator < Elevators.size(); elevator++)
 		{
+			Elevators.get(elevator).clearIgnoredFloorsList();
+			
 			for(int floor = 0; floor < Building.getNumFloors(); floor++)
 			{
 				boolean floor_serviced = false;
@@ -120,6 +128,7 @@ public class UpdateData extends TimerTask {
 	 */
 	public void initializeElevators() throws RemoteException
 	{
+		Elevators.clear();
         for(int i = 0; i < Building.getNumElevators(); i++)
         {
         	Elevators.add(new ElevatorModel());
@@ -508,6 +517,29 @@ public class UpdateData extends TimerTask {
     public int getSelectedElevator()
     {
     	return SelectedElevator;
+    }
+    
+    
+    
+    public void ReconnectRMI() {
+
+	    IElevator elevator = null;
+		try {
+			elevator = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
+			SqBuilding = wrap;
+			Sqelevator = wrap;
+			StatusAlert.Status.set("Connected to Elevator");
+			initializeBuilding();
+			initializeElevators();
+			initializeServicedFloors();
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			StatusAlert.Status.set("No Elevator Connection");
+		}
+
+
     }
     
     

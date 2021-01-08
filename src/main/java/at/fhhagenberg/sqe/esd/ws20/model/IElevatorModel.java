@@ -141,5 +141,10 @@ public interface IElevatorModel {
 	 * @return the floor which are serviced
 	 */
 	List<Integer> getIgnoredFloorsList();
+	
+	/**
+	 * Clear all ignored floors.
+	 */
+	public void clearIgnoredFloorsList();
 
 }
