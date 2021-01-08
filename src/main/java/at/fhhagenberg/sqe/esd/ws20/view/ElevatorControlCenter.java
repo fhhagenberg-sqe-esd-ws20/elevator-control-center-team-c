@@ -35,7 +35,8 @@ public class ElevatorControlCenter extends Application {
 	@Override
 	public void start(Stage stage) {
 		//TODO: use real Simulator instead of Mock
-		IElevator elevator = new ElevatorStub();
+		//IElevator elevator = new ElevatorStub();
+		IElevator elevator = null;
 		setup(stage, elevator);
 	}
 	
@@ -43,6 +44,7 @@ public class ElevatorControlCenter extends Application {
 	 * Set up app structure and show gui
 	 * @param stage the stage for the gui
 	 * @param elevator elevator simulator or mock object for elevator
+	 *                 if null, an rmi connection will be established 
 	 */
 	public void setup(Stage stage, IElevator elevator) {
 		Parent root = null;
@@ -92,6 +94,8 @@ public class ElevatorControlCenter extends Application {
     
     /**
      * Create models and Controller and connect them with each other
+     * @param elevator elevator simulator or mock object for elevator
+	 *                 if null, an rmi connection will be established 
      * @throws RemoteException 
      */
     public void SetupMVC(IElevator elevator) throws RemoteException
@@ -99,19 +103,12 @@ public class ElevatorControlCenter extends Application {
         // Creating models
         StatusAlert statusAlert = new StatusAlert();
         IBuildingModel building = new BuildingModel();
-        IFloorModel floor = new FloorModel();
-        //ElevatorWrapper sqelevator = new ElevatorWrapper(null);				
-        ElevatorWrapper elevatorWrapper = new ElevatorWrapper(elevator);
-        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo(elevatorWrapper.getElevatorNum());	
+        IFloorModel floor = new FloorModel();				
+
+        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo();	
         
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
-        for(int i = 0; i < elevatorWrapper.getElevatorNum(); i++)
-        {
-        	elevators.add(new ElevatorModel());
-        	//as all elevators start in automatic mode -> add all elevators to automode algorithm.
-        	autoModeAlgorithm.enable(i);
-        }
 
                 
         // Create Scheduler
@@ -119,13 +116,14 @@ public class ElevatorControlCenter extends Application {
 
         
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(elevatorWrapper, elevatorWrapper, building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
+        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
         
-        // set service floors for each elevator
-        updater.initializeServicedFloors();
-
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
+        
+        if(elevator != null) {
+        	updater.SetRMIs(elevator);
+        }
         
         autoModeAlgorithm.Init(building, floor, elevators, statusAlert, updater);
         

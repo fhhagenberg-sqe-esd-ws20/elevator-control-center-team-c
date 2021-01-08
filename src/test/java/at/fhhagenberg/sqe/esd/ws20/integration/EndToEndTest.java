@@ -120,7 +120,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("4"));
 		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("5"));
 		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closed"));
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Test
@@ -199,12 +199,12 @@ public class EndToEndTest {
 		robot.clickOn("#checkbox_manual_mode");
 		//testfx currently can't check if the checkbox is checked, there is no Matchers for checkboxes
 		//so here we check if the button is enabled
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 		
 		robot.clickOn("#listview_elevators");
 		robot.type(KeyCode.DOWN);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
 	@Disabled

@@ -5,15 +5,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AutoModeSimpleAlgo extends AutoMode {
 
 	//TODO remove this and replace by real algo
-	private int max = 0;
-	//TODO remove this and replace by real algo
-	public AutoModeSimpleAlgo(int numFloors) {
-		max = numFloors;
+	public AutoModeSimpleAlgo() {
+
 	}
 	//TODO remove this and replace by real algo
 	@Override
 	protected int doGetNext(int elevator) {
-		return ThreadLocalRandom.current().nextInt(0, max + 1);
+		return ThreadLocalRandom.current().nextInt(0, Building.getNumFloors() + 1);
 	}
 
 }

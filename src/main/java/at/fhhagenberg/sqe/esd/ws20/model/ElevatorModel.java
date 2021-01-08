@@ -143,6 +143,10 @@ public class ElevatorModel implements IElevatorModel {
 		return IgnoredFloors;
 	}	
 	
+	public void clearIgnoredFloorsList() {
+		IgnoredFloors.clear();
+	}
+	
 	private Integer Target = 0;
 	private Integer Position = 0;
 	private ElevatorDirection Direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;

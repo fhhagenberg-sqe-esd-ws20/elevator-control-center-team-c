@@ -68,6 +68,17 @@ public class ElevatorModelTest {
     }
     
     @Test
+    void testClearIgnoredFloorsList() {
+    	ElevatorModel elevatorModel = new ElevatorModel();
+    	elevatorModel.addIgnoredFloor(4);
+    	elevatorModel.addIgnoredFloor(8);
+    	
+    	elevatorModel.clearIgnoredFloorsList();
+    	
+    	assertEquals(0, elevatorModel.getIgnoredFloorsList().size());
+    }
+    
+    @Test
     void testTargetSet_Get() {
     	ElevatorModel elevatorModel = new ElevatorModel();
     	
