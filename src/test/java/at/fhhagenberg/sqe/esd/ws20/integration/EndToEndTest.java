@@ -199,12 +199,12 @@ public class EndToEndTest {
 		robot.clickOn("#checkbox_manual_mode");
 		//testfx currently can't check if the checkbox is checked, there is no Matchers for checkboxes
 		//so here we check if the button is enabled
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 		
 		robot.clickOn("#listview_elevators");
 		robot.type(KeyCode.DOWN);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
 	@Disabled

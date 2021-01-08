@@ -55,6 +55,8 @@ public class UpdateData extends TimerTask {
 		try
 		{
 			initializeBuilding();
+			initializeElevators();
+			initializeServicedFloors();
 		}
 		catch(RemoteException e)
 		{
@@ -109,6 +111,19 @@ public class UpdateData extends TimerTask {
 				}
 			}
 		}
+	}
+	
+	
+	/** 
+	 * Initializes all elevators
+	 * @throws RemoteException
+	 */
+	public void initializeElevators() throws RemoteException
+	{
+        for(int i = 0; i < Building.getNumElevators(); i++)
+        {
+        	Elevators.add(new ElevatorModel());
+        }
 	}
 	
 	

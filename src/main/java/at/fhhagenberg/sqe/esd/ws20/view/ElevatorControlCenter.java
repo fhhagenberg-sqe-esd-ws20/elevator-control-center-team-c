@@ -43,6 +43,7 @@ public class ElevatorControlCenter extends Application {
 	 * Set up app structure and show gui
 	 * @param stage the stage for the gui
 	 * @param elevator elevator simulator or mock object for elevator
+	 *                 if null, an rmi connection will be established 
 	 */
 	public void setup(Stage stage, IElevator elevator) {
 		Parent root = null;
@@ -92,6 +93,8 @@ public class ElevatorControlCenter extends Application {
     
     /**
      * Create models and Controller and connect them with each other
+     * @param elevator elevator simulator or mock object for elevator
+	 *                 if null, an rmi connection will be established 
      * @throws RemoteException 
      */
     public void SetupMVC(IElevator elevator) throws RemoteException
@@ -106,12 +109,6 @@ public class ElevatorControlCenter extends Application {
         
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
-        for(int i = 0; i < elevatorWrapper.getElevatorNum(); i++)
-        {
-        	elevators.add(new ElevatorModel());
-        	//as all elevators start in automatic mode -> add all elevators to automode algorithm.
-        	autoModeAlgorithm.enable(i);
-        }
 
                 
         // Create Scheduler
