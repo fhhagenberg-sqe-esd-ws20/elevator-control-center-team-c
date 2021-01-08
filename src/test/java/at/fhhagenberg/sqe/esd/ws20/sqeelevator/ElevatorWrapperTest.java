@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.rmi.RemoteException;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import at.fhhagenberg.sqe.esd.ws20.model.UpdateData;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import sqelevator.IElevator;
 
@@ -31,6 +33,13 @@ public class ElevatorWrapperTest {
 		elevatorWrapper = new ElevatorWrapper(mockedIElevator);
 	}
     
+	
+    @Test
+    public void testConstructor_IElevator_NullPtr() throws RemoteException {
+    	assertThrows(NullPointerException.class, () -> new ElevatorWrapper(null));
+    }
+    
+
     
     @Test
     public void testGetElevatorNum() throws RemoteException {

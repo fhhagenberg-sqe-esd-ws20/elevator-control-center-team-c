@@ -21,6 +21,9 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
 	 * @param elevatorInterface 	Interface to the elevator 
 	 */
 	public ElevatorWrapper(IElevator elevatorInterface) {
+		if(elevatorInterface == null) {
+			throw new NullPointerException("NullPointerException in ElevatorWrapper: no IElevator");
+		}
 		this.elevatorInterface = elevatorInterface;
 	}
 	
