@@ -238,7 +238,7 @@ public class MainGuiController {
     
     
     private UpdateData updateData = null;
-    private IBuildingModel iBuildingModel = null;
+    private IBuildingModel buildingModel = null;
     private AutoModeSimpleAlgo autoModeAlgo = null;
     private Integer numFloorsInBuilding = 0;
     private int selectedElevator = -1;
@@ -318,9 +318,9 @@ public class MainGuiController {
 		for (Integer e : ignoredFloors) {
 			ignoredFloorsOl.add("Floor " + e);
 		}
-		//Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(new Runnable() { public void run() {
 			listview_no_service.getItems().setAll(ignoredFloorsOl);
-		//}});
+		}});
 		
     	//calls
     	List<Integer> callsUp = floor.getUpButtonsList();
@@ -364,26 +364,29 @@ public class MainGuiController {
 		}
 		
 		updateData = updater;
-		iBuildingModel = building;
+		buildingModel = building;
 		autoModeAlgo = autoModeAlgorithm;
 		
-		//set/initialize elements that don't change anymore
-		numFloorsInBuilding = iBuildingModel.getNumFloors();
+		//set/initialize elements that don't change anymore after a connection to the rmi
+		numFloorsInBuilding = buildingModel.getNumFloors();
 		Platform.runLater(new Runnable() { public void run() {
 			label_floors_text.setText(numFloorsInBuilding.toString());
 		}});
 		
-		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
-		//for(int i = 1; i < 5 + 1; ++i) {
-			listview_elevators.getItems().add("Elevator " + i);
+		ObservableList<String> elevatorsOl = FXCollections.observableArrayList();
+		for(int i = 1; i < buildingModel.getNumElevators() + 1; ++i) {
+			elevatorsOl.add("Elevator " + i);
 		}
-		//enable the default disabled checkbox if elevators are in the list/building
-		if(!listview_elevators.getItems().isEmpty()) {
-			checkbox_manual_mode.setDisable(false);
-		}
-		//automatically select the first elevator. If the list is empty no item will be selected.
-		listview_elevators.getFocusModel().focus(0);
-		listview_elevators.getSelectionModel().select(0);
+		Platform.runLater(new Runnable() { public void run() {
+			listview_elevators.getItems().setAll(elevatorsOl);
+			//automatically select the first elevator. If the list is empty no item will be selected.
+			listview_elevators.getFocusModel().focus(0);
+			listview_elevators.getSelectionModel().select(0);
+			//enable the default disabled checkbox if elevators are in the list/building
+			if(!listview_elevators.getItems().isEmpty()) {
+				checkbox_manual_mode.setDisable(false);
+			}
+		}});
 		
 		//bind status so that gui always show the latest status automatically
 		Platform.runLater(new Runnable() { public void run() {
@@ -393,28 +396,27 @@ public class MainGuiController {
 	
 	
 	/**
-	 * Update static data that normally don't change any more. See update(...) for updates with objects that change during operation.
-	 * Must be called before interacting with any other function in this module!
+	 * Update static data that was registered by register(..) ONCE. See update(...) for updates with objects that change with every tick during operation.
 	 */
-	public void reUpdate() {	
-		//set/initialize elements that don't change anymore
-		numFloorsInBuilding = iBuildingModel.getNumFloors();
+	public void reUpdate() {
+		numFloorsInBuilding = buildingModel.getNumFloors();
 		Platform.runLater(new Runnable() { public void run() {
 			label_floors_text.setText(numFloorsInBuilding.toString());
 		}});
 		
-		listview_elevators.getItems().clear();
-		for(int i = 1; i < iBuildingModel.getNumElevators() + 1; ++i) {
-			//ToDo: umbauen auf setAll()
-			listview_elevators.getItems().add("Elevator " + i);
+		ObservableList<String> elevatorsOl = FXCollections.observableArrayList();
+		for(int i = 1; i < buildingModel.getNumElevators() + 1; ++i) {
+			elevatorsOl.add("Elevator " + i);
 		}
-		//enable the default disabled checkbox if elevators are in the list/building
-		if(!listview_elevators.getItems().isEmpty()) {
-			checkbox_manual_mode.setDisable(false);
-		}
-		//automatically select the first elevator. If the list is empty no item will be selected.
-		listview_elevators.getFocusModel().focus(0);
-		listview_elevators.getSelectionModel().select(0);
-		
+		Platform.runLater(new Runnable() { public void run() {
+			listview_elevators.getItems().setAll(elevatorsOl);
+			//automatically select the first elevator. If the list is empty no item will be selected.
+			listview_elevators.getFocusModel().focus(0);
+			listview_elevators.getSelectionModel().select(0);
+			//enable the default disabled checkbox if elevators are in the list/building			
+			if(!listview_elevators.getItems().isEmpty()) {
+				checkbox_manual_mode.setDisable(false);
+			}
+		}});
 	}
 }
