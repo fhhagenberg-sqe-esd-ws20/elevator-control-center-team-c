@@ -26,7 +26,7 @@ public class ElevatorControlCenter extends Application {
 
 	static MainGuiController mainGuiController;
 	static Timer scheduler;
-	static final int SCHEDULER_POLLING_INTERVAL_MS = 100;
+	static final int SCHEDULER_POLLING_INTERVAL_MS = 50;
 	
 	/**
 	 * Initializes and shows the gui.
@@ -116,7 +116,7 @@ public class ElevatorControlCenter extends Application {
 
         
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert); //TODO: use real Simulator instead of Mock
+        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert);
         
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
