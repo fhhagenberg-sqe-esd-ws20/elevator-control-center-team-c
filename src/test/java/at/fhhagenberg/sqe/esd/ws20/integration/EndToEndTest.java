@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -21,6 +22,7 @@ import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
+import at.fhhagenberg.sqe.esd.ws20.others.TestUtils;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
 import javafx.scene.control.DialogPane;
@@ -43,7 +45,8 @@ public class EndToEndTest {
 	
 	private Stage mainGuiStage;
 	private final static String uiDefaultLabelText = "...";
-	private final static int uiUpdateWaitDelay = 2000;
+	private final static int uiUpdateWaitDelayMs = 2000;
+	private TestUtils testutils = null;
 	
 	
 	@Mock
@@ -61,23 +64,24 @@ public class EndToEndTest {
 		mainGuiStage = stage;
 	}
 	
-	private void startGui() throws RemoteException {
+	private void startGui(FxRobot robot) throws RemoteException, TimeoutException {
 		Platform.runLater(new Runnable() { public void run() {
 			new ElevatorControlCenter().setup(mainGuiStage, mockedElevators);
 		}});
-		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
+		testutils.waitUntilNodeIsVisible("#button_send_to_floor", robot);
 	}
 	
 	
 	@BeforeEach
 	void setUp() {
+		testutils = new TestUtils(uiUpdateWaitDelayMs);
 	}
 	
-	@Disabled
+	
 	@Test
-	public void testNoElevators(FxRobot robot) throws RemoteException {
+	public void testNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
-		startGui();
+		startGui(robot);
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
 		//ui should not change from default as no elevators are available
@@ -261,7 +265,7 @@ public class EndToEndTest {
 		robot.doubleClickOn("#textfield_floor_number").write("0");
 		robot.clickOn("#button_send_to_floor");
 		
-		verifyAlertDialogHasHeader("Error");
+		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 	}
@@ -277,7 +281,7 @@ public class EndToEndTest {
 		robot.doubleClickOn("#textfield_floor_number").write("30");
 		robot.clickOn("#button_send_to_floor");
 		
-		verifyAlertDialogHasHeader("Error");
+		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 	}
@@ -293,13 +297,19 @@ public class EndToEndTest {
 		robot.doubleClickOn("#textfield_floor_number").write("");
 		robot.clickOn("#button_send_to_floor");
 		
-		verifyAlertDialogHasHeader("Error");
+		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
 	}
 	
 	
+	
+	
+	
 	//TODO add test for manual floor set with button when automatic/manual mode work as intended.
+	//TODO test connection and reconnect to simulator?
+	
+	
 	
 
 	
@@ -616,52 +626,6 @@ public class EndToEndTest {
 	
 	
 	
-	/**
-	 * Checks the current alert dialog displayed (on the top of the window stack)
-	 * has the expected contents.
-	 *
-	 * From https://stackoverflow.com/a/48654878/8355496
-	 * 
-	 * @param expectedHeader  Expected header of the dialog
-	 * @param expectedContent Expected content of the dialog
-	 */
-	private void verifyAlertDialogHasHeaderAndContent(final String expectedHeader, final String expectedContent) {
-		final Stage actualAlertDialog = getTopModalStage();
-		assertNotNull(actualAlertDialog);
+	
 
-		final DialogPane dialogPane = (DialogPane) actualAlertDialog.getScene().getRoot();
-		assertEquals(expectedHeader, dialogPane.getHeaderText());
-		assertEquals(expectedContent, dialogPane.getContentText());
-	}
-	/**
-	 * Checks the current alert dialog displayed (on the top of the window stack)
-	 * has the expected contents.
-	 *
-	 * Adapted from https://stackoverflow.com/a/48654878/8355496
-	 * 
-	 * @param expectedHeader  Expected header of the dialog
-	 */
-	private void verifyAlertDialogHasHeader(final String expectedHeader) {
-		final Stage actualAlertDialog = getTopModalStage();
-		assertNotNull(actualAlertDialog);
-
-		final DialogPane dialogPane = (DialogPane) actualAlertDialog.getScene().getRoot();
-		assertEquals(expectedHeader, dialogPane.getHeaderText());
-	}
-
-	/**
-	 * Get the top modal window.
-	 *
-	 * Adapted from https://stackoverflow.com/a/48654878/8355496
-	 * 
-	 * @return the top modal window
-	 */
-	private Stage getTopModalStage() {
-		// Get a list of windows but ordered from top[0] to bottom[n] ones.
-		// It is needed to get the first found modal window.
-		final List<Window> allWindows = new ArrayList<>(new FxRobot().robotContext().getWindowFinder().listWindows());
-		Collections.reverse(allWindows);
-
-		return (Stage) allWindows.stream().filter(window -> window instanceof Stage).findFirst().orElse(null);
-	}
 }
