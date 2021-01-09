@@ -34,7 +34,6 @@ public class ElevatorControlCenter extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
-		//TODO: use real Simulator instead of Mock
 		//IElevator elevator = new ElevatorStub();
 		IElevator elevator = null;
 		setup(stage, elevator);
@@ -113,16 +112,18 @@ public class ElevatorControlCenter extends Application {
                 
         // Create Scheduler
         scheduler = new Timer();
-
         
-		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert);
+        // Create RMI
+        RMI RMIInterface = new RMI();
+        
+		// Create updater, which polls values from the elevator every 50ms
+        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert, RMIInterface);
         
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
         
         if(elevator != null) {
-        	updater.SetRMIs(elevator);
+        	RMIInterface.SetRMIs(elevator, updater);
         }
         
         autoModeAlgorithm.Init(building, floor, elevators, statusAlert, updater);

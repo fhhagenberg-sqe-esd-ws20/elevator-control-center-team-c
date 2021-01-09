@@ -38,11 +38,18 @@ public class UpdateData extends TimerTask {
 	 * @param guiController - the controller, which controls the gui
 	 * @throws RemoteException 
 	 */
-	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert)
+	public UpdateData(IBuildingModel building, IFloorModel floor, 
+			List<IElevatorModel> elevators, MainGuiController guiController, 
+			StatusAlert statusAlert, RMI rmiInterface)
 	{
 		
 		//sqbuilding, sqelevator can be null -> next update cycle a reconnect will be done
-		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null )
+		if(building == null || 
+				floor == null || 
+				elevators == null || 
+				guiController == null || 
+				statusAlert == null ||
+				rmiInterface == null)
 		{
 			throw new NullPointerException("Nullpointer in UpdateData!");
 		}
@@ -54,6 +61,7 @@ public class UpdateData extends TimerTask {
 		GuiController = guiController;
 		StatusAlert = statusAlert;
 		OutOfSyncCounter = 0;
+		RMIInterface = rmiInterface;
 	}
 	
 
@@ -538,18 +546,22 @@ public class UpdateData extends TimerTask {
 	    IElevator elevator = null;
 		try {
 			elevator = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-			SetRMIs(elevator);
+			RMIInterface.SetRMIs(elevator, this);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			StatusAlert.setStatus("No Elevator Connection");
 		}
     }
     
-    public void SetRMIs(IElevator elevator) throws RemoteException {
-			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
-			SetSqs(wrap, wrap);
-    }
+//    public void SetRMIs(IElevator elevator) throws RemoteException {
+//			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
+//			SetSqs(wrap, wrap);
+//    }
     
     public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
+    	if(b == null || e == null)
+    	{
+    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
+    	}
 			SqBuilding = b;
 			Sqelevator = e;
 			StatusAlert.setStatus("Connected to Elevator");
@@ -575,6 +587,7 @@ public class UpdateData extends TimerTask {
 	StatusAlert StatusAlert;
     private Integer OutOfSyncCounter;
     private Integer CriticalOutOfSyncValue = 5;
+    RMI RMIInterface;
     
     
 }
