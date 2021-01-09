@@ -18,6 +18,8 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
 import at.fhhagenberg.sqe.esd.ws20.others.TestUtils;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
@@ -268,7 +270,7 @@ public class EndToEndTest {
 		});
 	}
 	
-	@Disabled
+	@Disabled("This test does not work in online Github build.")
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -286,7 +288,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
-	@Disabled
+	@Disabled("This test does not work in online Github build.")
 	@Test
 	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -304,7 +306,7 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
-	@Disabled
+	@Disabled("This test does not work in online Github build.")
 	@Test
 	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -322,16 +324,30 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
+	@Disabled("This does not work at 0.1 speed. The target gets reset back to original to fast.")
+	@Test
+	public void testSetTargetManualMode(FxRobot robot) throws RemoteException, TimeoutException {
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#label_target_text", "1", robot);
+		
+		
+		//robot.clickOn("#checkbox_manual_mode");
+		robot.doubleClickOn("#textfield_floor_number").write("5");
+		robot.clickOn("#button_send_to_floor");
+		
+		testutils.waitUntilLabelTextChangedTo("#label_target_text", "5", robot);
+		
+		Mockito.verify(mockedElevators).setTarget(0, 4);
+		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("5"));
+	}
 	
 	
 	
 	
-	//TODO add test for manual floor set with button when automatic/manual mode work as intended.
-	//TODO test connection and reconnect to simulator?
 	
-	
-	
-
 	
 	@Test
 	public void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
@@ -640,7 +656,7 @@ public class EndToEndTest {
 	
 	
 	
-	
+	//TODO test connection and reconnect to simulator?
 	
 
 }
