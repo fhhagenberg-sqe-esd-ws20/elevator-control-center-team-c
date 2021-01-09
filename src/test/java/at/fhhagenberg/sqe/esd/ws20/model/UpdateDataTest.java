@@ -202,9 +202,11 @@ public class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		coreUpdater.setTarget(11);
+		coreUpdater.setTarget(10);
 		
 		assertEquals(0, Elevators.get(0).getTarget());
+		Mockito.verify(MockedElevatorWrapper, times(0)).setTarget(0, 10);
+
 	}
 	
 	@Test
@@ -226,10 +228,10 @@ public class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		coreUpdater.setTarget(10);
+		coreUpdater.setTarget(9);
 		
-		assertEquals(10, Elevators.get(0).getTarget());
-		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 10);
+		assertEquals(9, Elevators.get(0).getTarget());
+		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 9);
 	}
 	
 	@Test
@@ -240,13 +242,13 @@ public class UpdateDataTest {
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setSelectedElevator(0);
-		coreUpdater.setTarget(10);
+		coreUpdater.setTarget(9);
 		coreUpdater.setSelectedElevator(1);
 		coreUpdater.setTarget(5);
 		
-		assertEquals(10, Elevators.get(0).getTarget());
+		assertEquals(9, Elevators.get(0).getTarget());
 		assertEquals(5, Elevators.get(1).getTarget());
-		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 10);
+		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 9);
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(1, 5);
 	}
 	

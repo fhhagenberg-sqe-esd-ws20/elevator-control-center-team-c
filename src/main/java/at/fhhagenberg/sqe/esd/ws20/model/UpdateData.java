@@ -192,8 +192,7 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor, int elevator)
     {
-    	//TODO check bounds of floors. I think this sould be < Building.getNumFloors()
-    	if(floor >= 0 && floor <= Building.getNumFloors())
+    	if(floor >= 0 && floor < Building.getNumFloors())
 		{
 			if(elevator >= 0 && elevator < Elevators.size())
 			{
@@ -222,8 +221,7 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor)
     {
-    	//TODO check bounds of floors. I think this sould be < Building.getNumFloors()
-    	if(floor >= 0 && floor <= Building.getNumFloors())
+    	if(floor >= 0 && floor < Building.getNumFloors())
     	{
     		Elevators.get(SelectedElevator).setTarget(floor);
     		
