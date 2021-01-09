@@ -7,16 +7,9 @@
 
 package at.fhhagenberg.sqe.esd.ws20.view;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +26,6 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
-import org.testfx.util.WaitForAsyncUtils;
 
 import at.fhhagenberg.sqe.esd.ws20.model.AutoModeSimpleAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
@@ -48,21 +40,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 
 /**
- * Tests for the MainGuiController for the MainGui.fxml.
- * After everty call to the update method a delay ist used. As the MainGuiController uses the runLater method we need to wait till the ui thread got scheduled and executed the ui changes.
+ * Unit test for the MainGuiController for the MainGui.fxml.
+ * After change to the ui (every call to the update or reUpdate method) we have to wait till the ui finished updating its fields.
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2021-01-03 04:18
+ * @since 2021-01-09 02:12
  */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
@@ -226,6 +214,7 @@ public class MainGuiControllerTest {
 		
 		mainGuiController.update(mockedFloor, mockedElevator);
 		testutils.waitUntilLabelTextChangedTo("#label_doors_text", uiDefaultLabelText, robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
 		
 		//nothing should change from the default
 		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("0"));
@@ -429,10 +418,11 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testCheckboxEnabledOnMultipleElevators() {
+	public void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		
 		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isEnabled());
 	}

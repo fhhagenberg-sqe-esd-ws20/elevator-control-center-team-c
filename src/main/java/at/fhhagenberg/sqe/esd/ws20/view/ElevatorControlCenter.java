@@ -26,7 +26,7 @@ public class ElevatorControlCenter extends Application {
 
 	static MainGuiController mainGuiController;
 	static Timer scheduler;
-	static final int SCHEDULER_POLLING_INTERVAL_MS = 1000;
+	static final int SCHEDULER_POLLING_INTERVAL_MS = 100;
 	
 	/**
 	 * Initializes and shows the gui.

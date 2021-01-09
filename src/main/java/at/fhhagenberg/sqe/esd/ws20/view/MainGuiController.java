@@ -345,7 +345,7 @@ public class MainGuiController {
     
 	/**
 	 * Register needed objects in the controller that don't change any more. See update(...) for updates with objects that change during operation.
-	 * Must be called before interacting with any other function in this module!
+	 * Must be called before interacting with any other function in this module once!
 	 * 
 	 * @param updater				Interaction on selection changes from the user in the gui
 	 * @param building				Information about the building that should be displayed
@@ -390,7 +390,7 @@ public class MainGuiController {
 	
 	
 	/**
-	 * Update static data that was registered by register(..) ONCE. See update(...) for updates with objects that change with every tick during operation.
+	 * Update static data that was registered by register(...). See update(...) for updates with objects that change with every tick during operation.
 	 */
 	public void reUpdate() {
 		numFloorsInBuilding = buildingModel.getNumFloors();
