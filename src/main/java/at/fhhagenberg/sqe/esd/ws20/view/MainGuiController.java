@@ -299,9 +299,9 @@ public class MainGuiController {
 		for (Integer e : stops) {
 			stopsOl.add("Floor " + e);
 		}
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			listview_stops.getItems().setAll(stopsOl);
-		}});
+		});
     	
 		//not serviced floors
 		List<Integer> ignoredFloors = elevator.getIgnoredFloorsList();
@@ -312,9 +312,9 @@ public class MainGuiController {
 		for (Integer e : ignoredFloors) {
 			ignoredFloorsOl.add("Floor " + e);
 		}
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			listview_no_service.getItems().setAll(ignoredFloorsOl);
-		}});
+		});
 		
     	//calls
     	List<Integer> callsUp = floor.getUpButtonsList();
@@ -325,9 +325,9 @@ public class MainGuiController {
 		for (Integer e : callsUp) {
 			callsUpOl.add("Floor " + e);
 		}
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			listview_calls_up.getItems().setAll(callsUpOl);
-		}});
+		});
 		
 		List<Integer> callsDown = floor.getDownButtonsList();
 		if (callsDown == null) {
@@ -337,9 +337,9 @@ public class MainGuiController {
 		for (Integer e : callsDown) {
 			callsDownOl.add("Floor " + e);
 		}
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			listview_calls_down.getItems().setAll(callsDownOl);
-		}});
+		});
 	}
 
     
@@ -363,29 +363,18 @@ public class MainGuiController {
 		
 		//set/initialize elements that don't change anymore after a connection to the rmi
 		numFloorsInBuilding = buildingModel.getNumFloors();
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			label_floors_text.setText(numFloorsInBuilding.toString());
-		}});
+		});
 		
-		ObservableList<String> elevatorsOl = FXCollections.observableArrayList();
-		for(int i = 1; i < buildingModel.getNumElevators() + 1; ++i) {
-			elevatorsOl.add("Elevator " + i);
-		}
-		Platform.runLater(new Runnable() { public void run() {
-			listview_elevators.getItems().setAll(elevatorsOl);
-			//automatically select the first elevator. If the list is empty no item will be selected.
-			listview_elevators.getFocusModel().focus(0);
-			listview_elevators.getSelectionModel().select(0);
-			//enable the default disabled checkbox if elevators are in the list/building
-			if(!listview_elevators.getItems().isEmpty()) {
-				checkbox_manual_mode.setDisable(false);
-			}
-		}});
+		
+		clearAndFillElevatorListView();
+		
 		
 		//bind status so that gui always show the latest status automatically
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			label_status_text.textProperty().bind(statusAlert.Status);
-		}});
+		});
 	}
 	
 	
@@ -398,19 +387,23 @@ public class MainGuiController {
 			label_floors_text.setText(numFloorsInBuilding.toString());
 		}});
 		
+		clearAndFillElevatorListView();
+	}
+	
+	private void clearAndFillElevatorListView() {
 		ObservableList<String> elevatorsOl = FXCollections.observableArrayList();
 		for(int i = 1; i < buildingModel.getNumElevators() + 1; ++i) {
 			elevatorsOl.add("Elevator " + i);
 		}
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			listview_elevators.getItems().setAll(elevatorsOl);
 			//automatically select the first elevator. If the list is empty no item will be selected.
 			listview_elevators.getFocusModel().focus(0);
 			listview_elevators.getSelectionModel().select(0);
-			//enable the default disabled checkbox if elevators are in the list/building			
+			//enable the default disabled checkbox if elevators are in the list/building
 			if(!listview_elevators.getItems().isEmpty()) {
 				checkbox_manual_mode.setDisable(false);
 			}
-		}});
+		});
 	}
 }

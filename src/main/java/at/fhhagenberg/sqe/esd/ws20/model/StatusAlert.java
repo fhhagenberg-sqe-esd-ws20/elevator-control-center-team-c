@@ -15,9 +15,9 @@ public class StatusAlert {
 	 * @param newStatus
 	 */
 	public void setStatus(String newStatus) {
-		Platform.runLater(new Runnable() { public void run() {
+		Platform.runLater(() -> {
 			Status.set(newStatus);
-		}});
+		});
 	}
 	
 	//TODO when to clear error status? After the next successful rmi access?
