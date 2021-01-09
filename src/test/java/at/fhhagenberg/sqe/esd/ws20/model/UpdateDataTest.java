@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.testfx.framework.junit5.ApplicationExtension;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
@@ -24,12 +25,12 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStat
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 /**
- * @author Florian Atzenhofer
+ * Testing Class UpdateData
  *
- *	Testing Class UpdateData
+ * @author Florian Atzenhofer
  */
 @ExtendWith(MockitoExtension.class)
-
+@ExtendWith(ApplicationExtension.class)
 public class UpdateDataTest {
 
 	@Mock
@@ -60,15 +61,14 @@ public class UpdateDataTest {
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater = new UpdateData(null, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert));
-
-    }	
+    }
 	
 	@Test
     public void testNoFloor() throws RemoteException {
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater = new UpdateData(MockedBuilding, null, Elevators, MockedmainGuiControler, StatusAlert));
-    }		
+    }
 	
 	@Test
     public void testNoElevators() throws RemoteException {
@@ -101,7 +101,7 @@ public class UpdateDataTest {
 		
 		assertEquals(0, MockedBuilding.getNumElevators());
 		assertEquals(0, MockedBuilding.getNumFloors());
-	}		
+	}
 	
 	
 	@Test
@@ -113,7 +113,7 @@ public class UpdateDataTest {
 		
 		assertEquals(2, MockedBuilding.getNumElevators());
 		assertEquals(5, MockedBuilding.getNumFloors());
-	}	
+	}
 	
 	
 	@Test
@@ -126,7 +126,7 @@ public class UpdateDataTest {
 		coreUpdater.initializeServicedFloors();
 		assertEquals(0, MockedBuilding.getNumElevators());
 		assertEquals(0, MockedBuilding.getNumFloors());
-	}			
+	}
 	
 	@Test
     public void testInitializeServicedFloorsWithTooMuchElevators() throws RemoteException {
@@ -142,7 +142,7 @@ public class UpdateDataTest {
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater.initializeServicedFloors());
-	}			
+	}
 	
 	@Test
     public void testInitializeThreeServicedFloorsInTwoElevators() throws RemoteException {
@@ -156,8 +156,7 @@ public class UpdateDataTest {
 
 		assertEquals(0, ignoredFloors0.size());
 		assertEquals(0, ignoredFloors1.size());
-
-	}		
+	}
 	
 
 	@Test
@@ -170,7 +169,7 @@ public class UpdateDataTest {
 		coreUpdater.setSelectedElevator(2);
 		
 		assertEquals(0, coreUpdater.getSelectedElevator());
-	}		
+	}
 	
 	@Test
     public void testSetSelectedElevatorToNegativeIndex() throws RemoteException {
@@ -182,7 +181,7 @@ public class UpdateDataTest {
 		coreUpdater.setSelectedElevator(-1);
 		
 		assertEquals(0, coreUpdater.getSelectedElevator());
-	}			
+	}
 	
 	@Test
     public void testSetSelectedElevatorToValidIndex() throws RemoteException {
@@ -194,7 +193,7 @@ public class UpdateDataTest {
 		coreUpdater.setSelectedElevator(1);
 		
 		assertEquals(1, coreUpdater.getSelectedElevator());
-	}			
+	}
 	
 	@Test
     public void testSetTargetInvalidFloor() throws RemoteException {
@@ -206,7 +205,7 @@ public class UpdateDataTest {
 		coreUpdater.setTarget(11);
 		
 		assertEquals(0, Elevators.get(0).getTarget());
-	}		
+	}
 	
 	@Test
     public void testSetTargetNegativeFloor() throws RemoteException {
@@ -218,7 +217,7 @@ public class UpdateDataTest {
 		coreUpdater.setTarget(-1);
 		
 		assertEquals(0, Elevators.get(0).getTarget());
-	}	
+	}
 	
 	@Test
     public void testSetTargetValidFloor() throws RemoteException {
@@ -231,8 +230,7 @@ public class UpdateDataTest {
 		
 		assertEquals(10, Elevators.get(0).getTarget());
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 10);
-		
-	}		
+	}
 	
 	@Test
     public void testSetTargetValidDifferentTargetsForTwoElevators() throws RemoteException {
@@ -250,8 +248,7 @@ public class UpdateDataTest {
 		assertEquals(5, Elevators.get(1).getTarget());
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 10);
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(1, 5);
-
-	}		
+	}
 	
 	@Test
     public void testSetInvalidTargetValidElevators() throws RemoteException {
@@ -266,7 +263,7 @@ public class UpdateDataTest {
 		
 		assertEquals(0, Elevators.get(0).getTarget());
 		assertEquals(0, Elevators.get(1).getTarget());
-	}			
+	}
 	
 	@Test
     public void testSetValidTargetInvalidElevators() throws RemoteException {
@@ -281,7 +278,7 @@ public class UpdateDataTest {
 		
 		assertEquals(0, Elevators.get(0).getTarget());
 		assertEquals(0, Elevators.get(1).getTarget());
-	}		
+	}
 	
 	@Test
     public void testSetNegativeTargetValidElevators() throws RemoteException {
@@ -296,7 +293,7 @@ public class UpdateDataTest {
 		
 		assertEquals(0, Elevators.get(0).getTarget());
 		assertEquals(0, Elevators.get(1).getTarget());
-	}		
+	}
 	
 	@Test
     public void testSetValidTargetValidElevators() throws RemoteException {
@@ -313,7 +310,7 @@ public class UpdateDataTest {
 		assertEquals(7, Elevators.get(1).getTarget());
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 6);
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(1, 7);
-	}		
+	}
 	
 	@Test
     public void testRefreshUpList() throws RemoteException {
@@ -330,7 +327,7 @@ public class UpdateDataTest {
 		
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(2);
-	}			
+	}
 	
 	@Test
     public void testRefreshDownList() throws RemoteException {
@@ -347,7 +344,7 @@ public class UpdateDataTest {
 		
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
-	}	
+	}
 	
 	@Test
     public void testRefreshUpDownList() throws RemoteException {
@@ -356,7 +353,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(0)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(1)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(2)).thenReturn(false);
-		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(true);	
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(0)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
@@ -370,7 +367,7 @@ public class UpdateDataTest {
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
-	}		
+	}
 	
 	@Test
     public void testRefreshUpDownListTimeout() throws RemoteException {
@@ -381,7 +378,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(0)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(1)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(2)).thenReturn(false);
-		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(true);	
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(0)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
@@ -397,7 +394,7 @@ public class UpdateDataTest {
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(0));
 		assertEquals("Out of sync with the simulator at clocktick " + 5, StatusAlert.Status.get());
-	}			
+	}
 	
 	@Test
     public void testRefreshElevatorInvalidIndex() throws RemoteException {
@@ -407,7 +404,7 @@ public class UpdateDataTest {
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater.refreshElevator(2));
-	}	
+	}
 	
 	@Test
     public void testRefreshElevatorNegativedIndex() throws RemoteException {
@@ -419,7 +416,7 @@ public class UpdateDataTest {
 
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater.refreshElevator(-1));
-	}			
+	}
 	
 	@Test
     public void testRefreshElevatorInvalidTarget() throws RemoteException {
@@ -433,8 +430,9 @@ public class UpdateDataTest {
 
 		Mockito.verify(MockedmainGuiControler, never()).update(Mockedfloor, Elevators.get(0));
 		assertEquals("Sanity Check failed in UpdateData.refreshElevator()", StatusAlert.Status.get());
-	}			
+	}
 	
+	@Disabled //Von @Lukas an @Flo: Ich hab da einen Fehler bekommen, kann sein, dass das zu schnell ist. Eventuell musst du nach refreshElevator oder so testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot); einfügen.
 	@Test
     public void testRefreshElevatorInvalidPosition() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
@@ -447,7 +445,7 @@ public class UpdateDataTest {
 
 		Mockito.verify(MockedmainGuiControler, never()).update(Mockedfloor, Elevators.get(0));
 		assertEquals("Sanity Check failed in UpdateData.refreshElevator()", StatusAlert.Status.get());
-	}			
+	}
 	
 	
 	@Test
@@ -482,7 +480,7 @@ public class UpdateDataTest {
 		
 		assertEquals(0 , Elevators.get(0).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(0).getStopsList().get(1));
-	}				
+	}
 	
 	@Test
     public void testRefreshElevatorValidValuesElevator1() throws RemoteException {
@@ -519,7 +517,7 @@ public class UpdateDataTest {
 		
 		assertEquals(0 , Elevators.get(1).getStopsList().get(0));
 		assertEquals(2 , Elevators.get(1).getStopsList().get(1));
-	}		
+	}
 	
 	@Test
     public void testRefreshElevatorValidValuesNotSelectedElevator() throws RemoteException {
@@ -545,7 +543,7 @@ public class UpdateDataTest {
 		coreUpdater.refreshElevator(1);
 		
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
-	}			
+	}
 	
 	
 	@Test
@@ -565,7 +563,7 @@ public class UpdateDataTest {
 		
 		assertEquals("Out of sync with the simulator when getting updownlist", StatusAlert.Status.get());
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(0));
-	}			
+	}
 	
 	@Test
     public void testRunMethode() throws RemoteException {
@@ -640,7 +638,7 @@ public class UpdateDataTest {
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
-	}		
+	}
 	
 	@Test
     public void testElevatorListFill() throws RemoteException {
@@ -650,7 +648,7 @@ public class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		assertEquals(2 , Elevators.size());		
+		assertEquals(2 , Elevators.size());
 	}
 	
 	//ToDo: Test RMI connection

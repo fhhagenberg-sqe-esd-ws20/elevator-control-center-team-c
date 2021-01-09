@@ -1,13 +1,9 @@
 package at.fhhagenberg.sqe.esd.ws20.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -21,13 +17,12 @@ import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
+import at.fhhagenberg.sqe.esd.ws20.others.TestUtils;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import sqelevator.IElevator;
 
 import org.mockito.Mock;
@@ -35,7 +30,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-//
+/**
+ * End to end test for the whole program. Only the elevator system gets mocked.
+ * After every call to the update method we have to wait till the ui finished updating its fields.
+ * 
+ * @author Lukas Ebenstein (s1910567015)
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2021-01-09 02:12
+ */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
 public class EndToEndTest {
@@ -43,7 +45,8 @@ public class EndToEndTest {
 	
 	private Stage mainGuiStage;
 	private final static String uiDefaultLabelText = "...";
-	private final static int uiUpdateWaitDelay = 2000;
+	private final static int uiUpdateWaitDelayMs = 2000;
+	private TestUtils testutils = null;
 	
 	
 	@Mock
@@ -61,23 +64,26 @@ public class EndToEndTest {
 		mainGuiStage = stage;
 	}
 	
-	private void startGui() throws RemoteException {
+	private void startGui(FxRobot robot) throws RemoteException, TimeoutException {
 		Platform.runLater(new Runnable() { public void run() {
 			new ElevatorControlCenter().setup(mainGuiStage, mockedElevators);
 		}});
-		try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }	//make sure the ui thread has enough time to update the ui
+		testutils.waitUntilNodeIsVisible("#button_send_to_floor", robot);
 	}
 	
 	
 	@BeforeEach
 	void setUp() {
+		testutils = new TestUtils(uiUpdateWaitDelayMs);
 	}
 	
-	@Disabled
+	
 	@Test
-	public void testNoElevators(FxRobot robot) throws RemoteException {
+	public void testNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
-		startGui();
+		
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_doors_text", uiDefaultLabelText, robot);
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
 		//ui should not change from default as no elevators are available
@@ -100,7 +106,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testElevatorsWithProperties(FxRobot robot) throws RemoteException {
+	public void testElevatorsWithProperties(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getTarget(0)).thenReturn(1);
@@ -109,13 +115,17 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorWeight(0)).thenReturn(4);
 		Mockito.when(mockedElevators.getElevatorSpeed(0)).thenReturn(5);
 		Mockito.when(mockedElevators.getElevatorDoorStatus(0)).thenReturn(2);	//ELEVATOR_DOORS_CLOSED
-		startGui();
+		
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closed", robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("1"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("3"));
 		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Down"));
 		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("4"));
 		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("5"));
@@ -124,7 +134,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testSwitchElevatorsWithPropertiesChange(FxRobot robot) throws RemoteException {
+	public void testSwitchElevatorsWithPropertiesChange(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getTarget(0)).thenReturn(1);
@@ -139,12 +149,15 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorWeight(1)).thenReturn(40);
 		Mockito.when(mockedElevators.getElevatorSpeed(1)).thenReturn(50);
 		Mockito.when(mockedElevators.getElevatorDoorStatus(1)).thenReturn(2);	//ELEVATOR_DOORS_CLOSED
-		startGui();
+		
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Open", robot);
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("1"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("3"));
 		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Up"));
 		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("4"));
 		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("5"));
@@ -153,12 +166,12 @@ public class EndToEndTest {
 		
 		robot.clickOn("#listview_elevators");
 		robot.type(KeyCode.DOWN);
-		//try { Thread.sleep(uiUpdateWaitDelay); } catch (InterruptedException e) { e.printStackTrace(); }
+		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closed", robot);
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("10"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("20"));
+		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("11"));
+		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("21"));
 		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Down"));
 		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("40"));
 		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("50"));
@@ -166,35 +179,39 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testDisplayedNumberOfFloors() throws RemoteException {
+	public void testDisplayedNumberOfFloors(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "25", robot);
 		
 		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("25"));
 	}
 	
-	@Disabled
+	
 	@Test
-	public void testCheckboxDisabledOnNoElevators() throws RemoteException {
+	public void testCheckboxDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
 		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isDisabled());
 	}
 	
 	@Test
-	public void testCheckboxEnabledOnMultipleElevators() throws RemoteException {
+	public void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
 		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isEnabled());
 	}
 	
 	@Test
-	public void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws RemoteException {
+	public void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
 		robot.clickOn("#checkbox_manual_mode");
 		//testfx currently can't check if the checkbox is checked, there is no Matchers for checkboxes
@@ -207,42 +224,43 @@ public class EndToEndTest {
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
-	@Disabled
 	@Test
-	public void testButtonDisabledOnNoElevators() throws RemoteException {
+	public void testButtonDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 	}
 	
-	@Disabled
 	@Test
-	public void testButtonDisabledWithCheckboxNotChecked() throws RemoteException {
+	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		startGui();
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
-	}
-	
-	@Disabled
-	@Test
-	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException {
-		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		startGui();
-		
-		robot.clickOn("#checkbox_manual_mode");
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
-	@Disabled
 	@Test
-	public void testInternalTargetGreaterNumFloors(FxRobot robot) throws RemoteException {
+	public void testButtonDisabledWithCheckboxNotChecked(FxRobot robot) throws RemoteException, TimeoutException {
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		
+		robot.clickOn("#checkbox_manual_mode");
+		
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+	}
+	
+	@Test
+	public void testInternalTargetGreaterNumFloors(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getElevatorFloor(0)).thenReturn(30);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		
 		robot.interact(() -> {
 			Label label = robot.lookup("#label_status_text").query();
@@ -252,62 +270,75 @@ public class EndToEndTest {
 	
 	@Disabled
 	@Test
-	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException {
+	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
 		
-		robot.clickOn("#checkbox_manual_mode");
+		//robot.clickOn("#checkbox_manual_mode");
 		robot.doubleClickOn("#textfield_floor_number").write("0");
 		robot.clickOn("#button_send_to_floor");
 		
-		verifyAlertDialogHasHeader("Error");
+		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Disabled
 	@Test
-	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException {
+	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
 		
-		robot.clickOn("#checkbox_manual_mode");
+		//robot.clickOn("#checkbox_manual_mode");
 		robot.doubleClickOn("#textfield_floor_number").write("30");
 		robot.clickOn("#button_send_to_floor");
 		
-		verifyAlertDialogHasHeader("Error");
+		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Disabled
 	@Test
-	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException {
+	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
 		
-		robot.clickOn("#checkbox_manual_mode");
+		//robot.clickOn("#checkbox_manual_mode");
 		robot.doubleClickOn("#textfield_floor_number").write("");
 		robot.clickOn("#button_send_to_floor");
 		
-		verifyAlertDialogHasHeader("Error");
+		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	
+	
+	
+	
 	//TODO add test for manual floor set with button when automatic/manual mode work as intended.
+	//TODO test connection and reconnect to simulator?
+	
+	
 	
 
 	
 	@Test
-	public void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException {
+	public void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(3);
 		
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 3", robot);
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(3));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
@@ -316,7 +347,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testServicedFloorListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+	public void testServicedFloorListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(3);
@@ -329,7 +360,8 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getServicesFloors(1, 1)).thenReturn(true);
 		Mockito.when(mockedElevators.getServicesFloors(1, 2)).thenReturn(true);
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_no_service", "Floor 2", robot);
 		
 		// elavator1
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -348,7 +380,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testStopListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+	public void testStopListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -364,7 +396,9 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorButton(1, 3)).thenReturn(true);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 2", robot);
+		
 		
 		// elavator1
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -385,7 +419,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testStopListContainsCorrectItemsWhenChangingBetweenElevators(FxRobot robot) throws RemoteException {
+	public void testStopListContainsCorrectItemsWhenChangingBetweenElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -401,7 +435,9 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorButton(1, 3)).thenReturn(true);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 2", robot);
+		
 		
 		// elavator1
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -422,7 +458,7 @@ public class EndToEndTest {
 	}		
 	
 	@Test
-	public void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+	public void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -433,7 +469,8 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorButtonUp(3)).thenReturn(false);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_calls_up", "Floor 2", robot);
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -444,7 +481,7 @@ public class EndToEndTest {
 	}		
 	
 	@Test
-	public void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+	public void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -455,7 +492,8 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorButtonDown(3)).thenReturn(false);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 2", robot);
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -466,7 +504,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testUpsAndDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException {
+	public void testUpsAndDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -481,7 +519,9 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorButtonDown(3)).thenReturn(false);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 2", robot);
+		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));		
@@ -510,7 +550,7 @@ public class EndToEndTest {
 	}		
 	
 	@Test
-	public void testStopListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException {
+	public void testStopListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -527,14 +567,9 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorButton(1, 3)).thenReturn(true, false);
 
 
-		startGui();
-		
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			System.out.println("Error in Thread.sleep()");
-			e.printStackTrace();
-		}
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 3", robot);
 		
 		// elavator1
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -556,7 +591,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testUpsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException {
+	public void testUpsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -567,14 +602,9 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorButtonUp(3)).thenReturn(false, true);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_calls_up", "Floor 3", robot);
 		
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			System.out.println("Error in Thread.sleep()");
-			e.printStackTrace();
-		}
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
@@ -584,7 +614,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testDownsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException {
+	public void testDownsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -595,14 +625,9 @@ public class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorButtonDown(3)).thenReturn(false, true);
 
 
-		startGui();
+		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 3", robot);
 		
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			System.out.println("Error in Thread.sleep()");
-			e.printStackTrace();
-		}		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
@@ -616,52 +641,6 @@ public class EndToEndTest {
 	
 	
 	
-	/**
-	 * Checks the current alert dialog displayed (on the top of the window stack)
-	 * has the expected contents.
-	 *
-	 * From https://stackoverflow.com/a/48654878/8355496
-	 * 
-	 * @param expectedHeader  Expected header of the dialog
-	 * @param expectedContent Expected content of the dialog
-	 */
-	private void verifyAlertDialogHasHeaderAndContent(final String expectedHeader, final String expectedContent) {
-		final Stage actualAlertDialog = getTopModalStage();
-		assertNotNull(actualAlertDialog);
+	
 
-		final DialogPane dialogPane = (DialogPane) actualAlertDialog.getScene().getRoot();
-		assertEquals(expectedHeader, dialogPane.getHeaderText());
-		assertEquals(expectedContent, dialogPane.getContentText());
-	}
-	/**
-	 * Checks the current alert dialog displayed (on the top of the window stack)
-	 * has the expected contents.
-	 *
-	 * Adapted from https://stackoverflow.com/a/48654878/8355496
-	 * 
-	 * @param expectedHeader  Expected header of the dialog
-	 */
-	private void verifyAlertDialogHasHeader(final String expectedHeader) {
-		final Stage actualAlertDialog = getTopModalStage();
-		assertNotNull(actualAlertDialog);
-
-		final DialogPane dialogPane = (DialogPane) actualAlertDialog.getScene().getRoot();
-		assertEquals(expectedHeader, dialogPane.getHeaderText());
-	}
-
-	/**
-	 * Get the top modal window.
-	 *
-	 * Adapted from https://stackoverflow.com/a/48654878/8355496
-	 * 
-	 * @return the top modal window
-	 */
-	private Stage getTopModalStage() {
-		// Get a list of windows but ordered from top[0] to bottom[n] ones.
-		// It is needed to get the first found modal window.
-		final List<Window> allWindows = new ArrayList<>(new FxRobot().robotContext().getWindowFinder().listWindows());
-		Collections.reverse(allWindows);
-
-		return (Stage) allWindows.stream().filter(window -> window instanceof Stage).findFirst().orElse(null);
-	}
 }
