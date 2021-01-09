@@ -53,6 +53,7 @@ public class UpdateData extends TimerTask {
 		Elevators = elevators;
 		GuiController = guiController;
 		StatusAlert = statusAlert;
+		OutOfSyncCounter = 0;
 	}
 	
 
@@ -67,6 +68,7 @@ public class UpdateData extends TimerTask {
 		// get number of floors and number of Elevators from the building
 		Building.setNumFloors(SqBuilding.getFloorNum());
 		Building.setNumElevators(SqBuilding.getElevatorNum());
+		OutOfSyncCounter = 0;
 	}
 	
 	/** 
@@ -103,6 +105,7 @@ public class UpdateData extends TimerTask {
 				}
 			}
 		}
+		OutOfSyncCounter = 0;
 	}
 	
 	
@@ -137,6 +140,13 @@ public class UpdateData extends TimerTask {
             	for(int i = 0; i < Elevators.size(); i++)
             	{
             		error |= refreshElevator(i);
+            	}
+            	
+            	if(OutOfSyncCounter > CriticalOutOfSyncValue)
+            	{
+    	    		StatusAlert.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface. "
+    	    				+ "Current timestamp = "
+    	    				+ SqBuilding.getClockTick());
             	}
 
             	if(error) {
@@ -248,28 +258,28 @@ public class UpdateData extends TimerTask {
 		error |= refreshUpList();
 		error |= refreshDownList();
     	
-    	long clocktick = 0;
+    	long clocktickAftereUpdate = 0;
 		try {
-			clocktick = SqBuilding.getClockTick();
+			clocktickAftereUpdate = SqBuilding.getClockTick();
 		} catch (RemoteException e) {
 			StatusAlert.setStatus("Exception in getClockTick() of SQElevator");
 			error = true;
 		}
 		
     	// check, if clocktick of the sqelevator has changed in the meantime
-		if(error)
+		if(!error)
 		{
-			
+			if(clocktickAftereUpdate != clocktickBeforeUpdate)
+	    	{
+				OutOfSyncCounter++;
+	    	}
+	    	else
+	    	{
+	    		// everything is okay. Notify the Controller, that updownlist has been updated
+	    		GuiController.update(Floor, Elevators.get(SelectedElevator));
+	    		OutOfSyncCounter = 0;
+	    	}
 		}
-		else if(clocktick != clocktickBeforeUpdate)
-    	{
-    		StatusAlert.setStatus("Out of sync with the simulator at clocktick " + clocktick);
-    	}
-    	else
-    	{
-    		// everything is okay. Notify the Controller, that updownlist has been updated
-    		GuiController.update(Floor, Elevators.get(SelectedElevator));
-    	}
 		
 		return error;
     }
@@ -417,8 +427,8 @@ public class UpdateData extends TimerTask {
     	{
 	    	// check, if clocktick of the sqelevator has changed in the meantime
 	    	if(clockTickAfterUpdate != clocktickBeforeUpdate)
-	    	{
-	    		StatusAlert.setStatus("Out of sync with the simulator when getting updownlist");
+	    	{ 
+	    		OutOfSyncCounter++;
 	    	}
 	    	else if(validValues == false) // sanity checks failes
 	    	{
@@ -432,6 +442,7 @@ public class UpdateData extends TimerTask {
 	    		{
 	    			GuiController.update(Floor, Elevators.get(SelectedElevator));
 	    		}
+	    		OutOfSyncCounter = 0;
 	    	}
     	}
     	
@@ -550,6 +561,11 @@ public class UpdateData extends TimerTask {
 			GuiController.reUpdate();
     }
     
+    public Integer GetOutOfSyncCounter()
+    {
+    	return OutOfSyncCounter;
+    }
+    
     
 	private IElevatorWrapper Sqelevator;
 	private IBuildingWrapper SqBuilding;
@@ -559,7 +575,8 @@ public class UpdateData extends TimerTask {
 	private MainGuiController GuiController;
 	private int SelectedElevator;
 	StatusAlert StatusAlert;
-    
+    private Integer OutOfSyncCounter;
+    private Integer CriticalOutOfSyncValue = 5;
     
     
 }

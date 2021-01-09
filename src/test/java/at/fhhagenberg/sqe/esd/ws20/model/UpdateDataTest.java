@@ -374,7 +374,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		
-		Mockito.when(MockedBuildingWrapper.getClockTick()).thenReturn((long) 4, (long)5);
+		Mockito.when(MockedBuildingWrapper.getClockTick()).thenReturn((long) 0, (long)1, (long)1, (long)2, (long)2, (long)3, (long)3, (long)4, (long)4, (long)5, (long)5, (long)6);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(0)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(1)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(2)).thenReturn(false);
@@ -387,13 +387,17 @@ public class UpdateDataTest {
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 		coreUpdater.refreshUpDownList();
+		coreUpdater.refreshUpDownList();
+		coreUpdater.refreshUpDownList();
+		coreUpdater.refreshUpDownList();
+		coreUpdater.refreshUpDownList();
 		
-		Mockito.verify(Mockedfloor, times(1)).addButtonUp(1);
-		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
-		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
-		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
+		Mockito.verify(Mockedfloor, times(5)).addButtonUp(1);
+		Mockito.verify(Mockedfloor, times(5)).addButtonUp(3);
+		Mockito.verify(Mockedfloor, times(5)).addButtonDown(0);
+		Mockito.verify(Mockedfloor, times(5)).addButtonDown(2);
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(0));
-		assertEquals("Out of sync with the simulator at clocktick " + 5, StatusAlert.Status.get());
+		assertEquals(5, coreUpdater.GetOutOfSyncCounter());
 	}
 	
 	@Test
@@ -418,7 +422,6 @@ public class UpdateDataTest {
 				-> coreUpdater.refreshElevator(-1));
 	}
 
-	@Disabled //Von @Lukas an @Flo: Ich hab da einen Fehler bekommen, kann sein, dass das zu schnell ist. Eventuell musst du nach refreshElevator oder so testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot); einfügen.
 	@Test
     public void testRefreshElevatorInvalidTarget() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
@@ -433,7 +436,6 @@ public class UpdateDataTest {
 		assertEquals("Sanity Check failed in UpdateData.refreshElevator()", StatusAlert.Status.get());
 	}
 	
-	@Disabled
 	@Test
     public void testRefreshElevatorInvalidPosition() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
@@ -546,23 +548,25 @@ public class UpdateDataTest {
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
 	}
 	
-	@Disabled
 	@Test
     public void testRefreshElevatorTimeout() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long) 4, (long)5);
-		
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long) 0, (long)1, (long)1, (long)2, (long)2, (long)3, (long)3, (long)4, (long)4, (long)5, (long)5, (long)6);
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 		
 		coreUpdater.refreshElevator(0);
+		coreUpdater.refreshElevator(0);
+		coreUpdater.refreshElevator(0);
+		coreUpdater.refreshElevator(0);
+		coreUpdater.refreshElevator(0);
 		
 		
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
 		
-		assertEquals("Out of sync with the simulator when getting updownlist", StatusAlert.Status.get());
+		assertEquals(5, coreUpdater.GetOutOfSyncCounter());
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(0));
 	}
 	
