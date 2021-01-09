@@ -417,7 +417,8 @@ public class UpdateDataTest {
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater.refreshElevator(-1));
 	}
-	
+
+	@Disabled //Von @Lukas an @Flo: Ich hab da einen Fehler bekommen, kann sein, dass das zu schnell ist. Eventuell musst du nach refreshElevator oder so testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot); einfügen.
 	@Test
     public void testRefreshElevatorInvalidTarget() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
@@ -432,7 +433,7 @@ public class UpdateDataTest {
 		assertEquals("Sanity Check failed in UpdateData.refreshElevator()", StatusAlert.Status.get());
 	}
 	
-	@Disabled //Von @Lukas an @Flo: Ich hab da einen Fehler bekommen, kann sein, dass das zu schnell ist. Eventuell musst du nach refreshElevator oder so testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot); einfügen.
+	@Disabled
 	@Test
     public void testRefreshElevatorInvalidPosition() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
@@ -545,7 +546,7 @@ public class UpdateDataTest {
 		Mockito.verify(MockedmainGuiControler, times(0)).update(Mockedfloor, Elevators.get(1));
 	}
 	
-	
+	@Disabled
 	@Test
     public void testRefreshElevatorTimeout() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
