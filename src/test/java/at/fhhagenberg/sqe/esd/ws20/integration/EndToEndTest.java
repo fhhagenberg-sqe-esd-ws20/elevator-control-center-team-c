@@ -18,8 +18,6 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
 import at.fhhagenberg.sqe.esd.ws20.others.TestUtils;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
 import javafx.scene.control.Label;

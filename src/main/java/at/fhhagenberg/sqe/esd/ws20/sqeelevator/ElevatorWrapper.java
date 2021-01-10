@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import java.rmi.RemoteException;
+import java.security.InvalidParameterException;
 
 import sqelevator.IElevator;
 
@@ -75,7 +76,7 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
         	elevatorInterface.setCommittedDirection(elevatorNumber, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
             break;
         default:
-            throw new RuntimeException("Wrong commited direction (set)");
+            throw new InvalidParameterException("Wrong commited direction (set)");
         }			
 	}
 
@@ -89,7 +90,7 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
         case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
         	return ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
         default:
-            throw new RuntimeException("Wrong commited direction (get)");
+            throw new InvalidParameterException("Wrong commited direction (get)");
         }
 	}
 
@@ -107,7 +108,7 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
         case IElevator.ELEVATOR_DOORS_CLOSING:
         	return ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING;
         default:
-            throw new RuntimeException("Wrong door status");
+            throw new InvalidParameterException("Wrong door status");
         }
 	}
 

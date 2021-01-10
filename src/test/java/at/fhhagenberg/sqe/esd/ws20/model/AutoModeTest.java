@@ -112,7 +112,7 @@ public class AutoModeTest extends AutoMode {
     	this.enable(2);
     	this.enable(4);
     	
-    	this.UpdateElevatorTargets();
+    	this.updateElevatorTargets();
 
     	Mockito.verify(updateData).setTarget(1, 1);
     	Mockito.verify(updateData).setTarget(2, 2);

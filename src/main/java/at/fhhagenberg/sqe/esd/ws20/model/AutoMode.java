@@ -4,10 +4,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
-import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
-
 public abstract class AutoMode {
 
 	protected List<Integer> autoModeEnabledElevators = new ArrayList<Integer>();
@@ -58,14 +54,11 @@ public abstract class AutoMode {
 		return false;
 	}
 	public boolean checkIfInAutoMode(Integer elevatorNr) {
-		if(autoModeEnabledElevators.contains(elevatorNr)) {
-			return true;
-		}
-		return false;
+		return autoModeEnabledElevators.contains(elevatorNr);
 	}
 	
 
-	public void UpdateElevatorTargets() {
+	public void updateElevatorTargets() {
 		for (int i = 0; i < Elevators.size(); i++) {
 			if(autoModeEnabledElevators.contains(i)) {
 				Updater.setTarget(doGetNext(i), i);

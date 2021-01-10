@@ -26,14 +26,18 @@ public class AutoModeExampleAlgo extends AutoMode {
 			while (Elevators.get(elevator).getPosition() < nextFloor || Elevators.get(elevator).getSpeed() > 0) {
 				try { 
 					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
 			}
 			
 			// Wait until doors are open before setting the next direction
 			while (Elevators.get(elevator).getDoors() != ElevatorDoorStatus.ELEVATOR_DOORS_OPEN) {
 				try {
 					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
 			}
 		}
 		
@@ -51,7 +55,9 @@ public class AutoModeExampleAlgo extends AutoMode {
 		while (Elevators.get(elevator).getPosition() > 0 || Elevators.get(elevator).getSpeed() > 0) {
 			try { 
 				Thread.sleep(sleepTime);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
 		}
 		
 		// Set the committed direction to uncommitted when back at the ground floor

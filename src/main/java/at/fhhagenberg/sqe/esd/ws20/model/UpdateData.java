@@ -81,7 +81,7 @@ public class UpdateData extends TimerTask {
 		//elevators in the building
 		if(Building.getNumElevators() != Elevators.size()) 
 		{
-			throw new RuntimeException("Numer of stored elevators not the same as number of elevators in the building!");
+			throw new InvalidParameterException("Numer of stored elevators not the same as number of elevators in the building!");
 		}
 		
 		
@@ -113,7 +113,7 @@ public class UpdateData extends TimerTask {
 	 * Initializes all elevators
 	 * @throws RemoteException
 	 */
-	public void initializeElevators() throws RemoteException
+	public void initializeElevators()
 	{
 		Elevators.clear();
         for(int i = 0; i < Building.getNumElevators(); i++)
@@ -192,8 +192,7 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor, int elevator)
     {
-    	//TODO check bounds of floors. I think this sould be < Building.getNumFloors()
-    	if(floor >= 0 && floor <= Building.getNumFloors())
+    	if(floor >= 0 && floor < Building.getNumFloors())
 		{
 			if(elevator >= 0 && elevator < Elevators.size())
 			{
@@ -222,8 +221,7 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor)
     {
-    	//TODO check bounds of floors. I think this sould be < Building.getNumFloors()
-    	if(floor >= 0 && floor <= Building.getNumFloors())
+    	if(floor >= 0 && floor < Building.getNumFloors())
     	{
     		Elevators.get(SelectedElevator).setTarget(floor);
     		
@@ -251,7 +249,7 @@ public class UpdateData extends TimerTask {
 		try {
 			clocktickBeforeUpdate = SqBuilding.getClockTick();
 		} catch (RemoteException e) {
-			StatusAlert.setStatus("Exception in getClockTick() of SQElevator");
+			StatusAlert.setStatus(GetClockExecText);
 			error = true;
 		}
     	
@@ -262,7 +260,7 @@ public class UpdateData extends TimerTask {
 		try {
 			clocktickAftereUpdate = SqBuilding.getClockTick();
 		} catch (RemoteException e) {
-			StatusAlert.setStatus("Exception in getClockTick() of SQElevator");
+			StatusAlert.setStatus(GetClockExecText);
 			error = true;
 		}
 		
@@ -369,8 +367,7 @@ public class UpdateData extends TimerTask {
 		try {
 			clocktickBeforeUpdate = Sqelevator.getClockTick();
 		} catch (RemoteException e) {
-			error = true;
-			StatusAlert.setStatus("Exception in getClockTick() of SQElevator");
+			StatusAlert.setStatus(GetClockExecText);
 		}
     	
     	// store values to temp elevator. Necessary to do not overwrite the real elevator with corrupted data, if we are out of sync
@@ -420,7 +417,7 @@ public class UpdateData extends TimerTask {
     		clockTickAfterUpdate = Sqelevator.getClockTick();
 		} catch (RemoteException e) {
 			error = true;
-			StatusAlert.setStatus("Exception in getClockTick() of SQElevator 2");
+			StatusAlert.setStatus(GetClockExecText);
 		}
     	
     	if(!error)
@@ -552,6 +549,10 @@ public class UpdateData extends TimerTask {
     }
     
     public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
+	    	if(b == null || e == null)
+	    	{
+	    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
+	    	}    	
 			SqBuilding = b;
 			Sqelevator = e;
 			StatusAlert.setStatus("Connected to Elevator");
@@ -577,6 +578,7 @@ public class UpdateData extends TimerTask {
 	StatusAlert StatusAlert;
     private Integer OutOfSyncCounter;
     private Integer CriticalOutOfSyncValue = 5;
+    private final String GetClockExecText = "Exception in getClockTick() of SQElevator";
     
     
 }
