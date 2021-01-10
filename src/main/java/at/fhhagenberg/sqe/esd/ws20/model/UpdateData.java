@@ -549,6 +549,10 @@ public class UpdateData extends TimerTask {
     }
     
     public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
+	    	if(b == null || e == null)
+	    	{
+	    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
+	    	}    	
 			SqBuilding = b;
 			Sqelevator = e;
 			StatusAlert.setStatus("Connected to Elevator");
