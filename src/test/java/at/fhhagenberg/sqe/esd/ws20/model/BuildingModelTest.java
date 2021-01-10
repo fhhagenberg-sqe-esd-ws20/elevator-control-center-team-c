@@ -2,9 +2,6 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.junit.jupiter.api.Test;
 
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -654,6 +653,46 @@ public class UpdateDataTest {
 		
 		assertEquals(2 , Elevators.size());
 	}
+	
+	@Test
+    public void setSQsNullpointerforElevator() throws RemoteException {		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		
+		assertThrows(RuntimeException.class, () 
+				-> coreUpdater.SetSqs(MockedBuildingWrapper, null));		
+	}
+	
+	@Test
+    public void setSQsNullpointerforBuilding() throws RemoteException {		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		
+		assertThrows(RuntimeException.class, () 
+				-> coreUpdater.SetSqs(null, MockedElevatorWrapper));		
+	}	
+	
+	@Test
+    public void setSQsIsCallingMethods() throws RemoteException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		Mockito.verify(MockedmainGuiControler, times(1)).reUpdate();
+		Mockito.verify(MockedBuilding, times(1)).setNumFloors(4);
+		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
+	}		
+	
+	@Test
+    public void ReconnectRMIFailureTest() throws RemoteException {		
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.ReconnectRMI();
+		coreUpdater.run();
+		assertEquals("No Elevator Connection", StatusAlert.Status.get());
+	}	
 	
 	//ToDo: Test RMI connection
 	//ToDo: Test return bool values

@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-import at.fhhagenberg.sqe.esd.ws20.integration.ElevatorStub;
 import at.fhhagenberg.sqe.esd.ws20.model.*;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
