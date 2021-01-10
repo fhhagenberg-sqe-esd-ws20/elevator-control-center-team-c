@@ -4,10 +4,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
-import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
-
 public abstract class AutoMode {
 
 	protected List<Integer> autoModeEnabledElevators = new ArrayList<Integer>();

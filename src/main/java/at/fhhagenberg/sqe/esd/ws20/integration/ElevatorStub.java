@@ -84,17 +84,17 @@ public class ElevatorStub implements IElevator {
 		return 4;
 	}
 
-	public void setCommittedDirection(int elevatorNumber, int direction) throws java.rmi.RemoteException
+	public void setCommittedDirection(int elevatorNumber, int direction)
 	{
 		
 	}
 	
-	public void setServicesFloors(int elevatorNumber, int floor, boolean service) throws java.rmi.RemoteException 
+	public void setServicesFloors(int elevatorNumber, int floor, boolean service)
 	{
 		
 	}
 	
-	public void setTarget(int elevatorNumber, int target) throws java.rmi.RemoteException
+	public void setTarget(int elevatorNumber, int target)
 	{
 		
 	}

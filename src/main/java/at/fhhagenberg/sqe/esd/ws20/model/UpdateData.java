@@ -89,7 +89,7 @@ public class UpdateData extends TimerTask {
 		//elevators in the building
 		if(Building.getNumElevators() != Elevators.size()) 
 		{
-			throw new RuntimeException("Numer of stored elevators not the same as number of elevators in the building!");
+			throw new InvalidParameterException("Numer of stored elevators not the same as number of elevators in the building!");
 		}
 		
 		
@@ -121,7 +121,7 @@ public class UpdateData extends TimerTask {
 	 * Initializes all elevators
 	 * @throws RemoteException
 	 */
-	public void initializeElevators() throws RemoteException
+	public void initializeElevators()
 	{
 		Elevators.clear();
         for(int i = 0; i < Building.getNumElevators(); i++)

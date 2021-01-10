@@ -681,8 +681,34 @@ public class UpdateDataTest {
 				-> coreUpdater.SetSqs(null, MockedElevatorWrapper));		
 	}	
 	
+	@Test
+    public void setSQsIsCallingMethods() throws RemoteException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, RMIInterface);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		Mockito.verify(MockedmainGuiControler, times(1)).reUpdate();
+		Mockito.verify(MockedBuilding, times(1)).setNumFloors(4);
+		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
+	}		
+	
+	@Test
+    public void ReconnectRMIFailureTest() throws RemoteException {		
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, RMIInterface);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.ReconnectRMI();
+		coreUpdater.run();
+		assertEquals("No e Connection", StatusAlert.Status.get());
+	}		
+	
+	
+	
 	//ToDo: Test RMI connection
 	//ToDo: Test return bool values
-	//ToDo: SetRMIs, Construktor, ReconnectRMI, SetSqs
+	//ToDo: SetRMIs, ReconnectRMI
 }
 	
