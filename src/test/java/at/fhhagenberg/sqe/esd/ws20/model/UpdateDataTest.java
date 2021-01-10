@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -683,6 +684,7 @@ public class UpdateDataTest {
 		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
 	}		
 	
+	@Disabled
 	@Test
     public void ReconnectRMIFailureTest() throws RemoteException {		
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
