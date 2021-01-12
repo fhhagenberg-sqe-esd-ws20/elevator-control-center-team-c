@@ -8,17 +8,15 @@ import java.util.List;
  * except the algorithm.
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2021-01-12 01:42
+ * @since 2021-01-12 02:28
  */
 public abstract class AutoMode {
 
 	protected List<Integer> autoModeEnabledElevators = new ArrayList<Integer>();
 
 	protected IBuildingModel Building;
-	protected IFloorModel Floor;
 	protected UpdateData Updater;
 	protected List<IElevatorModel> Elevators;
-	protected StatusAlert StatusAlert;
 
 	/**
 	 * Initialization for needed Objects
@@ -26,16 +24,17 @@ public abstract class AutoMode {
 	 * @param building     the internal model of the building
 	 * @param numElevators the internal list with the models for the elevators
 	 */
-	public void Init(IBuildingModel building, int numElevators, UpdateData updater) {
-		if (building == null || updater == null) {
+	public void Init(IBuildingModel building, List<IElevatorModel> elevators, UpdateData updater) {
+		if (building == null || elevators == null || updater == null) {
 			throw new NullPointerException("AutoMode.Init() NullPointerException!");
 		}
 
 		Building = building;
+		Elevators = elevators;
 		Updater = updater;
 
 		// at the beginning set all elevators to automatic mode
-		for (int i = 0; i < numElevators; ++i) {
+		for (int i = 0; i < elevators.size(); ++i) {
 			enable(i);
 		}
 	}

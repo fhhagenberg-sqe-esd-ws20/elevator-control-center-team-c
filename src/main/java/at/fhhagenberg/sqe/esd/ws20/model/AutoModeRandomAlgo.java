@@ -2,18 +2,20 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.security.SecureRandom;
 
+/**
+ * Automatic mode algorithm. Returns a random number in Building.getNumFloors()
+ * range.
+ * 
+ * @author Lukas Ebenstein (s1910567015)
+ * @since 2021-01-12 02:11
+ */
 public class AutoModeRandomAlgo extends AutoMode {
-	
+
 	private SecureRandom random = new SecureRandom();
 
-	//TODO remove this and replace by real algo
-	public AutoModeRandomAlgo() {
-
-	}
-	//TODO remove this and replace by real algo
 	@Override
 	protected int doGetNext(int elevator) {
-		//0 to Building.getNumFloors() exclusive
+		// 0 to Building.getNumFloors() exclusive
 		return random.nextInt(Building.getNumFloors());
 	}
 

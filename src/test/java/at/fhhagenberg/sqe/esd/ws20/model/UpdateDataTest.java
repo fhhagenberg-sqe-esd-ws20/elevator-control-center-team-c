@@ -47,6 +47,7 @@ public class UpdateDataTest {
 	List<IElevatorModel> Elevators;
 	UpdateData coreUpdater;
 	StatusAlert StatusAlert;
+	AutoMode AutoModeAlgo = new AutoModeRandomAlgo();	//TODO Von Lukas: Da ich die Schnittstelle von UpdateData(...) geändert habe, musste ich diese Objekt hier einfügen, damit die Tests wieder durchlaufen. Muss man das auch mocken?
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -58,45 +59,46 @@ public class UpdateDataTest {
 	
 	@Test
     public void testNoBuilding() throws RemoteException {
-		
 		assertThrows(RuntimeException.class, () 
-				-> coreUpdater = new UpdateData(null, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert));
+				-> coreUpdater = new UpdateData(null, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo));
     }
 	
 	@Test
     public void testNoFloor() throws RemoteException {
-		
 		assertThrows(RuntimeException.class, () 
-				-> coreUpdater = new UpdateData(MockedBuilding, null, Elevators, MockedmainGuiControler, StatusAlert));
+				-> coreUpdater = new UpdateData(MockedBuilding, null, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo));
     }
 	
 	@Test
     public void testNoElevators() throws RemoteException {
-		
 		assertThrows(RuntimeException.class, () 
-				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, null, MockedmainGuiControler, StatusAlert));
+				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, null, MockedmainGuiControler, StatusAlert, AutoModeAlgo));
     }			
 	
 	@Test
     public void testNoMainGuiControler() throws RemoteException {
-		
 		assertThrows(RuntimeException.class, () 
-				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, null, StatusAlert));
+				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, null, StatusAlert, AutoModeAlgo));
     }
 	
 	@Test
     public void testNoStatusAlert() throws RemoteException {
-		
 		assertThrows(RuntimeException.class, () 
-				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, null));
+				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, null, AutoModeAlgo));
+    }
+	
+	@Test
+    public void testNoAutoModeAlgo() throws RemoteException {
+		assertThrows(RuntimeException.class, () 
+				-> coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, null));
     }
 	
 	
 	@Test
     public void testCtorWithoutFloors() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(0);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(0);		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(0);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		assertEquals(0, MockedBuilding.getNumElevators());
@@ -107,8 +109,8 @@ public class UpdateDataTest {
 	@Test
     public void testCtorWithouttwoFloors() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(5);		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(5);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		assertEquals(2, MockedBuilding.getNumElevators());
@@ -119,8 +121,8 @@ public class UpdateDataTest {
 	@Test
     public void testInitializeServicedFloorsWithNoElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(0);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(0);	
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(0);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.initializeServicedFloors();
@@ -131,7 +133,7 @@ public class UpdateDataTest {
 	@Test
     public void testInitializeServicedFloorsWithTooMuchElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(3);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		// add one elevator to much to the list and initialize the serviced floors
@@ -148,7 +150,7 @@ public class UpdateDataTest {
     public void testInitializeThreeServicedFloorsInTwoElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(3);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		List<Integer> ignoredFloors0 = Elevators.get(0).getIgnoredFloorsList();
@@ -163,7 +165,7 @@ public class UpdateDataTest {
     public void testSetSelectedElevatorToInValidIndex() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setSelectedElevator(2);
@@ -175,7 +177,7 @@ public class UpdateDataTest {
     public void testSetSelectedElevatorToNegativeIndex() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setSelectedElevator(-1);
@@ -187,7 +189,7 @@ public class UpdateDataTest {
     public void testSetSelectedElevatorToValidIndex() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setSelectedElevator(1);
@@ -199,7 +201,7 @@ public class UpdateDataTest {
     public void testSetTargetInvalidFloor() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(11);
@@ -211,7 +213,7 @@ public class UpdateDataTest {
     public void testSetTargetNegativeFloor() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(-1);
@@ -223,7 +225,7 @@ public class UpdateDataTest {
     public void testSetTargetValidFloor() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(9);
@@ -236,7 +238,7 @@ public class UpdateDataTest {
     public void testSetTargetValidDifferentTargetsForTwoElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setSelectedElevator(0);
@@ -254,7 +256,7 @@ public class UpdateDataTest {
     public void testSetInvalidTargetValidElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(11, 0);
@@ -269,7 +271,7 @@ public class UpdateDataTest {
     public void testSetValidTargetInvalidElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(10, 2);
@@ -284,7 +286,7 @@ public class UpdateDataTest {
     public void testSetNegativeTargetValidElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(11, 0);
@@ -299,7 +301,7 @@ public class UpdateDataTest {
     public void testSetValidTargetValidElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.setTarget(6, 0);
@@ -320,7 +322,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(1)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(2)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(3)).thenReturn(false);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.refreshUpList();
@@ -337,7 +339,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(3)).thenReturn(false);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.refreshDownList();
@@ -358,7 +360,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(3)).thenReturn(false);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 		coreUpdater.refreshUpDownList();
@@ -383,7 +385,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(1)).thenReturn(false);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(3)).thenReturn(false);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 		coreUpdater.refreshUpDownList();
@@ -403,7 +405,7 @@ public class UpdateDataTest {
 	@Test
     public void testRefreshElevatorInvalidIndex() throws RemoteException {
 
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		assertThrows(RuntimeException.class, () 
@@ -414,7 +416,7 @@ public class UpdateDataTest {
     public void testRefreshElevatorNegativedIndex() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 
@@ -427,7 +429,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		Mockito.when(MockedElevatorWrapper.getTarget(0)).thenReturn(5);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.refreshElevator(0);
@@ -440,7 +442,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(5);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.refreshElevator(0);
@@ -467,7 +469,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 2)).thenReturn(true);
 		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 3)).thenReturn(false);
 
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.refreshElevator(0);
@@ -501,7 +503,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 2)).thenReturn(true);
 		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 3)).thenReturn(false);
 
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 
@@ -538,7 +540,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 2)).thenReturn(true);
 		Mockito.when(MockedElevatorWrapper.getElevatorButton(1, 3)).thenReturn(false);
 
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 		
@@ -552,7 +554,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long) 0, (long)1, (long)1, (long)2, (long)2, (long)3, (long)3, (long)4, (long)4, (long)5, (long)5, (long)6);
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
 		
@@ -608,7 +610,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(2)).thenReturn(true);
 		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(3)).thenReturn(false);
 		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		
@@ -649,7 +651,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		assertEquals(2 , Elevators.size());
@@ -657,7 +659,7 @@ public class UpdateDataTest {
 	
 	@Test
     public void setSQsNullpointerforElevator() throws RemoteException {		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater.SetSqs(MockedBuildingWrapper, null));		
@@ -665,7 +667,7 @@ public class UpdateDataTest {
 	
 	@Test
     public void setSQsNullpointerforBuilding() throws RemoteException {		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		
 		assertThrows(RuntimeException.class, () 
 				-> coreUpdater.SetSqs(null, MockedElevatorWrapper));		
@@ -676,7 +678,7 @@ public class UpdateDataTest {
 		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		Mockito.verify(MockedmainGuiControler, times(1)).reUpdate();
@@ -689,7 +691,7 @@ public class UpdateDataTest {
     public void ReconnectRMIFailureTest() throws RemoteException {		
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		coreUpdater.ReconnectRMI();
 		coreUpdater.run();

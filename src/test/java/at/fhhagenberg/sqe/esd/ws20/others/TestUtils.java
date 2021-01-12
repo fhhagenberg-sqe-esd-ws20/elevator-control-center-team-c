@@ -22,6 +22,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+/**
+ * Provides helper functions that are needed in multiple tests
+ * 
+ * @author Lukas Ebenstein (s1910567015)
+ * @since 2021-01-12 02:10
+ */
 public class TestUtils {
 	
 	private int uiUpdateWaitDelayMs;
@@ -75,6 +81,14 @@ public class TestUtils {
 		});
 	}
 	
+	/**
+	 * waits until a node is visible or a timeout occurs.
+	 * Can be used to wait till a new window finished opening.
+	 * 
+	 * @param nodeCssId				Example: "#button_send_to_floor"
+	 * @param robot
+	 * @throws TimeoutException
+	 */
 	public void waitUntilNodeIsVisible(String nodeCssId, FxRobot robot) throws TimeoutException {
 		WaitForAsyncUtils.waitFor(uiUpdateWaitDelayMs, TimeUnit.MILLISECONDS, new Callable<Boolean>() {
 			@Override
@@ -87,6 +101,31 @@ public class TestUtils {
 			}
 		});
 	}
+	
+	
+	/**
+	 * waits until a node is enabled or a timeout occurs.
+	 * Can be used to wait till a button is enabled after it got enabled through other ui element.
+	 * 
+	 * @param nodeCssId				Example: "#button_send_to_floor"
+	 * @param robot
+	 * @throws TimeoutException
+	 */
+	public void waitUntilNodeIsEnabled(String nodeCssId, FxRobot robot) throws TimeoutException {
+		WaitForAsyncUtils.waitFor(uiUpdateWaitDelayMs, TimeUnit.MILLISECONDS, new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				Optional<Node> button = robot.lookup(nodeCssId).tryQuery();
+				if(button.isPresent()) {
+					return !robot.lookup(nodeCssId).query().isDisabled();
+				}
+				return false;
+			}
+		});
+	}
+	
+	
+	
 	
 	
 	/**

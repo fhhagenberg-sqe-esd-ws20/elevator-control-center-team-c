@@ -54,7 +54,7 @@ public class AutoModeTest extends AutoMode {
 	
 	@BeforeEach
 	public void setup() {
-		this.Init(MockedBuilding, Mockedfloor, MockedElevators, StatusAlert, updateData);
+		this.Init(MockedBuilding, MockedElevators, updateData);
 	}
 		
 		
@@ -107,7 +107,6 @@ public class AutoModeTest extends AutoMode {
     
     @Test
     void testUpdateElevatorTargets() {
-    	Mockito.when(MockedElevators.size()).thenReturn(6);
     	this.enable(1);
     	this.enable(2);
     	this.enable(4);
@@ -120,6 +119,9 @@ public class AutoModeTest extends AutoMode {
     	Mockito.verifyNoMoreInteractions(updateData);
 
     }
+
     
+    //TODO this.disable tests
+    //TODO test all other functions in AutoMode
 	
 }

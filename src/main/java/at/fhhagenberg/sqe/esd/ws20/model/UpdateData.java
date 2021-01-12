@@ -561,7 +561,7 @@ public class UpdateData extends TimerTask {
 			initializeBuilding();
 			initializeElevators();
 			initializeServicedFloors();
-			AutoModeAlgorithm.Init(Building, Elevators.size(), this);
+			AutoModeAlgorithm.Init(Building, Elevators, this);
 			GuiController.reUpdate();
     }
     
