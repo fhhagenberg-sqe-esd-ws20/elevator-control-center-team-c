@@ -216,12 +216,12 @@ public class EndToEndTest {
 		robot.clickOn("#checkbox_manual_mode");
 		//testfx currently can't check if the checkbox is checked, there is no Matchers for checkboxes
 		//so here we check if the button is enabled
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 		
 		robot.clickOn("#listview_elevators");
 		robot.type(KeyCode.DOWN);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
@@ -234,24 +234,24 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException, TimeoutException {
-		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		
-		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
-	}
-	
-	@Test
 	public void testButtonDisabledWithCheckboxNotChecked(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		
-		robot.clickOn("#checkbox_manual_mode");
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
 		
 		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+	}
+	
+	@Test
+	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException, TimeoutException {
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
+		
+		robot.clickOn("#checkbox_manual_mode");
+		testutils.waitUntilNodeIsEnabled("#button_send_to_floor", robot);
+		
+		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
 	}
 	
 	@Test

@@ -27,7 +27,7 @@ import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
-import at.fhhagenberg.sqe.esd.ws20.model.AutoModeSimpleAlgo;
+import at.fhhagenberg.sqe.esd.ws20.model.AutoModeRandomAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
@@ -63,7 +63,7 @@ public class MainGuiControllerTest {
 	//@Mock
 	//private StatusAlert mockedStatusAlert;	//i don't know how to mock the beans property. So in all further tests a normal object will be used for StatusAlert.
 	@Mock
-	private AutoModeSimpleAlgo mockedAutoModeAlgorithm;
+	private AutoModeRandomAlgo mockedAutoModeAlgorithm;
 	@Mock
 	private IFloorModel mockedFloor;
 	@Mock
