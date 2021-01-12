@@ -36,13 +36,14 @@ public class UpdateData extends TimerTask {
 	 * @param floor - the internal model for the floors
 	 * @param elevators - the internal list with the models for the elevators
 	 * @param guiController - the controller, which controls the gui
+	 * @param autoModeAlgorithm - the algorithm to calculate the next elevator target in automatic mode
 	 * @throws RemoteException 
 	 */
-	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert)
+	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert, AutoMode autoModeAlgorithm)
 	{
 		
 		//sqbuilding, sqelevator can be null -> next update cycle a reconnect will be done
-		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null )
+		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null || autoModeAlgorithm == null)
 		{
 			throw new NullPointerException("Nullpointer in UpdateData!");
 		}
@@ -53,6 +54,7 @@ public class UpdateData extends TimerTask {
 		Elevators = elevators;
 		GuiController = guiController;
 		StatusAlert = statusAlert;
+		AutoModeAlgorithm = autoModeAlgorithm;
 		OutOfSyncCounter = 0;
 	}
 	
@@ -483,7 +485,7 @@ public class UpdateData extends TimerTask {
     	catch(RemoteException e){
     		error = true;
     		StatusAlert.setStatus("Exception in getElevatorFloor() of SQElevator");
-    	}    	
+    	}
     	try{
     		speed = Sqelevator.getElevatorSpeed(elevator_idx);
     	}
@@ -552,13 +554,14 @@ public class UpdateData extends TimerTask {
 	    	if(b == null || e == null)
 	    	{
 	    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
-	    	}    	
+	    	}
 			SqBuilding = b;
 			Sqelevator = e;
 			StatusAlert.setStatus("Connected to Elevator");
 			initializeBuilding();
 			initializeElevators();
 			initializeServicedFloors();
+			AutoModeAlgorithm.Init(Building, Elevators.size(), this);
 			GuiController.reUpdate();
     }
     
@@ -579,6 +582,6 @@ public class UpdateData extends TimerTask {
     private Integer OutOfSyncCounter;
     private Integer CriticalOutOfSyncValue = 5;
     private final String GetClockExecText = "Exception in getClockTick() of SQElevator";
-    
+    private AutoMode AutoModeAlgorithm;
     
 }

@@ -111,7 +111,7 @@
                   <Label fx:id="label_doors_text" maxWidth="1.7976931348623157E308" text="..." />
                </children>
             </VBox>
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent lightgrey transparent;" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent black transparent;" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <GridPane hgap="5.0" maxWidth="-Infinity" style="-fx-border-color: black;" vgap="5.0" GridPane.columnIndex="4">

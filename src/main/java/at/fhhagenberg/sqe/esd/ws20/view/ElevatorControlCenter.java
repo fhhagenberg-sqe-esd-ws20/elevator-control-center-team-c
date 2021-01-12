@@ -101,20 +101,20 @@ public class ElevatorControlCenter extends Application {
         // Creating models
         StatusAlert statusAlert = new StatusAlert();
         IBuildingModel building = new BuildingModel();
-        IFloorModel floor = new FloorModel();				
+        IFloorModel floor = new FloorModel();
 
-        AutoModeSimpleAlgo autoModeAlgorithm = new AutoModeSimpleAlgo();	
+        AutoMode autoModeAlgorithm = new AutoModeRandomAlgo();
         
         // creating list for the elevators
         List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
 
-                
+        
         // Create Scheduler
         scheduler = new Timer();
 
         
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert);
+        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert, autoModeAlgorithm);
         
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
@@ -122,8 +122,6 @@ public class ElevatorControlCenter extends Application {
         if(elevator != null) {
         	updater.SetRMIs(elevator);
         }
-        
-        autoModeAlgorithm.Init(building, floor, elevators, statusAlert, updater);
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);

@@ -2,12 +2,12 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.security.SecureRandom;
 
-public class AutoModeSimpleAlgo extends AutoMode {
+public class AutoModeRandomAlgo extends AutoMode {
 	
 	private SecureRandom random = new SecureRandom();
 
 	//TODO remove this and replace by real algo
-	public AutoModeSimpleAlgo() {
+	public AutoModeRandomAlgo() {
 
 	}
 	//TODO remove this and replace by real algo

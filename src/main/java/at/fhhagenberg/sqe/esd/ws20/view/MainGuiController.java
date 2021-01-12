@@ -8,7 +8,8 @@ import java.text.ParsePosition;
 import java.util.ResourceBundle;
 import java.util.List;
 
-import at.fhhagenberg.sqe.esd.ws20.model.AutoModeSimpleAlgo;
+import at.fhhagenberg.sqe.esd.ws20.model.AutoMode;
+import at.fhhagenberg.sqe.esd.ws20.model.AutoModeRandomAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;
@@ -152,7 +153,7 @@ public class MainGuiController {
     @FXML
     void buttonSendToFloor(ActionEvent event) {
     	if(updateData == null) {
-    		throw new NullPointerException("MainGuiController.buttonSendToFloor()");
+    		throw new NullPointerException("MainGuiController.buttonSendToFloor() NullPointerException");
     	}
     	
     	//get floor number from textfield
@@ -217,7 +218,7 @@ public class MainGuiController {
 				selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
 				
 				if(updateData == null) {
-					throw new NullPointerException("MainGuiController.setup()");
+					throw new NullPointerException("MainGuiController.setup() NullPointerException");
 				}
 				//getSelectedIndex() returns -1 if no line is selected
 				if(selectedElevator < 0) {
@@ -231,7 +232,7 @@ public class MainGuiController {
     
     private UpdateData updateData = null;
     private IBuildingModel buildingModel = null;
-    private AutoModeSimpleAlgo autoModeAlgo = null;
+    private AutoMode autoModeAlgo = null;
     private Integer numFloorsInBuilding = 0;
     private int selectedElevator = -1;
     
@@ -244,7 +245,7 @@ public class MainGuiController {
      */
     public void update(IFloorModel floor, IElevatorModel elevator) {
     	if(floor == null || elevator == null) {
-    		throw new NullPointerException("MainGuiController.update()");
+    		throw new NullPointerException("MainGuiController.update() NullPointerException");
     	}
     	
     	//if there are no elevators, do nothing on update. Nothing should or can be updated
@@ -255,7 +256,7 @@ public class MainGuiController {
     	//get current selected elevator
     	//getSelectedIndex() returned -1 if no line is selected
     	if(selectedElevator < 0) {
-    		throw new IllegalStateException("listview_elevators no line selected!");
+    		throw new IllegalStateException("MainGuiController.update() listview_elevators no line selected!");
     	}
     	//check if the selected elevator is in manual or automatic mode -> set checkbox and button to right state.
     	if(autoModeAlgo.checkIfInAutoMode(selectedElevator)) {
@@ -344,9 +345,9 @@ public class MainGuiController {
 	 * @param statusAlert			Binding to new status messages
 	 * @param autoModeAlgorithm		Enable/disable elevators for automatic/manual mode
 	 */
-	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert, AutoModeSimpleAlgo autoModeAlgorithm) {
+	public void register(UpdateData updater, IBuildingModel building, StatusAlert statusAlert, AutoMode autoModeAlgorithm) {
 		if(updater == null || building == null || statusAlert == null || autoModeAlgorithm == null) {
-			throw new NullPointerException("MainGuiController.register()");
+			throw new NullPointerException("MainGuiController.register() NullPointerException");
 		}
 		
 		updateData = updater;
