@@ -40,7 +40,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
-public class EndToEndTest {
+class EndToEndTest {
 	
 	
 	private Stage mainGuiStage;
@@ -60,7 +60,7 @@ public class EndToEndTest {
 	 * @throws Exception
 	 */
 	@Start
-	public void start(Stage stage) throws Exception {
+	void start(Stage stage) throws Exception {
 		mainGuiStage = stage;
 	}
 	
@@ -79,7 +79,7 @@ public class EndToEndTest {
 	
 	
 	@Test
-	public void testNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
+	void testNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
 		
 		startGui(robot);
@@ -106,7 +106,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testElevatorsWithProperties(FxRobot robot) throws RemoteException, TimeoutException {
+	void testElevatorsWithProperties(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getTarget(0)).thenReturn(1);
@@ -134,7 +134,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testSwitchElevatorsWithPropertiesChange(FxRobot robot) throws RemoteException, TimeoutException {
+	void testSwitchElevatorsWithPropertiesChange(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getTarget(0)).thenReturn(1);
@@ -179,7 +179,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testDisplayedNumberOfFloors(FxRobot robot) throws RemoteException, TimeoutException {
+	void testDisplayedNumberOfFloors(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
@@ -190,7 +190,7 @@ public class EndToEndTest {
 	
 	
 	@Test
-	public void testCheckboxDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
+	void testCheckboxDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
 		startGui(robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
@@ -199,7 +199,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws RemoteException, TimeoutException {
+	void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
@@ -208,7 +208,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws RemoteException, TimeoutException {
+	void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
@@ -225,7 +225,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testButtonDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
+	void testButtonDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
 		startGui(robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
@@ -234,7 +234,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testButtonDisabledWithCheckboxNotChecked(FxRobot robot) throws RemoteException, TimeoutException {
+	void testButtonDisabledWithCheckboxNotChecked(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
@@ -243,7 +243,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException, TimeoutException {
+	void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
@@ -255,7 +255,7 @@ public class EndToEndTest {
 	}
 	
 	@Test
-	public void testInternalTargetGreaterNumFloors(FxRobot robot) throws RemoteException, TimeoutException {
+	void testInternalTargetGreaterNumFloors(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getElevatorFloor(0)).thenReturn(30);
@@ -270,7 +270,7 @@ public class EndToEndTest {
 	
 	@Disabled("This test does not work in online Github build.")
 	@Test
-	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException, TimeoutException {
+	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
@@ -288,7 +288,7 @@ public class EndToEndTest {
 	
 	@Disabled("This test does not work in online Github build.")
 	@Test
-	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException, TimeoutException {
+	void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
@@ -306,7 +306,7 @@ public class EndToEndTest {
 	
 	@Disabled("This test does not work in online Github build.")
 	@Test
-	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException, TimeoutException {
+	void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
@@ -324,7 +324,7 @@ public class EndToEndTest {
 	
 	@Disabled("This does not work at 0.1 speed. The target gets reset back to original to fast.")
 	@Test
-	public void testSetTargetManualMode(FxRobot robot) throws RemoteException, TimeoutException {
+	void testSetTargetManualMode(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
@@ -348,7 +348,7 @@ public class EndToEndTest {
 	
 	
 	@Test
-	public void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
+	void testElevatorListHasElementsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(3);
 		
 		startGui(robot);
@@ -361,7 +361,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testServicedFloorListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
+	void testServicedFloorListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(3);
@@ -394,7 +394,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testStopListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
+	void testStopListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -433,7 +433,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testStopListContainsCorrectItemsWhenChangingBetweenElevators(FxRobot robot) throws RemoteException, TimeoutException {
+	void testStopListContainsCorrectItemsWhenChangingBetweenElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -472,7 +472,7 @@ public class EndToEndTest {
 	}		
 	
 	@Test
-	public void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
+	void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -495,7 +495,7 @@ public class EndToEndTest {
 	}		
 	
 	@Test
-	public void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
+	void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -518,7 +518,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testUpsAndDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
+	void testUpsAndDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -564,7 +564,7 @@ public class EndToEndTest {
 	}		
 	
 	@Test
-	public void testStopListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
+	void testStopListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -605,7 +605,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testUpsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
+	void testUpsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
@@ -628,7 +628,7 @@ public class EndToEndTest {
 	}	
 	
 	@Test
-	public void testDownsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
+	void testDownsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
