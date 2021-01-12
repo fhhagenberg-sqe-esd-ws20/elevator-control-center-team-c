@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import java.util.List;
 
 import at.fhhagenberg.sqe.esd.ws20.model.AutoMode;
-import at.fhhagenberg.sqe.esd.ws20.model.AutoModeRandomAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IElevatorModel;
 import at.fhhagenberg.sqe.esd.ws20.model.IFloorModel;

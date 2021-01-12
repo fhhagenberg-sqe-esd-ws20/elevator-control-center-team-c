@@ -54,7 +54,7 @@ import javafx.stage.Stage;
  */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
-public class MainGuiControllerTest {
+class MainGuiControllerTest {
 	
 	@Mock
 	private UpdateData mockedUpdater;
@@ -85,7 +85,7 @@ public class MainGuiControllerTest {
 	 * @throws Exception
 	 */
 	@Start
-	public void start(Stage stage) throws Exception {
+	void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainGui.fxml"));
 		Parent root = loader.load();
 		
@@ -107,7 +107,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testRegisterNullExceptions() {
+	void testRegisterNullExceptions() {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 
 		assertThrows(NullPointerException.class, () -> {
@@ -127,7 +127,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testUpdateNullExceptions() {
+	void testUpdateNullExceptions() {
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.update(null, mockedElevator);
 		});
@@ -138,7 +138,7 @@ public class MainGuiControllerTest {
 	
 	
 	@Test
-	public void testHandlersBeforeRegister(FxRobot robot) {
+	void testHandlersBeforeRegister(FxRobot robot) {
 		//no elements are in the elevator, nothing should happen as the checkbox is disabled by default
 		robot.clickOn("#checkbox_manual_mode");
 		Mockito.verifyNoMoreInteractions(mockedAutoModeAlgorithm);
@@ -151,7 +151,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testHandlersBeforeRegisterManualCall(FxRobot robot) {
+	void testHandlersBeforeRegisterManualCall(FxRobot robot) {
 		//this tests doesn't click the ui, but calls the handlers manually. This is to check if the null checks work.
 		
 		assertThrows(NullPointerException.class, () -> {
@@ -163,7 +163,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testUpdateBeforeRegister() {
+	void testUpdateBeforeRegister() {
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
 		//nothing should change from the default
@@ -185,7 +185,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testNoElevatorsRegister(FxRobot robot) throws TimeoutException {
+	void testNoElevatorsRegister(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(0);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -208,7 +208,7 @@ public class MainGuiControllerTest {
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.isEmpty());
 	}
 	@Test
-	public void testNoElevatorsUpdateAfterRegister(FxRobot robot) throws TimeoutException {
+	void testNoElevatorsUpdateAfterRegister(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(0);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
@@ -236,7 +236,7 @@ public class MainGuiControllerTest {
 	
 	
 	@Test
-	public void testElevatorsWithPropertiesButEmptyLists(FxRobot robot) throws TimeoutException {
+	void testElevatorsWithPropertiesButEmptyLists(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedElevator.getTarget()).thenReturn(0);
 		Mockito.when(mockedElevator.getPosition()).thenReturn(0);
@@ -268,7 +268,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testElevatorsWithFilledLists(FxRobot robot) throws TimeoutException {
+	void testElevatorsWithFilledLists(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedElevator.getTarget()).thenReturn(0);
 		Mockito.when(mockedElevator.getPosition()).thenReturn(1);
@@ -304,7 +304,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testElevatorChangeAutomodeFunctionCalls(FxRobot robot) throws TimeoutException {
+	void testElevatorChangeAutomodeFunctionCalls(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedElevator.getTarget()).thenReturn(0);
 		Mockito.when(mockedElevator.getPosition()).thenReturn(1);
@@ -326,7 +326,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testSwitchElevatorsFunctionCalls(FxRobot robot) {
+	void testSwitchElevatorsFunctionCalls(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedElevator.getTarget()).thenReturn(0);
 		Mockito.when(mockedElevator.getPosition()).thenReturn(1);
@@ -348,7 +348,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testSwitchElevatorsWithPropertiesChange(FxRobot robot) throws TimeoutException {
+	void testSwitchElevatorsWithPropertiesChange(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedElevator.getTarget()).thenReturn(0, 0);
 		Mockito.when(mockedElevator.getPosition()).thenReturn(1, 10);
@@ -387,7 +387,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testDisplayedNumberOfFloors(FxRobot robot) throws TimeoutException {
+	void testDisplayedNumberOfFloors(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -397,7 +397,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testDisplayedStatusMessage(FxRobot robot) throws TimeoutException {
+	void testDisplayedStatusMessage(FxRobot robot) throws TimeoutException {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		statusAlert.Status.set("moinmoin");
@@ -408,7 +408,7 @@ public class MainGuiControllerTest {
 	
 	
 	@Test
-	public void testCheckboxDisabledOnNoElevators() {
+	void testCheckboxDisabledOnNoElevators() {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(0);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -418,7 +418,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws TimeoutException {
+	void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -428,7 +428,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws TimeoutException {
+	void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws TimeoutException {
 		Mockito.when(mockedAutoModeAlgorithm.checkIfInAutoMode(1)).thenReturn(true);
 		
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -454,7 +454,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testCheckboxSelectDeselectFunctionCalls(FxRobot robot) {
+	void testCheckboxSelectDeselectFunctionCalls(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
@@ -471,7 +471,7 @@ public class MainGuiControllerTest {
 	
 	
 	@Test
-	public void testButtonDisabledOnNoElevators() {
+	void testButtonDisabledOnNoElevators() {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(0);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -480,7 +480,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testButtonDisabledWithCheckboxNotChecked() {
+	void testButtonDisabledWithCheckboxNotChecked() {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -489,7 +489,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testButtonEnabledWithCheckboxChecked(FxRobot robot) {
+	void testButtonEnabledWithCheckboxChecked(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
@@ -499,7 +499,7 @@ public class MainGuiControllerTest {
 	}
 	
 	@Test
-	public void testButtonClickedFunctionCalls(FxRobot robot) {
+	void testButtonClickedFunctionCalls(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -515,7 +515,7 @@ public class MainGuiControllerTest {
 	
 	@Disabled
 	@Test
-	public void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
+	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -532,7 +532,7 @@ public class MainGuiControllerTest {
 	
 	@Disabled
 	@Test
-	public void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) {
+	void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
@@ -550,7 +550,7 @@ public class MainGuiControllerTest {
 	
 	@Disabled
 	@Test
-	public void testButtonClickedEnteredFloorEmpty(FxRobot robot) {
+	void testButtonClickedEnteredFloorEmpty(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
