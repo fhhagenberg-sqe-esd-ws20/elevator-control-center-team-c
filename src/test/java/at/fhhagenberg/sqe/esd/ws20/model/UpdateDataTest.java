@@ -438,7 +438,7 @@ class UpdateDataTest {
 	}
 	
 	@Test
-	void testRefreshElevatorInvalidPosition() throws RemoteException {
+	void testRefreshElevatorInvalidPosition() throws RemoteException, InterruptedException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
 		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(5);
@@ -446,6 +446,8 @@ class UpdateDataTest {
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
 		coreUpdater.refreshElevator(0);
+		
+		Thread.sleep(100);
 
 		Mockito.verify(MockedmainGuiControler, never()).update(Mockedfloor, Elevators.get(0));
 		assertEquals("Sanity Check failed in UpdateData.refreshElevator()", StatusAlert.Status.get());
