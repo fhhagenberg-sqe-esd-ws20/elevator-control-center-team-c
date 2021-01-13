@@ -54,7 +54,7 @@ public class ElevatorControlCenter extends Application {
 		} catch (IOException e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-96.png"));
 			alert.showAndWait();
 			return;
 		}
@@ -62,7 +62,7 @@ public class ElevatorControlCenter extends Application {
 		Scene scene = new Scene(root);
 		stage.setTitle("Wielander Inc. Elevator Control Center | Team C");
 		stage.setResizable(false);
-		stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons8-elevator-24.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons8-elevator-96.png")));
 		scene.getStylesheets().add("/modena_dark.css");
 		stage.setScene(scene);
 		stage.show();

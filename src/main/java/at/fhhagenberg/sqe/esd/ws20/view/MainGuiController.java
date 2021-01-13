@@ -162,7 +162,7 @@ public class MainGuiController {
     	} catch (NumberFormatException e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-96.png"));
 			alert.showAndWait();
 			return;
 		}
@@ -171,16 +171,13 @@ public class MainGuiController {
     	if(floorNumber > numFloorsInBuilding) {
     		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") exceeds number of floors in building (" + numFloorsInBuilding + ")!");
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-96.png"));
 			alert.showAndWait();
 			return;
     	}
     	if(floorNumber <= 0) {
-    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") must be greater than 0!");
-			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-24.png"));
-			alert.showAndWait();
-			return;
+    		//this should never happen, the textformatter of the textfield should not allow input that is <=0
+    		throw new NumberFormatException("MainGuiController.buttonSendToFloor() floorNumber<=0");
     	}
     	
     	//send to UpdateData and set as new floor
@@ -193,22 +190,14 @@ public class MainGuiController {
 	 * Sets up a formatter for the textfield and registers a listener for the elevator listview
 	 */
 	private void setup() {
-		//only allow integers without decimal separator in textfield
-		DecimalFormat format = new DecimalFormat("#");
-		format.setParseIntegerOnly(true);
-		textfield_floor_number.setTextFormatter(new TextFormatter<>(c -> {
-			if (c.getControlNewText().isEmpty()) {
-				return c;
+		//set which chars are allowed in the textfield
+		textfield_floor_number.setTextFormatter(new TextFormatter<>(change -> {
+			String newText = change.getControlNewText();
+			//only positive integers without leading sing
+			if (newText.matches("([1-9][0-9]*)?")) {
+				return change;
 			}
-
-			ParsePosition parsePosition = new ParsePosition(0);
-			Object object = format.parse(c.getControlNewText(), parsePosition);
-
-			if (object == null || parsePosition.getIndex() < c.getControlNewText().length()) {
-				return null;
-			} else {
-				return c;
-			}
+			return null;
 		}));
 		
 		//listen for selection changes on the elevator listview. Update the selected index.

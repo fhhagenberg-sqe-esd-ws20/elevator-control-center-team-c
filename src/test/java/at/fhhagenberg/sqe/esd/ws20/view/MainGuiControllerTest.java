@@ -26,6 +26,7 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
+import org.testfx.matcher.control.TextInputControlMatchers;
 
 import at.fhhagenberg.sqe.esd.ws20.model.AutoModeRandomAlgo;
 import at.fhhagenberg.sqe.esd.ws20.model.IBuildingModel;
@@ -92,7 +93,7 @@ class MainGuiControllerTest {
 		Scene scene = new Scene(root);
 		stage.setTitle("Wielander Inc. Elevator Control Center | Team C");
 		stage.setResizable(false);
-		stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons8-elevator-24.png")));
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons8-elevator-96.png")));
 		scene.getStylesheets().add("/modena_dark.css");
 		stage.setScene(scene);
 		stage.show();
@@ -511,6 +512,22 @@ class MainGuiControllerTest {
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(4);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
+	}
+	
+	@Test
+	void testButtonClickedEnteredFloorValidRegexFormatChecks(FxRobot robot) {
+		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
+		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
+		
+		robot.clickOn("#checkbox_manual_mode");
+		robot.doubleClickOn("#textfield_floor_number").write("0");
+		
+		FxAssert.verifyThat("#textfield_floor_number", TextInputControlMatchers.hasText(""));
+		
+		robot.doubleClickOn("#textfield_floor_number").write("-");
+		
+		FxAssert.verifyThat("#textfield_floor_number", TextInputControlMatchers.hasText(""));
 	}
 	
 	@Disabled
