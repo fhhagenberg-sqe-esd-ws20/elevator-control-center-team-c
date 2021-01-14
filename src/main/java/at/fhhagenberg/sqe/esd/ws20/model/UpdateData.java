@@ -1,8 +1,5 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -541,7 +538,6 @@ public class UpdateData extends TimerTask {
 		initializeServicedFloors();
 		AutoModeAlgorithm.Init(Building, Elevators, this);
 		GuiController.reUpdate();
-		StatusAlert.setStatus("Connected to Elevator");
     }
     
     /**
