@@ -14,6 +14,7 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 import sqelevator.IElevator;
 
@@ -39,11 +40,11 @@ public class UpdateData extends TimerTask {
 	 * @param autoModeAlgorithm - the algorithm to calculate the next elevator target in automatic mode
 	 * @throws RemoteException 
 	 */
-	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert, AutoMode autoModeAlgorithm)
+	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert, AutoMode autoModeAlgorithm, IRMIConnection rmiConnection)
 	{
 		
 		//sqbuilding, sqelevator can be null -> next update cycle a reconnect will be done
-		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null || autoModeAlgorithm == null)
+		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null || autoModeAlgorithm == null || rmiConnection == null)
 		{
 			throw new NullPointerException("Nullpointer in UpdateData!");
 		}
@@ -55,6 +56,7 @@ public class UpdateData extends TimerTask {
 		GuiController = guiController;
 		StatusAlert = statusAlert;
 		AutoModeAlgorithm = autoModeAlgorithm;
+		RMIConnection = rmiConnection;
 		OutOfSyncCounter = 0;
 	}
 	
@@ -535,14 +537,45 @@ public class UpdateData extends TimerTask {
     	}
 		SqBuilding = b;
 		Sqelevator = e;
-		StatusAlert.setStatus("Connected to Elevator");
 		initializeBuilding();
 		initializeElevators();
 		initializeServicedFloors();
 		AutoModeAlgorithm.Init(Building, Elevators, this);
 		GuiController.reUpdate();
+		StatusAlert.setStatus("Connected to Elevator");
     }
     
+    /**
+     * Set ElevatorSimulator to use
+     * @param elevator elevator to use
+     * @throws RemoteException exception which can be thrown
+     */
+    public void SetRMIs(IElevator elevator) throws RemoteException {
+			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
+			SetSqs(wrap, wrap);
+    }
+    
+
+    /**
+     * Reconnects to the RMI
+     */
+    public void ReconnectRMI() {
+
+	    IElevator elevator = RMIConnection.getElevator();
+	    
+	    if(elevator != null) {
+			try {
+				SetRMIs(elevator);
+				StatusAlert.setStatus("Connected to Elevator");
+			} catch (RemoteException e) {
+				StatusAlert.setStatus("No Elevator Connection");
+			}
+	    }
+	    else {
+	    	StatusAlert.setStatus("No Elevator Connection");
+	    }
+	    
+    }
     
     /**
      * returns the index of the current selected elevator
@@ -551,28 +584,12 @@ public class UpdateData extends TimerTask {
     {
     	return SelectedElevator;
     }
-    
-    
-    
-    public void ReconnectRMI() {
-
-	    IElevator elevator = null;
-		try {
-			elevator = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-			SetRMIs(elevator);
-			StatusAlert.setStatus("Connected");
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			StatusAlert.setStatus("No Elevator Connection");
-		}
-    }
-    
-    public void SetRMIs(IElevator elevator) throws RemoteException {
-			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
-			SetSqs(wrap, wrap);
-    }
-    
 
     
+    /**
+     * Get the Out of sync counter
+     * @return out of sync counter
+     */
     public Integer GetOutOfSyncCounter()
     {
     	return OutOfSyncCounter;
@@ -591,5 +608,6 @@ public class UpdateData extends TimerTask {
     private Integer CriticalOutOfSyncValue = 5;
     private final String GetClockExecText = "Exception in getClockTick() of SQElevator";
     private AutoMode AutoModeAlgorithm;
+    private IRMIConnection RMIConnection;
     
 }

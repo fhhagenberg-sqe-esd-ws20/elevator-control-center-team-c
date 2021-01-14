@@ -15,6 +15,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +36,8 @@ public class RMIConnectionTests {
 	AutoMode AutoModeAlgo;
 	@Mock
 	StatusAlert StatusAlert;
+	@Mock
+	IRMIConnection RMIConnection;
 	
 	List<IElevatorModel> Elevators;
 	
@@ -50,7 +53,7 @@ public class RMIConnectionTests {
 	void testReconnectRMIFailureTest() throws RemoteException {		
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo, RMIConnection);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		coreUpdater.ReconnectRMI();
 		coreUpdater.run();

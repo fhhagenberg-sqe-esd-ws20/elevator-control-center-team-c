@@ -18,6 +18,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
 import at.fhhagenberg.sqe.esd.ws20.others.TestUtils;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
@@ -52,6 +53,9 @@ class EndToEndTest {
 	@Mock
 	private IElevator mockedElevators;
 	
+	@Mock
+	private IRMIConnection mockedRMI;
+	
 	/**
 	 * Initialize and open gui.
 	 * Gets executed before each test, works like BeforeEach.
@@ -65,8 +69,9 @@ class EndToEndTest {
 	}
 	
 	private void startGui(FxRobot robot) throws RemoteException, TimeoutException {
+		Mockito.when(mockedRMI.getElevator()).thenReturn(mockedElevators);
 		Platform.runLater(new Runnable() { public void run() {
-			new ElevatorControlCenter().setup(mainGuiStage, mockedElevators);
+			new ElevatorControlCenter().setup(mainGuiStage, mockedRMI);
 		}});
 		testutils.waitUntilNodeIsVisible("#button_send_to_floor", robot);
 	}
