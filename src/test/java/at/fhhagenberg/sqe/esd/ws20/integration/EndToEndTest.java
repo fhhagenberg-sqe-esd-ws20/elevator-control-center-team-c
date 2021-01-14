@@ -654,7 +654,21 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 4"));
 	}	
 	
-	
+	@Test
+	void testOutOfSync(FxRobot robot) throws RemoteException, TimeoutException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		Mockito.when(mockedElevators.getClockTick()).thenReturn((long)0, (long)1, (long)2, (long)3, (long)4, (long)5, (long)6, (long)7, 
+				(long)8, (long)9, (long)10, (long)11);
+
+		startGui(robot);
+		
+		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.", robot);
+		
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface."));
+	}	
 	
 	
 	

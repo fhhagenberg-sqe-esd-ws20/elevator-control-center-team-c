@@ -148,9 +148,7 @@ public class UpdateData extends TimerTask {
             	
             	if(OutOfSyncCounter > CriticalOutOfSyncValue)
             	{
-    	    		StatusAlert.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface. "
-    	    				+ "Current timestamp = "
-    	    				+ SqBuilding.getClockTick());
+    	    		StatusAlert.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.");
             	}
 
             	if(error) {
