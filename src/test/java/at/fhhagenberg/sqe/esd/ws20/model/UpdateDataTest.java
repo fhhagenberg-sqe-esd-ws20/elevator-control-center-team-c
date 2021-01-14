@@ -26,6 +26,7 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
+import sqelevator.IElevator;
 
 /**
  * Testing Class UpdateData
@@ -52,6 +53,8 @@ class UpdateDataTest {
 	StatusAlert MockedStatusAlert;
 	@Mock
 	IRMIConnection MockedRMIConnection;
+	@Mock
+	IElevator IElevatorMock;
 	
 	List<IElevatorModel> Elevators;
 	UpdateData coreUpdater;
@@ -774,7 +777,37 @@ class UpdateDataTest {
 		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
 	}		
 	
-	//ToDo: Test return bool values
+	@Test
+	void testReconnectionIsCalledAfterRemoteException() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getElevatorSpeed(0)).thenThrow(new RemoteException());
 
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		//update
+		coreUpdater.run();
+		
+		Mockito.verify(MockedRMIConnection, times(1)).getElevator();
+	}
+	
+	//TODO: wie soll man SetRMIs testen? Das objekt wird ja in der methode angelegt
+	@Disabled
+	@Test
+	void testSetRMIIsSettingRMIs() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetRMIs(IElevatorMock);
+		
+		assertEquals(IElevatorMock, coreUpdater.getSqelevator());
+		assertEquals(IElevatorMock, coreUpdater.getSqBuilding());
+
+	}
+	
 }
 	

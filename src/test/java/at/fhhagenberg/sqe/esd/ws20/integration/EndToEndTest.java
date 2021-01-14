@@ -655,6 +655,18 @@ class EndToEndTest {
 	}	
 	
 	@Test
+	void testConnectionStatusIsConnected(FxRobot robot) throws RemoteException, TimeoutException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+
+		startGui(robot);
+		
+		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
+		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
+	}		
+	
+	@Test
 	void testOutOfSync(FxRobot robot) throws RemoteException, TimeoutException {
 		
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);

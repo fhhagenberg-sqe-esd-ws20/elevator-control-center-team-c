@@ -594,6 +594,24 @@ public class UpdateData extends TimerTask {
     	return OutOfSyncCounter;
     }
     
+    /**
+     * Get the Sqelevator
+     * @return Sqelevator
+     */
+    public IElevatorWrapper getSqelevator()
+    {
+    	return Sqelevator;
+    }
+    
+    /**
+     * Get the SqBuilding
+     * @return SqBuilding
+     */
+    public IBuildingWrapper getSqBuilding()
+    {
+    	return SqBuilding;
+    }
+    
     
 	private IElevatorWrapper Sqelevator;
 	private IBuildingWrapper SqBuilding;
