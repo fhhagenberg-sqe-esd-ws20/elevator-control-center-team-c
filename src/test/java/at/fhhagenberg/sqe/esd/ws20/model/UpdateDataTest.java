@@ -43,12 +43,14 @@ class UpdateDataTest {
 	IBuildingWrapper MockedBuildingWrapper;	
 	@Mock
 	MainGuiController MockedmainGuiControler;
+	@Mock
+	AutoMode AutoModeAlgo;
+	@Mock
+	StatusAlert StatusAlert;
 	
 	List<IElevatorModel> Elevators;
 	UpdateData coreUpdater;
-	StatusAlert StatusAlert;
-	AutoMode AutoModeAlgo = new AutoModeRandomAlgo();	//TODO Von Lukas: Da ich die Schnittstelle von UpdateData(...) geändert habe, musste ich diese Objekt hier einfügen, damit die Tests wieder durchlaufen. Muss man das auch mocken?
-
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		StatusAlert = new StatusAlert();
@@ -660,7 +662,7 @@ class UpdateDataTest {
 	}
 	
 	@Test
-	void setSQsNullpointerforElevator() throws RemoteException {		
+	void testSetSQsNullpointerforElevator() throws RemoteException {		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		
 		assertThrows(RuntimeException.class, () 
@@ -668,7 +670,7 @@ class UpdateDataTest {
 	}
 	
 	@Test
-	void setSQsNullpointerforBuilding() throws RemoteException {		
+	void testSetSQsNullpointerforBuilding() throws RemoteException {		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
 		
 		assertThrows(RuntimeException.class, () 
@@ -676,7 +678,7 @@ class UpdateDataTest {
 	}	
 	
 	@Test
-	void setSQsIsCallingMethods() throws RemoteException {		
+	void testSetSQsIsCallingMethods() throws RemoteException {		
 		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
@@ -688,20 +690,7 @@ class UpdateDataTest {
 		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
 	}		
 	
-	@Disabled
-	@Test
-	void ReconnectRMIFailureTest() throws RemoteException {		
-		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
-		
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
-		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		coreUpdater.ReconnectRMI();
-		coreUpdater.run();
-		assertEquals("No Elevator Connection", StatusAlert.Status.get());
-	}	
 	
-	//ToDo: Test RMI connection
-	//ToDo: Test return bool values
-	//ToDo: SetRMIs, ReconnectRMI
+
 }
 	
