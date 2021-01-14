@@ -380,9 +380,9 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getServicesFloors(1, 2)).thenReturn(false);
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_no_service", "Floor 3", robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "3", robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listview_no_service", "Floor 3", robot);
 		
 		// elavator1
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(2));
@@ -491,7 +491,7 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_calls_up", "Floor 2", robot);
+		testutils.waitUntilListviewHasCellText("#listview_calls_up", "Floor 3", robot);
 		
 		
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
@@ -514,6 +514,7 @@ class EndToEndTest {
 
 
 		startGui(robot);
+		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 2", robot);
 		
 		
