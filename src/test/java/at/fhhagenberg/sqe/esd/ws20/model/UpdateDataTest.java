@@ -269,6 +269,55 @@ class UpdateDataTest {
 	}
 	
 	@Test
+	void testSetTargetCommitedDirectionUp() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(8);
+
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		coreUpdater.setTarget(9);
+
+		
+		assertEquals(9, Elevators.get(0).getTarget());
+		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 9);
+		Mockito.verify(MockedElevatorWrapper, times(1)).setCommittedDirection(0, ElevatorDirection.ELEVATOR_DIRECTION_UP);
+	}	
+	
+	@Test
+	void testSetTargetCommitedDirectionDown() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(5);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		coreUpdater.setTarget(4);
+
+		
+		assertEquals(4, Elevators.get(0).getTarget());
+		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 4);
+		Mockito.verify(MockedElevatorWrapper, times(1)).setCommittedDirection(0, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
+	}		
+	
+	@Test
+	void testSetTargetCommitedDirectionUncomitted() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(5);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		coreUpdater.setTarget(5);
+
+		
+		assertEquals(5, Elevators.get(0).getTarget());
+		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 5);
+		Mockito.verify(MockedElevatorWrapper, times(1)).setCommittedDirection(0, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
+	}			
+	
+	@Test
 	void testSetTargetValidDifferentTargetsForTwoElevators() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);

@@ -201,10 +201,13 @@ public class UpdateData extends TimerTask {
 			if(elevator >= 0 && elevator < Elevators.size())
 			{
 				Elevators.get(elevator).setTarget(floor);
-				
+								
 				// set new target for SQElevator
 				try {
+					int currentPosition = Sqelevator.getElevatorFloor(elevator);
 					Sqelevator.setTarget(elevator, floor);
+					setComittedDirection(currentPosition, floor, elevator);
+					
 				} catch (RemoteException e) {
 					StatusAlert.setStatus("Exception in setTarget of SQElevator with floor: " + floor + " for Elevator" + elevator);
 				}
@@ -231,12 +234,39 @@ public class UpdateData extends TimerTask {
     		
 			// set new target for SQElevator
 			try {
+				int currentPosition = Sqelevator.getElevatorFloor(SelectedElevator);
 				Sqelevator.setTarget(SelectedElevator, floor);
+				setComittedDirection(currentPosition, floor, SelectedElevator);
+				
 			} catch (RemoteException e) {
 				StatusAlert.setStatus("Exception in setTarget of SQElevator with floor: " + floor);
 			}
     		GuiController.update(Floor, Elevators.get(SelectedElevator));
     	}
+    }
+    
+    
+    /**
+     * Set the comitted direction depending on current floor and target floor
+     * 
+     * @param currentFloor - current position of the elevator
+     * @param targetFloor - index of the floor, where the elevator should stop
+     * @param elevator - index of the elevator, which should change the comitted direction
+     */
+    private void setComittedDirection(int currentFloor, int targetFloor, int elevatorIdx) throws RemoteException
+    {
+		if(targetFloor > currentFloor)
+		{
+			Sqelevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UP);
+		}
+		else if(targetFloor < currentFloor)
+		{
+			Sqelevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);						
+		}
+		else
+		{
+			Sqelevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);												
+		}
     }
     
     
