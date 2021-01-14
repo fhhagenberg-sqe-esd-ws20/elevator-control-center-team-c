@@ -50,14 +50,14 @@ class UpdateDataTest {
 	@Mock
 	AutoMode MockedAutoModeAlgo;
 	@Mock
-	StatusAlert MockedStatusAlert;
-	@Mock
 	IRMIConnection MockedRMIConnection;
 	@Mock
 	IElevator IElevatorMock;
 	
 	List<IElevatorModel> Elevators;
 	UpdateData coreUpdater;
+	StatusAlert MockedStatusAlert;
+
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -765,6 +765,143 @@ class UpdateDataTest {
 	}	
 	
 	@Test
+	void testExceptionWhengettingServicedFloors() throws RemoteException, InterruptedException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(5);
+		Mockito.when(MockedElevatorWrapper.getServicesFloors(0, 0)).thenThrow(new RemoteException());
+		
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in getServicesFloors() of SQElevator with floor 0 and elevator 0",  MockedStatusAlert.Status.get());
+	}
+	
+	// This test fails by no comprehensible reason. When debugging, the test runs without failure
+	@Test
+	void testRemoteExceptionInSetTargetWithSelectedElevator() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setTarget(0);
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in setTarget of SQElevator with floor: 0",  MockedStatusAlert.Status.get());
+	}	
+	
+	// This test fails by no comprehensible reason. When debugging, the test runs without failure
+	@Test
+	void testRemoteExceptionInSetTargetWithElevator() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setTarget(0, 0);
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in setTarget of SQElevator with floor: 0 for Elevator0",  MockedStatusAlert.Status.get());
+	}	
+	
+	
+	@Test
+	void testRefreshElevatorWithRemoteExceptionWhenGettingTicks() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.refreshElevator(0);
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in getClockTick() of SQElevator",  MockedStatusAlert.Status.get());
+	}	
+	
+	@Test
+	void testRefreshElevatorWithRemoteExceptionWhenGettingElevatorButton() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getElevatorButton(0, 0)).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.refreshElevator(0);
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in getTarget() of SQElevator 1",  MockedStatusAlert.Status.get());
+	}		
+
+	@Test
+	void testrefreshUpDownlistWithRemoteExceptionWhenGettingTicks() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedBuildingWrapper.getClockTick()).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.refreshUpDownList();
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in getClockTick() of SQElevator",  MockedStatusAlert.Status.get());
+	}		
+	
+	@Test
+	void testrefreshUpistWithRemoteExceptionWhenGettingUpButton() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonUp(0)).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.refreshUpList();
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in getFloorButtonUp of SQElevator",  MockedStatusAlert.Status.get());
+	}	
+	
+	@Test
+	void testrefreshDownistWithRemoteExceptionWhenGettingDownButton() throws RemoteException, InterruptedException {		
+		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
+		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
+		Mockito.when(MockedBuildingWrapper.getFloorButtonDown(0)).thenThrow(new RemoteException());
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.refreshDownList();
+		
+		Thread.sleep(100);
+		
+		assertEquals("Exception in getFloorButtonDown of SQElevator",  MockedStatusAlert.Status.get());
+	}	
+	
+	@Test
 	void testSetSQsIsCallingMethods() throws RemoteException {		
 		Mockito.when(MockedBuildingWrapper.getElevatorNum()).thenReturn(2);
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
@@ -775,7 +912,7 @@ class UpdateDataTest {
 		Mockito.verify(MockedmainGuiControler, times(1)).reUpdate();
 		Mockito.verify(MockedBuilding, times(1)).setNumFloors(4);
 		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
-	}		
+	}	
 	
 	@Test
 	void testReconnectionIsCalledAfterRemoteException() throws RemoteException {
