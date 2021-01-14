@@ -54,7 +54,7 @@ public class RMIConnectionTests {
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo, RMIConnection);
-		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		coreUpdater.ReconnectRMI();
 		coreUpdater.run();
 		assertEquals("No Elevator Connection", StatusAlert.Status.get());
