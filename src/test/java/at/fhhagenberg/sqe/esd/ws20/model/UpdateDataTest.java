@@ -690,7 +690,7 @@ class UpdateDataTest {
 		Mockito.verify(MockedBuilding, times(1)).setNumElevators(2);
 	}		
 	
-	
+	//ToDo: Test return bool values
 
 }
 	

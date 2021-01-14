@@ -522,6 +522,26 @@ public class UpdateData extends TimerTask {
     	
     }
     
+    /**
+     * Set new SqElevator and SqBuilding to use and reinitialize all components
+     * @param b IBuildingWrapper
+     * @param e IElevatorWrapper
+     * @throws RemoteException 
+     */
+    public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
+    	if(b == null || e == null)
+    	{
+    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
+    	}
+		SqBuilding = b;
+		Sqelevator = e;
+		StatusAlert.setStatus("Connected to Elevator");
+		initializeBuilding();
+		initializeElevators();
+		initializeServicedFloors();
+		AutoModeAlgorithm.Init(Building, Elevators, this);
+		GuiController.reUpdate();
+    }
     
     
     /**
@@ -551,20 +571,7 @@ public class UpdateData extends TimerTask {
 			SetSqs(wrap, wrap);
     }
     
-    public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
-	    	if(b == null || e == null)
-	    	{
-	    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
-	    	}
-			SqBuilding = b;
-			Sqelevator = e;
-			StatusAlert.setStatus("Connected to Elevator");
-			initializeBuilding();
-			initializeElevators();
-			initializeServicedFloors();
-			AutoModeAlgorithm.Init(Building, Elevators, this);
-			GuiController.reUpdate();
-    }
+
     
     public Integer GetOutOfSyncCounter()
     {

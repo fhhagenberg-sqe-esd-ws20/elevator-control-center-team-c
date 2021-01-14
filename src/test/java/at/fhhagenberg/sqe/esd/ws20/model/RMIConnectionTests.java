@@ -41,9 +41,13 @@ public class RMIConnectionTests {
 	UpdateData coreUpdater;
 
 	
+	
+	
+	
+	
 	@Disabled
 	@Test
-	void ReconnectRMIFailureTest() throws RemoteException {		
+	void testReconnectRMIFailureTest() throws RemoteException {		
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo);
@@ -54,7 +58,6 @@ public class RMIConnectionTests {
 	}
 	
 	//ToDo: Test RMI connection
-	//ToDo: Test return bool values
 	//ToDo: SetRMIs, ReconnectRMI
 	
 }
