@@ -1,7 +1,9 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.never;
 
@@ -357,8 +359,9 @@ class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		coreUpdater.refreshUpList();
+		Boolean retVal = coreUpdater.refreshUpList();
 		
+		assertFalse(retVal.booleanValue());
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(2);
 	}
@@ -374,8 +377,9 @@ class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		coreUpdater.refreshDownList();
+		Boolean retVal = coreUpdater.refreshDownList();
 		
+		assertFalse(retVal.booleanValue());
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
 	}
@@ -395,8 +399,9 @@ class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.SetSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 
-		coreUpdater.refreshUpDownList();
+		Boolean retVal = coreUpdater.refreshUpDownList();
 		
+		assertFalse(retVal.booleanValue());
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(1);
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);

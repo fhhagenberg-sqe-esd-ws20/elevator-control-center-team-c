@@ -242,8 +242,8 @@ public class UpdateData extends TimerTask {
     
     /**
      * Refresh list with pressed up and down buttons and notify the gui to show them
-     * @return success ... true, false ... error
-     */
+     * @return error ... true, success ... false
+     *      */
     public boolean refreshUpDownList()
     {
     	boolean error = false;
@@ -289,7 +289,7 @@ public class UpdateData extends TimerTask {
     /**
      * Refresh list with pressed up buttons
      * 
-     * @return success ... true, false ... error
+     * @return error ... true, success ... false
      * @throws RemoteException
      */
     public boolean refreshUpList()
@@ -322,8 +322,8 @@ public class UpdateData extends TimerTask {
     /**
      * Refresh list with pressed down buttons
      
-     * @return success ... true, false ... error
-     * @throws RemoteException
+     * @return error ... true, success ... false
+     *      * @throws RemoteException
      */
     public boolean refreshDownList()
     {
@@ -355,8 +355,8 @@ public class UpdateData extends TimerTask {
      * Refresh whole content of an elevator
      * 
      * @param elevator_idx - index of the elevator, that should be refreshed
-     * @return success ... true, false ... error
-     * @throws RemoteException
+     * @return error ... true, success ... false
+     *      * @throws RemoteException
      */
     public boolean refreshElevator(int elevator_idx)
     {
