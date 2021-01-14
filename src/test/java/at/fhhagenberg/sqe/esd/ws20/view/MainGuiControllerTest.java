@@ -291,17 +291,17 @@ class MainGuiControllerTest {
 		
 		
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 3"));
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 5"));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 5"));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 6"));
+		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 7"));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 7"));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 8"));
+		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 9"));
 	}
 	
 	@Test

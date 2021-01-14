@@ -103,7 +103,7 @@ public class UpdateData extends TimerTask {
 					StatusAlert.setStatus("Exception in getServicesFloors() of SQElevator with floor " + floor + " and elevator " + elevator);
 				}
 				
-				if(floor_serviced)
+				if(!floor_serviced)
 				{
 					Elevators.get(elevator).addIgnoredFloor(floor);
 				}
