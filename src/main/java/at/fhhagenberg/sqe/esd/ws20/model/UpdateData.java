@@ -497,46 +497,17 @@ public class UpdateData extends TimerTask {
     	
     	try{
     		target = Sqelevator.getTarget(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getTarget() of SQElevator");
-    	}
-    	try{
     		door_status = Sqelevator.getElevatorDoorStatus(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorDoorStatus() of SQElevator");
-    	}
-    	try{
     		position = Sqelevator.getElevatorFloor(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorFloor() of SQElevator");
-    	}
-    	try{
     		speed = Sqelevator.getElevatorSpeed(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorSpeed() of SQElevator");
-    	}
-    	try{
     		payload = Sqelevator.getElevatorWeight(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorWeight() of SQElevator");
-    	}
-    	try{
     		direction = Sqelevator.getCommittedDirection(elevator_idx);
     	}
     	catch(RemoteException e){
     		error = true;
-    		StatusAlert.setStatus("Exception in getCommittedDirection() of SQElevator");
+    		StatusAlert.setStatus("Connection lost to Elevator Simulator");
     	}
+
     	
 
     	if(error == false)

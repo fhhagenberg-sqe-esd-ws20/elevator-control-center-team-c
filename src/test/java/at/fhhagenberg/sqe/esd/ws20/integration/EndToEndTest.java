@@ -670,9 +670,16 @@ class EndToEndTest {
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface."));
 	}	
 	
-	
-	
-	//TODO test connection and reconnect to simulator?
-	
+	@Test
+	void testReconnectionAfterRemoteException(FxRobot robot) throws RemoteException, TimeoutException {
+		
+		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
+		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
+		Mockito.when(mockedElevators.getElevatorSpeed(0)).thenThrow(new RemoteException());
 
+		startGui(robot);
+		
+		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connection lost to Elevator Simulator", robot);
+		//FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connection lost to Elevator Simulator"));
+	}		
 }
