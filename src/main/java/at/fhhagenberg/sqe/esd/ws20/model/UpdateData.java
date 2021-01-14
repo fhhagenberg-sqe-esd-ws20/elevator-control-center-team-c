@@ -14,6 +14,7 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IBuildingWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 import sqelevator.IElevator;
 
@@ -39,11 +40,11 @@ public class UpdateData extends TimerTask {
 	 * @param autoModeAlgorithm - the algorithm to calculate the next elevator target in automatic mode
 	 * @throws RemoteException 
 	 */
-	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert, AutoMode autoModeAlgorithm)
+	public UpdateData(IBuildingModel building, IFloorModel floor, List<IElevatorModel> elevators, MainGuiController guiController, StatusAlert statusAlert, AutoMode autoModeAlgorithm, IRMIConnection rmiConnection)
 	{
 		
 		//sqbuilding, sqelevator can be null -> next update cycle a reconnect will be done
-		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null || autoModeAlgorithm == null)
+		if(building == null || floor == null || elevators == null || guiController == null || statusAlert == null || autoModeAlgorithm == null || rmiConnection == null)
 		{
 			throw new NullPointerException("Nullpointer in UpdateData!");
 		}
@@ -55,6 +56,7 @@ public class UpdateData extends TimerTask {
 		GuiController = guiController;
 		StatusAlert = statusAlert;
 		AutoModeAlgorithm = autoModeAlgorithm;
+		RMIConnection = rmiConnection;
 		OutOfSyncCounter = 0;
 	}
 	
@@ -101,7 +103,7 @@ public class UpdateData extends TimerTask {
 					StatusAlert.setStatus("Exception in getServicesFloors() of SQElevator with floor " + floor + " and elevator " + elevator);
 				}
 				
-				if(floor_serviced)
+				if(!floor_serviced)
 				{
 					Elevators.get(elevator).addIgnoredFloor(floor);
 				}
@@ -146,9 +148,7 @@ public class UpdateData extends TimerTask {
             	
             	if(OutOfSyncCounter > CriticalOutOfSyncValue)
             	{
-    	    		StatusAlert.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface. "
-    	    				+ "Current timestamp = "
-    	    				+ SqBuilding.getClockTick());
+    	    		StatusAlert.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.");
             	}
 
             	if(error) {
@@ -199,10 +199,13 @@ public class UpdateData extends TimerTask {
 			if(elevator >= 0 && elevator < Elevators.size())
 			{
 				Elevators.get(elevator).setTarget(floor);
-				
+								
 				// set new target for SQElevator
 				try {
+					int currentPosition = Sqelevator.getElevatorFloor(elevator);
 					Sqelevator.setTarget(elevator, floor);
+					setComittedDirection(currentPosition, floor, elevator);
+					
 				} catch (RemoteException e) {
 					StatusAlert.setStatus("Exception in setTarget of SQElevator with floor: " + floor + " for Elevator" + elevator);
 				}
@@ -229,7 +232,10 @@ public class UpdateData extends TimerTask {
     		
 			// set new target for SQElevator
 			try {
+				int currentPosition = Sqelevator.getElevatorFloor(SelectedElevator);
 				Sqelevator.setTarget(SelectedElevator, floor);
+				setComittedDirection(currentPosition, floor, SelectedElevator);
+				
 			} catch (RemoteException e) {
 				StatusAlert.setStatus("Exception in setTarget of SQElevator with floor: " + floor);
 			}
@@ -239,9 +245,33 @@ public class UpdateData extends TimerTask {
     
     
     /**
-     * Refresh list with pressed up and down buttons and notify the gui to show them
-     * @return success ... true, false ... error
+     * Set the comitted direction depending on current floor and target floor
+     * 
+     * @param currentFloor - current position of the elevator
+     * @param targetFloor - index of the floor, where the elevator should stop
+     * @param elevator - index of the elevator, which should change the comitted direction
      */
+    private void setComittedDirection(int currentFloor, int targetFloor, int elevatorIdx) throws RemoteException
+    {
+		if(targetFloor > currentFloor)
+		{
+			Sqelevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UP);
+		}
+		else if(targetFloor < currentFloor)
+		{
+			Sqelevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);						
+		}
+		else
+		{
+			Sqelevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);												
+		}
+    }
+    
+    
+    /**
+     * Refresh list with pressed up and down buttons and notify the gui to show them
+     * @return error ... true, success ... false
+     *      */
     public boolean refreshUpDownList()
     {
     	boolean error = false;
@@ -287,7 +317,7 @@ public class UpdateData extends TimerTask {
     /**
      * Refresh list with pressed up buttons
      * 
-     * @return success ... true, false ... error
+     * @return error ... true, success ... false
      * @throws RemoteException
      */
     public boolean refreshUpList()
@@ -320,8 +350,8 @@ public class UpdateData extends TimerTask {
     /**
      * Refresh list with pressed down buttons
      
-     * @return success ... true, false ... error
-     * @throws RemoteException
+     * @return error ... true, success ... false
+     *      * @throws RemoteException
      */
     public boolean refreshDownList()
     {
@@ -353,8 +383,8 @@ public class UpdateData extends TimerTask {
      * Refresh whole content of an elevator
      * 
      * @param elevator_idx - index of the elevator, that should be refreshed
-     * @return success ... true, false ... error
-     * @throws RemoteException
+     * @return error ... true, success ... false
+     *      * @throws RemoteException
      */
     public boolean refreshElevator(int elevator_idx)
     {
@@ -467,46 +497,17 @@ public class UpdateData extends TimerTask {
     	
     	try{
     		target = Sqelevator.getTarget(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getTarget() of SQElevator");
-    	}
-    	try{
     		door_status = Sqelevator.getElevatorDoorStatus(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorDoorStatus() of SQElevator");
-    	}
-    	try{
     		position = Sqelevator.getElevatorFloor(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorFloor() of SQElevator");
-    	}
-    	try{
     		speed = Sqelevator.getElevatorSpeed(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorSpeed() of SQElevator");
-    	}
-    	try{
     		payload = Sqelevator.getElevatorWeight(elevator_idx);
-    	}
-    	catch(RemoteException e){
-    		error = true;
-    		StatusAlert.setStatus("Exception in getElevatorWeight() of SQElevator");
-    	}
-    	try{
     		direction = Sqelevator.getCommittedDirection(elevator_idx);
     	}
     	catch(RemoteException e){
     		error = true;
-    		StatusAlert.setStatus("Exception in getCommittedDirection() of SQElevator");
+    		StatusAlert.setStatus("Connection lost to Elevator Simulator");
     	}
+
     	
 
     	if(error == false)
@@ -522,7 +523,58 @@ public class UpdateData extends TimerTask {
     	
     }
     
+    /**
+     * Set new SqElevator and SqBuilding to use and reinitialize all components
+     * @param b IBuildingWrapper
+     * @param e IElevatorWrapper
+     * @throws RemoteException 
+     */
+    public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
+    	if(b == null || e == null)
+    	{
+    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
+    	}
+		SqBuilding = b;
+		Sqelevator = e;
+		initializeBuilding();
+		initializeElevators();
+		initializeServicedFloors();
+		AutoModeAlgorithm.Init(Building, Elevators, this);
+		GuiController.reUpdate();
+		StatusAlert.setStatus("Connected to Elevator");
+    }
     
+    /**
+     * Set ElevatorSimulator to use
+     * @param elevator elevator to use
+     * @throws RemoteException exception which can be thrown
+     */
+    public void SetRMIs(IElevator elevator) throws RemoteException {
+			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
+			SetSqs(wrap, wrap);
+    }
+    
+
+    /**
+     * Reconnects to the RMI
+     */
+    public void ReconnectRMI() {
+
+	    IElevator elevator = RMIConnection.getElevator();
+	    
+	    if(elevator != null) {
+			try {
+				SetRMIs(elevator);
+				StatusAlert.setStatus("Connected to Elevator");
+			} catch (RemoteException e) {
+				StatusAlert.setStatus("No Elevator Connection");
+			}
+	    }
+	    else {
+	    	StatusAlert.setStatus("No Elevator Connection");
+	    }
+	    
+    }
     
     /**
      * returns the index of the current selected elevator
@@ -531,43 +583,33 @@ public class UpdateData extends TimerTask {
     {
     	return SelectedElevator;
     }
-    
-    
-    
-    public void ReconnectRMI() {
 
-	    IElevator elevator = null;
-		try {
-			elevator = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
-			SetRMIs(elevator);
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			StatusAlert.setStatus("No Elevator Connection");
-		}
-    }
     
-    public void SetRMIs(IElevator elevator) throws RemoteException {
-			ElevatorWrapper wrap = new ElevatorWrapper(elevator);
-			SetSqs(wrap, wrap);
-    }
-    
-    public void SetSqs(IBuildingWrapper b, IElevatorWrapper e) throws RemoteException {
-	    	if(b == null || e == null)
-	    	{
-	    		throw new NullPointerException("Nullpointer in UpdateData.setSqs");
-	    	}
-			SqBuilding = b;
-			Sqelevator = e;
-			StatusAlert.setStatus("Connected to Elevator");
-			initializeBuilding();
-			initializeElevators();
-			initializeServicedFloors();
-			AutoModeAlgorithm.Init(Building, Elevators, this);
-			GuiController.reUpdate();
-    }
-    
+    /**
+     * Get the Out of sync counter
+     * @return out of sync counter
+     */
     public Integer GetOutOfSyncCounter()
     {
     	return OutOfSyncCounter;
+    }
+    
+    /**
+     * Get the Sqelevator
+     * @return Sqelevator
+     */
+    public IElevatorWrapper getSqelevator()
+    {
+    	return Sqelevator;
+    }
+    
+    /**
+     * Get the SqBuilding
+     * @return SqBuilding
+     */
+    public IBuildingWrapper getSqBuilding()
+    {
+    	return SqBuilding;
     }
     
     
@@ -583,5 +625,6 @@ public class UpdateData extends TimerTask {
     private Integer CriticalOutOfSyncValue = 5;
     private final String GetClockExecText = "Exception in getClockTick() of SQElevator";
     private AutoMode AutoModeAlgorithm;
+    private IRMIConnection RMIConnection;
     
 }

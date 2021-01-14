@@ -286,7 +286,7 @@ public class MainGuiController {
 		}
 		ObservableList<String> stopsOl = FXCollections.observableArrayList();
 		for (Integer e : stops) {
-			stopsOl.add("Floor " + e);
+			stopsOl.add("Floor " + (e+1));
 		}
 		Platform.runLater(() -> listview_stops.getItems().setAll(stopsOl));
     	
@@ -297,7 +297,7 @@ public class MainGuiController {
 		}
 		ObservableList<String> ignoredFloorsOl = FXCollections.observableArrayList();
 		for (Integer e : ignoredFloors) {
-			ignoredFloorsOl.add("Floor " + e);
+			ignoredFloorsOl.add("Floor " + (e+1));
 		}
 		Platform.runLater(() -> listview_no_service.getItems().setAll(ignoredFloorsOl));
 		
@@ -308,7 +308,7 @@ public class MainGuiController {
 		}
 		ObservableList<String> callsUpOl = FXCollections.observableArrayList();
 		for (Integer e : callsUp) {
-			callsUpOl.add("Floor " + e);
+			callsUpOl.add("Floor " + (e+1));
 		}
 		Platform.runLater(() -> listview_calls_up.getItems().setAll(callsUpOl));
 		
@@ -318,7 +318,7 @@ public class MainGuiController {
 		}
 		ObservableList<String> callsDownOl = FXCollections.observableArrayList();
 		for (Integer e : callsDown) {
-			callsDownOl.add("Floor " + e);
+			callsDownOl.add("Floor " + (e+1));
 		}
 		Platform.runLater(() -> listview_calls_down.getItems().setAll(callsDownOl));
 	}

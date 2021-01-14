@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Timer;
 
 import at.fhhagenberg.sqe.esd.ws20.model.*;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
+import at.fhhagenberg.sqe.esd.ws20.sqeelevator.RMIConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,19 +34,16 @@ public class ElevatorControlCenter extends Application {
 	 */
 	@Override
 	public void start(Stage stage) {
-		//TODO: use real Simulator instead of Mock
-		//IElevator elevator = new ElevatorStub();
-		IElevator elevator = null;
-		setup(stage, elevator);
+		RMIConnection rmiConnection = new RMIConnection();
+		setup(stage, rmiConnection);
 	}
 	
 	/**
 	 * Set up app structure and show gui
 	 * @param stage the stage for the gui
-	 * @param elevator elevator simulator or mock object for elevator
-	 *                 if null, an rmi connection will be established 
+	 * @param rmiConnection rmi connection to elevator simulator or mock object 
 	 */
-	public void setup(Stage stage, IElevator elevator) {
+	public void setup(Stage stage, IRMIConnection rmiConnection) {
 		Parent root = null;
 		FXMLLoader loader;
 		try {
@@ -73,7 +72,7 @@ public class ElevatorControlCenter extends Application {
 		
 		// Setup and connect objects, which are necessary for the MVC Pattern
 		try {
-			SetupMVC(elevator);
+			SetupMVC(rmiConnection);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,11 +91,10 @@ public class ElevatorControlCenter extends Application {
     
     /**
      * Create models and Controller and connect them with each other
-     * @param elevator elevator simulator or mock object for elevator
-	 *                 if null, an rmi connection will be established 
+     * @param rmiConnection rmi connection to elevator simulator or mock object 
      * @throws RemoteException 
      */
-    public void SetupMVC(IElevator elevator) throws RemoteException
+    public void SetupMVC(IRMIConnection rmiConnection) throws RemoteException
     {
         // Creating models
         StatusAlert statusAlert = new StatusAlert();
@@ -114,14 +112,13 @@ public class ElevatorControlCenter extends Application {
 
         
 		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert, autoModeAlgorithm);
+        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert, autoModeAlgorithm, rmiConnection);
         
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
         
-        if(elevator != null) {
-        	updater.SetRMIs(elevator);
-        }
+        updater.ReconnectRMI();
+
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
         scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);
