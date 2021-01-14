@@ -540,6 +540,7 @@ public class UpdateData extends TimerTask {
 		try {
 			elevator = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
 			SetRMIs(elevator);
+			StatusAlert.setStatus("Connected");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			StatusAlert.setStatus("No Elevator Connection");
 		}
