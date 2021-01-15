@@ -66,7 +66,7 @@ public class UpdateData extends TimerTask {
 	 */
 	public void initializeBuilding() throws RemoteException
 	{
-		// get number of floors and number of Elevators from the building
+		// get number of floors and number of elevators from the building
 		buildingModel.setNumFloors(sqBuilding.getFloorNum());
 		buildingModel.setNumElevators(sqBuilding.getElevatorNum());
 		outOfSyncCounter = 0;
@@ -536,7 +536,7 @@ public class UpdateData extends TimerTask {
 		initializeBuilding();
 		initializeElevators();
 		initializeServicedFloors();
-		autoModeAlgorithmContext.Init(buildingModel, elevatorsList, this);
+		autoModeAlgorithmContext.init(buildingModel, elevatorsList, this);
 		mainGuiController.reUpdate();
     }
     

@@ -54,7 +54,7 @@ public class AutoModeTest extends AutoMode {
 	
 	@BeforeEach
 	public void setup() {
-		this.Init(MockedBuilding, MockedElevators, updateData);
+		this.init(MockedBuilding, MockedElevators, updateData);
 	}
 		
 		

@@ -12,11 +12,11 @@ import java.util.List;
  */
 public abstract class AutoMode {
 
-	protected List<Integer> autoModeEnabledElevators = new ArrayList<Integer>();
+	protected List<Integer> autoModeEnabledElevators = new ArrayList<>();
 
-	protected IBuildingModel Building;
-	protected UpdateData Updater;
-	protected List<IElevatorModel> Elevators;
+	protected IBuildingModel building;
+	protected UpdateData updater;
+	protected List<IElevatorModel> elevators;
 
 	/**
 	 * Initialization for needed Objects
@@ -24,17 +24,17 @@ public abstract class AutoMode {
 	 * @param building     the internal model of the building
 	 * @param numElevators the internal list with the models for the elevators
 	 */
-	public void Init(IBuildingModel building, List<IElevatorModel> elevators, UpdateData updater) {
-		if (building == null || elevators == null || updater == null) {
+	public void init(IBuildingModel newBuilding, List<IElevatorModel> newElevators, UpdateData newUpdater) {
+		if (newBuilding == null || newElevators == null || newUpdater == null) {
 			throw new NullPointerException("AutoMode.Init() NullPointerException!");
 		}
 
-		Building = building;
-		Elevators = elevators;
-		Updater = updater;
+		building = newBuilding;
+		elevators = newElevators;
+		updater = newUpdater;
 
 		// at the beginning set all elevators to automatic mode
-		for (int i = 0; i < elevators.size(); ++i) {
+		for (int i = 0; i < newElevators.size(); ++i) {
 			enable(i);
 		}
 	}
@@ -86,7 +86,7 @@ public abstract class AutoMode {
 	 */
 	public void updateAllElevatorTargets() {
 		for (Integer e : autoModeEnabledElevators) {
-			Updater.setTarget(doGetNext(e), e);
+			updater.setTarget(doGetNext(e), e);
 		}
 	}
 
