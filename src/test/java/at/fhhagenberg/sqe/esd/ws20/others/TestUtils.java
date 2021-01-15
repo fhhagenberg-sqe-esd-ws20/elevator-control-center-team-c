@@ -15,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 import org.testfx.api.FxRobot;
 import org.testfx.util.WaitForAsyncUtils;
 
+import at.fhhagenberg.sqe.esd.ws20.model.StatusAlert;
 import javafx.scene.Node;
 import javafx.scene.control.Cell;
 import javafx.scene.control.DialogPane;
@@ -26,7 +27,7 @@ import javafx.stage.Window;
  * Provides helper functions that are needed in multiple tests
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2021-01-12 02:10
+ * @since 2021-01-15 13:29
  */
 public class TestUtils {
 	
@@ -118,6 +119,27 @@ public class TestUtils {
 				Optional<Node> button = robot.lookup(nodeCssId).tryQuery();
 				if(button.isPresent()) {
 					return !robot.lookup(nodeCssId).query().isDisabled();
+				}
+				return false;
+			}
+		});
+	}
+	
+	
+	/**
+	 * waits until the given strings equals the message in statusAlert or a timeout occurs.
+	 * Can be used to wait till the property updated its status text.
+	 * 
+	 * @param expectedStatus		Example: "Exception in setTarget of SQElevator with floor: 0"
+	 * @param statusAlert
+	 * @throws TimeoutException
+	 */
+	public void waitUntilStatusAlertHasStatus(String expectedStatus, StatusAlert statusAlert) throws TimeoutException {
+		WaitForAsyncUtils.waitFor(uiUpdateWaitDelayMs, TimeUnit.MILLISECONDS, new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				if(Objects.equals(expectedStatus, statusAlert.Status.get())) {
+					return true;
 				}
 				return false;
 			}
