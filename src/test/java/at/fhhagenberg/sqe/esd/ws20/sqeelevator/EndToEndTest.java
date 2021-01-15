@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe.esd.ws20.integration;
+package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
