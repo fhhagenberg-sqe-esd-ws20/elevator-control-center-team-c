@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>5</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>335</x>
-      <y>180</y>
-      <w>105</w>
-      <h>95</h>
+      <x>224</x>
+      <y>288</y>
+      <w>168</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IElevator
@@ -20,10 +20,10 @@ IElevator
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>35</y>
-      <w>105</w>
-      <h>95</h>
+      <x>568</x>
+      <y>56</y>
+      <w>168</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IElevatorWrapper
@@ -36,10 +36,10 @@ IElevatorWrapper
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>485</x>
-      <y>180</y>
-      <w>105</w>
-      <h>95</h>
+      <x>464</x>
+      <y>288</y>
+      <w>168</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>ElevatorWrapper
 --
@@ -51,10 +51,10 @@ IElevatorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>560</x>
-      <y>125</y>
-      <w>15</w>
-      <h>65</h>
+      <x>584</x>
+      <y>200</y>
+      <w>24</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
@@ -62,10 +62,10 @@ IElevatorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>435</x>
-      <y>230</y>
-      <w>60</w>
-      <h>15</h>
+      <x>384</x>
+      <y>368</y>
+      <w>96</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
@@ -73,10 +73,10 @@ IElevatorWrapper
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1335</x>
-      <y>515</y>
-      <w>295</w>
-      <h>405</h>
+      <x>1904</x>
+      <y>936</y>
+      <w>232</w>
+      <h>648</h>
     </coordinates>
     <panel_attributes>View
 --
@@ -86,10 +86,10 @@ IElevatorWrapper
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>320</x>
-      <y>300</y>
-      <w>720</w>
-      <h>625</h>
+      <x>0</x>
+      <y>504</y>
+      <w>1352</w>
+      <h>1080</h>
     </coordinates>
     <panel_attributes>Model
 --
@@ -99,10 +99,10 @@ IElevatorWrapper
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>750</x>
-      <y>320</y>
-      <w>160</w>
-      <h>340</h>
+      <x>864</x>
+      <y>560</y>
+      <w>280</w>
+      <h>544</h>
     </coordinates>
     <panel_attributes>UpdateData
 --
@@ -146,32 +146,46 @@ IElevatorWrapper
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1135</x>
-      <y>700</y>
-      <w>175</w>
-      <h>95</h>
+      <x>1544</x>
+      <y>1232</y>
+      <w>312</w>
+      <h>304</h>
     </coordinates>
     <panel_attributes>MainGuiController
 --
 
+
+
+
+- updateData: UpdateData
+- buildingModel: IBuildingModel
+- autoModeAlgo: AutoMode
+- numFloorsInBuilding: Integer
+- selectedElevator: int
 --
-+ update(IElevatormodel, IFloorModel): void
-+ register(UpdateData, IBuildingModel, StatusAlert): void
 - initialize(): void
-- setup(): void</panel_attributes>
+- checkboxManualAutomatic(event: ActionEvent): void
+- buttonSendToFloor(event: ActionEvent): void
+
+- setup(): void
++ update(floor: IFloorModel, elevator: IElevatormodel): void
++ register(updater: UpdateData,
+                building: IBuildingModel, 
+                statusAlert: StatusAlert, 
+                autoModeAlgorithm: AutoMode): void
++ reUpdate(): void
+- clearAndFillElevatorListView(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1430</x>
-      <y>700</y>
-      <w>105</w>
-      <h>95</h>
+      <x>1936</x>
+      <y>1200</y>
+      <w>168</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>MainGui
---
-
 --
 </panel_attributes>
     <additional_attributes/>
@@ -179,10 +193,10 @@ IElevatorWrapper
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>750</x>
-      <y>785</y>
-      <w>105</w>
-      <h>125</h>
+      <x>888</x>
+      <y>1360</y>
+      <w>168</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>ElevatorModel
 --
@@ -201,21 +215,21 @@ IElevatorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>655</y>
-      <w>15</w>
-      <h>70</h>
+      <x>968</x>
+      <y>1096</y>
+      <w>24</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>785</y>
-      <w>105</w>
-      <h>125</h>
+      <x>696</x>
+      <y>1360</y>
+      <w>168</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>BuildingModel
 --
@@ -229,21 +243,21 @@ IElevatorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>705</x>
-      <y>600</y>
-      <w>55</w>
-      <h>125</h>
+      <x>768</x>
+      <y>1096</y>
+      <w>184</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>90.0;10.0;10.0;10.0;10.0;230.0</additional_attributes>
+    <additional_attributes>210.0;10.0;210.0;80.0;10.0;80.0;10.0;220.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>875</x>
-      <y>785</y>
-      <w>105</w>
-      <h>125</h>
+      <x>1088</x>
+      <y>1360</y>
+      <w>168</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>FloorModel
 --
@@ -256,21 +270,21 @@ IElevatorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>905</x>
-      <y>600</y>
-      <w>35</w>
-      <h>125</h>
+      <x>1016</x>
+      <y>1096</y>
+      <w>168</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;10.0;50.0;230.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;190.0;80.0;190.0;220.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>760</x>
-      <y>610</y>
-      <w>85</w>
-      <h>35</h>
+      <x>904</x>
+      <y>1032</y>
+      <w>136</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Update SelectedElevator 
 int when changed in gui
@@ -280,36 +294,38 @@ int when changed in gui
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
-      <y>560</y>
-      <w>105</w>
-      <h>95</h>
+      <x>504</x>
+      <y>968</y>
+      <w>200</w>
+      <h>136</h>
     </coordinates>
     <panel_attributes>StatusAlert
 --
-+ status : StringProperty
---</panel_attributes>
++ Status : StringProperty
+--
++ setStatus(newStatus: String): void
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>670</x>
-      <y>585</y>
-      <w>90</w>
-      <h>20</h>
+      <x>696</x>
+      <y>1008</y>
+      <w>184</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>875</x>
-      <y>715</y>
-      <w>105</w>
-      <h>40</h>
+      <x>1088</x>
+      <y>1272</y>
+      <w>168</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IFloorModel
@@ -321,21 +337,21 @@ IFloorModel
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>920</x>
-      <y>750</y>
-      <w>15</w>
-      <h>45</h>
+      <x>1160</x>
+      <y>1328</y>
+      <w>24</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>750</x>
-      <y>715</y>
-      <w>105</w>
-      <h>40</h>
+      <x>888</x>
+      <y>1272</y>
+      <w>168</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IElevatorModel
@@ -347,21 +363,21 @@ IElevatorModel
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>750</y>
-      <w>15</w>
-      <h>45</h>
+      <x>968</x>
+      <y>1328</y>
+      <w>24</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>630</x>
-      <y>715</y>
-      <w>105</w>
-      <h>40</h>
+      <x>696</x>
+      <y>1272</y>
+      <w>168</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IBuildingModel
@@ -373,122 +389,129 @@ IBuildingModel
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>675</x>
-      <y>750</y>
-      <w>15</w>
-      <h>45</h>
+      <x>768</x>
+      <y>1328</y>
+      <w>24</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>335</x>
-      <y>545</y>
-      <w>115</w>
-      <h>95</h>
+      <x>80</x>
+      <y>1064</y>
+      <w>272</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>&lt;&lt;abstract&gt;&gt;
 AutoMode
 --
-- autoModeEnabledFloors: List&lt;Integer&gt;
+# autoModeEnabledFloors: List&lt;Integer&gt;
+# Building: IBuildingModel
+# Updater: UpdateData
+# Elevators: List&lt;IElevatorModel&gt;
 --
-+ enable(floor: Integer): void
-+ disable(flor: Integer): void
-+ doGetNext(): int {abstract}</panel_attributes>
++ Init(building: IBuildingModel, 
+         elevators: List&lt;IElevatorModel&gt;, 
+         updater: UpdateData): void
++ enable(elevatorNr: Integer): boolean
++ disable(elevatorNr: Integer): boolean
++ checkIfInAutoMode(elevatorNr: Integer): boolean
+# doGetNext(elevator: int): int {abstract}</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>445</x>
-      <y>625</y>
-      <w>215</w>
-      <h>100</h>
+      <x>344</x>
+      <y>1232</y>
+      <w>400</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;10.0;130.0;160.0;410.0;160.0;410.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;480.0;10.0;480.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>445</x>
-      <y>595</y>
-      <w>525</w>
-      <h>130</h>
+      <x>344</x>
+      <y>1200</y>
+      <w>896</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;190.0;10.0;190.0;180.0;1030.0;180.0;1030.0;240.0</additional_attributes>
+    <additional_attributes>10.0;10.0;1100.0;10.0;1100.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>445</x>
-      <y>610</y>
-      <w>335</w>
-      <h>115</h>
+      <x>344</x>
+      <y>1216</y>
+      <w>592</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;170.0;10.0;170.0;170.0;650.0;170.0;650.0;210.0</additional_attributes>
+    <additional_attributes>10.0;10.0;720.0;10.0;720.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>445</x>
-      <y>570</y>
-      <w>135</w>
-      <h>20</h>
+      <x>344</x>
+      <y>1040</y>
+      <w>176</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>250.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>200.0;10.0;60.0;10.0;60.0;100.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>335</x>
-      <y>675</y>
-      <w>115</w>
-      <h>95</h>
+      <x>224</x>
+      <y>1304</y>
+      <w>184</w>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>AutoModeSimpleAlgo
+    <panel_attributes>AutoModeExampleAlgo
 --
 
 --
-DoGetNext() {abstract}</panel_attributes>
+# doGetNext(elevator: int): int</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>390</x>
-      <y>635</y>
-      <w>15</w>
-      <h>50</h>
+      <x>232</x>
+      <y>1248</y>
+      <w>104</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;110.0;40.0;110.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1310</x>
-      <y>740</y>
-      <w>130</w>
-      <h>20</h>
+      <x>1720</x>
+      <y>1264</y>
+      <w>232</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;-&gt;
 binding</panel_attributes>
-    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;270.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1065</x>
-      <y>515</y>
-      <w>250</w>
-      <h>405</h>
+      <x>1392</x>
+      <y>936</y>
+      <w>488</w>
+      <h>648</h>
     </coordinates>
     <panel_attributes>Controller
 --
@@ -498,10 +521,10 @@ binding</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>275</x>
+      <x>128</x>
       <y>0</y>
-      <w>545</w>
-      <h>290</h>
+      <w>872</w>
+      <h>464</h>
     </coordinates>
     <panel_attributes>sqelevator
 --
@@ -511,57 +534,45 @@ binding</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>965</x>
-      <y>680</y>
-      <w>180</w>
-      <h>95</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>340.0;170.0;230.0;170.0;230.0;10.0;10.0;10.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>840</x>
-      <y>670</y>
-      <w>305</w>
-      <h>95</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>590.0;170.0;510.0;170.0;510.0;10.0;10.0;10.0;10.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>660</y>
-      <w>425</w>
-      <h>95</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>830.0;170.0;780.0;170.0;780.0;10.0;10.0;10.0;10.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>905</x>
-      <y>590</y>
-      <w>250</w>
+      <x>1232</x>
+      <y>1232</y>
+      <w>328</w>
       <h>120</h>
     </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>390.0;130.0;230.0;130.0;230.0;10.0;10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1032</x>
+      <y>1216</y>
+      <w>528</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>640.0;130.0;510.0;130.0;510.0;10.0;10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1136</x>
+      <y>1032</y>
+      <w>440</w>
+      <h>216</h>
+    </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;480.0;10.0;480.0;220.0</additional_attributes>
+    <additional_attributes>10.0;10.0;530.0;10.0;530.0;250.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>430</x>
-      <y>35</y>
-      <w>105</w>
-      <h>95</h>
+      <x>376</x>
+      <y>56</y>
+      <w>168</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 IFloorWrapper
@@ -574,10 +585,10 @@ IFloorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>515</x>
-      <y>125</y>
-      <w>15</w>
-      <h>65</h>
+      <x>512</x>
+      <y>200</y>
+      <w>24</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
@@ -585,57 +596,116 @@ IFloorWrapper
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>90</y>
-      <w>110</w>
-      <h>450</h>
+      <x>728</x>
+      <y>144</y>
+      <w>152</w>
+      <h>768</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>200.0;880.0;100.0;880.0;100.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>170.0;940.0;100.0;940.0;100.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>485</x>
-      <y>125</y>
-      <w>275</w>
-      <h>375</h>
+      <x>464</x>
+      <y>200</y>
+      <w>416</w>
+      <h>648</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>530.0;730.0;460.0;730.0;460.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>500.0;790.0;460.0;790.0;460.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>905</x>
-      <y>565</y>
-      <w>270</w>
-      <h>145</h>
+      <x>1136</x>
+      <y>992</y>
+      <w>472</w>
+      <h>256</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>520.0;270.0;520.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>570.0;300.0;570.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>445</x>
-      <y>540</y>
-      <w>315</w>
-      <h>55</h>
+      <x>280</x>
+      <y>928</y>
+      <w>600</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;90.0;210.0;90.0;210.0;10.0;610.0;10.0</additional_attributes>
+    <additional_attributes>10.0;170.0;10.0;10.0;730.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>670</x>
-      <y>610</y>
-      <w>475</w>
-      <h>135</h>
+      <x>696</x>
+      <y>1048</y>
+      <w>864</w>
+      <h>256</h>
     </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>930.0;250.0;910.0;250.0;910.0;90.0;40.0;90.0;40.0;10.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;-&gt;
+binding</panel_attributes>
+    <additional_attributes>1060.0;300.0;990.0;300.0;990.0;160.0;120.0;160.0;120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1560</x>
+      <y>1264</y>
+      <w>168</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>private @FXML ui elements</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>24</x>
+      <y>1304</y>
+      <w>184</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>AutoModeRandomAlgo
+--
+- random: SecureRandom 
+--
+# doGetNext(elevator: int): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>104</x>
+      <y>1248</y>
+      <w>104</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;110.0;40.0;10.0;40.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>832</x>
+      <y>1184</y>
+      <w>728</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>890.0;150.0;790.0;150.0;790.0;10.0;10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>1136</y>
+      <w>1216</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>1500.0;160.0;1460.0;160.0;1460.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

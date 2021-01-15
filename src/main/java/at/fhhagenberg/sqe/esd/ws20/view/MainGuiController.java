@@ -3,8 +3,6 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.ParsePosition;
 import java.util.ResourceBundle;
 import java.util.List;
 
@@ -365,6 +363,9 @@ public class MainGuiController {
 		clearAndFillElevatorListView();
 	}
 	
+	/**
+	 * clear and fill the elevator listview with new data
+	 */
 	private void clearAndFillElevatorListView() {
 		ObservableList<String> elevatorsOl = FXCollections.observableArrayList();
 		for(int i = 1; i < buildingModel.getNumElevators() + 1; ++i) {
