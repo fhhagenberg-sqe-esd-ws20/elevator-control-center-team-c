@@ -93,14 +93,14 @@ public class UpdateData extends TimerTask {
 			
 			for(int floor = 0; floor < buildingModel.getNumFloors(); floor++)
 			{
-				boolean floor_serviced = false;
+				boolean floorServiced = false;
 				try {
-					floor_serviced = sqElevator.getServicesFloors(elevator, floor);
+					floorServiced = sqElevator.getServicesFloors(elevator, floor);
 				} catch (RemoteException e) {
 					statusAlertContext.setStatus("Exception in getServicesFloors() of SQElevator with floor " + floor + " and elevator " + elevator);
 				}
 				
-				if(!floor_serviced)
+				if(!floorServiced)
 				{
 					elevatorsList.get(elevator).addIgnoredFloor(floor);
 				}
@@ -150,14 +150,14 @@ public class UpdateData extends TimerTask {
 
             	if(error) {
             		//try to reinitialize rmi
-            		ReconnectRMI();
+            		reconnectRMI();
             	}
         		
         	}
         	else 
         	{
         		//try to reinitialize rmi
-        		ReconnectRMI();
+        		reconnectRMI();
         	}
         	
 
@@ -278,7 +278,7 @@ public class UpdateData extends TimerTask {
 		try {
 			clocktickBeforeUpdate = sqBuilding.getClockTick();
 		} catch (RemoteException e) {
-			statusAlertContext.setStatus(getClockExecText);
+			statusAlertContext.setStatus(GET_CLOCK_EXEC_TEXT);
 			error = true;
 		}
     	
@@ -289,7 +289,7 @@ public class UpdateData extends TimerTask {
 		try {
 			clocktickAftereUpdate = sqBuilding.getClockTick();
 		} catch (RemoteException e) {
-			statusAlertContext.setStatus(getClockExecText);
+			statusAlertContext.setStatus(GET_CLOCK_EXEC_TEXT);
 			error = true;
 		}
 		
@@ -359,15 +359,15 @@ public class UpdateData extends TimerTask {
     	for(int i = 0; i < buildingModel.getNumFloors(); i++)
     	{
     		// if down button is pressed in a floor, add id to the list
-    		boolean button_pressed = false;
+    		boolean buttonPressed = false;
     		
     		try {
-				button_pressed = sqBuilding.getFloorButtonDown(i);
+    			buttonPressed = sqBuilding.getFloorButtonDown(i);
 			} catch (RemoteException e) {
 				statusAlertContext.setStatus("Exception in getFloorButtonDown of SQElevator");
 			}
     		
-    		if(button_pressed)
+    		if(buttonPressed)
     		{
     			floorModel.addButtonDown(i);
     		}
@@ -379,35 +379,35 @@ public class UpdateData extends TimerTask {
     /**
      * Refresh whole content of an elevator
      * 
-     * @param elevator_idx - index of the elevator, that should be refreshed
+     * @param elevatorIdx - index of the elevator, that should be refreshed
      * @return error ... true, success ... false
      *      * @throws RemoteException
      */
-    public boolean refreshElevator(int elevator_idx)
+    public boolean refreshElevator(int elevatorIdx)
     {
-    	if(elevator_idx < 0 || elevator_idx >= elevatorsList.size())
+    	if(elevatorIdx < 0 || elevatorIdx >= elevatorsList.size())
     	{
     		throw new InvalidParameterException("index of elevator out of range");
     	}
-    	Boolean error = false;
+    	boolean error = false;
     	
     	//get current clocktick to guarantee atomar access
     	long clocktickBeforeUpdate = 0;
 		try {
 			clocktickBeforeUpdate = sqElevator.getClockTick();
 		} catch (RemoteException e) {
-			statusAlertContext.setStatus(getClockExecText);
+			statusAlertContext.setStatus(GET_CLOCK_EXEC_TEXT);
 		}
     	
     	// store values to temp elevator. Necessary to do not overwrite the real elevator with corrupted data, if we are out of sync
     	IElevatorModel tempElevator = new ElevatorModel();
-    	Boolean validValues = true;
+    	boolean validValues = true;
     	
     	// the old serviced floors must be copied to the updated elevator
-    	tempElevator.setIgnoredFloors(elevatorsList.get(elevator_idx).getIgnoredFloorsList());
+    	tempElevator.setIgnoredFloors(elevatorsList.get(elevatorIdx).getIgnoredFloorsList());
     	
     	// refresh all fields in the elevator
-    	error = refreshlevatorFields(tempElevator, elevator_idx);
+    	error = refreshlevatorFields(tempElevator, elevatorIdx);
     	
     	// sanity checks
     	if(tempElevator.getTarget() > buildingModel.getNumFloors())
@@ -417,27 +417,27 @@ public class UpdateData extends TimerTask {
     	if(tempElevator.getPosition() > buildingModel.getNumFloors())
     	{
     		validValues = false;
-    	}    	
+    	}
     	
     	// refresh stoplist
-    	List<Integer> Stops = new ArrayList<Integer>();
-    	tempElevator.setStops(Stops);
+    	List<Integer> stops = new ArrayList<>();
+    	tempElevator.setStops(stops);
     	
     	// get pressed stops for all floors
     	for(int i = 0; i < buildingModel.getNumFloors(); i++)
     	{
-    		boolean button_pressed = false;
+    		boolean buttonPressed = false;
     		// if stop button was pressed in this elevator, add it to the list
     		try {
-				button_pressed = sqElevator.getElevatorButton(elevator_idx, i);
+				buttonPressed = sqElevator.getElevatorButton(elevatorIdx, i);
 			} catch (RemoteException e) {
 				error = true;
 				statusAlertContext.setStatus("Exception in getTarget() of SQElevator 1");
 			}
     		
-    		if(button_pressed)
+    		if(buttonPressed)
     		{
-    			Stops.add(i);
+    			stops.add(i);
     		}
     	}
     	
@@ -446,7 +446,7 @@ public class UpdateData extends TimerTask {
     		clockTickAfterUpdate = sqElevator.getClockTick();
 		} catch (RemoteException e) {
 			error = true;
-			statusAlertContext.setStatus(getClockExecText);
+			statusAlertContext.setStatus(GET_CLOCK_EXEC_TEXT);
 		}
     	
     	if(!error)
@@ -456,15 +456,15 @@ public class UpdateData extends TimerTask {
 	    	{ 
 	    		outOfSyncCounter++;
 	    	}
-	    	else if(validValues == false) // sanity checks failes
+	    	else if(!validValues) // sanity checks failes
 	    	{
 	    		statusAlertContext.setStatus("Sanity Check failed in UpdateData.refreshElevator()");
 	    	}
 	    	else
 	    	{
 	    		// everything is okay. update the elevator and notify the gui, if this is the selected elevator
-	    		elevatorsList.set(elevator_idx, tempElevator);
-	    		if(elevator_idx == selectedElevator)
+	    		elevatorsList.set(elevatorIdx, tempElevator);
+	    		if(elevatorIdx == selectedElevator)
 	    		{
 	    			mainGuiController.update(floorModel, elevatorsList.get(selectedElevator));
 	    		}
@@ -479,26 +479,26 @@ public class UpdateData extends TimerTask {
      * Refresh all fields of this elevator
      * 
      * @param tempElevator temp elevator
-     * @param elevator_idx index of current updated elevator
+     * @param elevatorIdx index of current updated elevator
      * @return
      */
-    private Boolean refreshlevatorFields(IElevatorModel tempElevator, int elevator_idx)
+    private Boolean refreshlevatorFields(IElevatorModel tempElevator, int elevatorIdx)
     {
-    	Boolean error = false;
+    	boolean error = false;
     	int target = 0;
-    	ElevatorDoorStatus door_status = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
+    	ElevatorDoorStatus doorStatus = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
     	int position = 0;
     	int speed = 0;
     	int payload = 0;
     	ElevatorDirection direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
     	
     	try{
-    		target = sqElevator.getTarget(elevator_idx);
-    		door_status = sqElevator.getElevatorDoorStatus(elevator_idx);
-    		position = sqElevator.getElevatorFloor(elevator_idx);
-    		speed = sqElevator.getElevatorSpeed(elevator_idx);
-    		payload = sqElevator.getElevatorWeight(elevator_idx);
-    		direction = sqElevator.getCommittedDirection(elevator_idx);
+    		target = sqElevator.getTarget(elevatorIdx);
+    		doorStatus = sqElevator.getElevatorDoorStatus(elevatorIdx);
+    		position = sqElevator.getElevatorFloor(elevatorIdx);
+    		speed = sqElevator.getElevatorSpeed(elevatorIdx);
+    		payload = sqElevator.getElevatorWeight(elevatorIdx);
+    		direction = sqElevator.getCommittedDirection(elevatorIdx);
     	}
     	catch(RemoteException e){
     		error = true;
@@ -507,10 +507,10 @@ public class UpdateData extends TimerTask {
 
     	
 
-    	if(error == false)
+    	if(!error)
     	{
 	    	tempElevator.setTarget(target);
-	    	tempElevator.setDoors(door_status);
+	    	tempElevator.setDoors(doorStatus);
 	    	tempElevator.setPosition(position);
 	    	tempElevator.setSpeed(speed);
 	    	tempElevator.setPayload(payload);
@@ -554,7 +554,7 @@ public class UpdateData extends TimerTask {
     /**
      * Reconnects to the RMI
      */
-    public void ReconnectRMI() {
+    public void reconnectRMI() {
 
 	    IElevator elevator = rmiConnectionContext.getElevator();
 	    
@@ -619,7 +619,7 @@ public class UpdateData extends TimerTask {
 	StatusAlert statusAlertContext;
     private Integer outOfSyncCounter;
     private Integer criticalOutOfSyncValue = 5;
-    private static final String getClockExecText = "Exception in getClockTick() of SQElevator";
+    private static final String GET_CLOCK_EXEC_TEXT = "Exception in getClockTick() of SQElevator";
     private AutoMode autoModeAlgorithmContext;
     private IRMIConnection rmiConnectionContext;
     

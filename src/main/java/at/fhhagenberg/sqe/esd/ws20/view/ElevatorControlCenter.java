@@ -116,7 +116,7 @@ public class ElevatorControlCenter extends Application {
         // give information about the models to the mainGuiController
         mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
         
-        updater.ReconnectRMI();
+        updater.reconnectRMI();
 
         
         // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS

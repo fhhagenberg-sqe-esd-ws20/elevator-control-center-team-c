@@ -55,7 +55,7 @@ public class RMIConnectionTests {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo, RMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		coreUpdater.ReconnectRMI();
+		coreUpdater.reconnectRMI();
 		coreUpdater.run();
 		assertEquals("No Elevator Connection", StatusAlert.Status.get());
 	}
