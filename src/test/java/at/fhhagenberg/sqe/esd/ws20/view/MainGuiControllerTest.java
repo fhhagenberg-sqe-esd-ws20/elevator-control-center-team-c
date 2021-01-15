@@ -155,11 +155,12 @@ class MainGuiControllerTest {
 	void testHandlersBeforeRegisterManualCall(FxRobot robot) {
 		//this tests doesn't click the ui, but calls the handlers manually. This is to check if the null checks work.
 		
+		ActionEvent actionEvent = new ActionEvent();
 		assertThrows(NullPointerException.class, () -> {
-			mainGuiController.checkboxManualAutomatic(new ActionEvent());
+			mainGuiController.checkboxManualAutomatic(actionEvent);
 		});
 		assertThrows(NullPointerException.class, () -> {
-			mainGuiController.buttonSendToFloor(new ActionEvent());
+			mainGuiController.buttonSendToFloor(actionEvent);
 		});
 	}
 	
@@ -530,7 +531,7 @@ class MainGuiControllerTest {
 		FxAssert.verifyThat("#textfield_floor_number", TextInputControlMatchers.hasText(""));
 	}
 	
-	@Disabled
+	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -547,7 +548,7 @@ class MainGuiControllerTest {
 		robot.clickOn("OK");
 	}
 	
-	@Disabled
+	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
@@ -565,7 +566,7 @@ class MainGuiControllerTest {
 		robot.type(KeyCode.ESCAPE);
 	}
 	
-	@Disabled
+	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorEmpty(FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);

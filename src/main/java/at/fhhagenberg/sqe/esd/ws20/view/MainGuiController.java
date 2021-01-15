@@ -200,7 +200,7 @@ public class MainGuiController {
 		
 		//listen for selection changes on the elevator listview. Update the selected index.
 		listview_elevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+			public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {
 				selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
 				
 				if(updateData == null) {
@@ -214,80 +214,81 @@ public class MainGuiController {
 			}
 		});
 	}
-    
-    
-    private UpdateData updateData = null;
-    private IBuildingModel buildingModel = null;
-    private AutoMode autoModeAlgo = null;
-    private Integer numFloorsInBuilding = 0;
-    private int selectedElevator = -1;
-    
-    
-    /**
-     * Updates the gui with information from the provided objects
-     * 
-     * @param floor		All information about the floors in the building
-     * @param elevator	The informatino about a elevator that should be displayed in the gui
-     */
-    public void update(IFloorModel floor, IElevatorModel elevator) {
-    	if(floor == null || elevator == null) {
-    		throw new NullPointerException("MainGuiController.update() NullPointerException");
-    	}
-    	
-    	//if there are no elevators, do nothing on update. Nothing should or can be updated
-    	if(listview_elevators.getItems().isEmpty()) {
-    		return;
-    	}
-    	
-    	//get current selected elevator
-    	//getSelectedIndex() returned -1 if no line is selected
-    	if(selectedElevator < 0) {
-    		throw new IllegalStateException("MainGuiController.update() listview_elevators no line selected!");
-    	}
-    	//check if the selected elevator is in manual or automatic mode -> set checkbox and button to right state.
-    	if(autoModeAlgo.checkIfInAutoMode(selectedElevator)) {
-    		checkbox_manual_mode.setSelected(false);
-    		button_send_to_floor.setDisable(true);
-    	}
-    	else {
-    		checkbox_manual_mode.setSelected(true);
-    		button_send_to_floor.setDisable(false);
-    	}
-    	
-    	//update gui with new values from the given elevator
-    	//elevator data
-    	Platform.runLater(() -> {
-    		Integer targetReranged = elevator.getTarget() + 1;
+	
+	
+	private UpdateData updateData = null;
+	private IBuildingModel buildingModel = null;
+	private AutoMode autoModeAlgo = null;
+	private Integer numFloorsInBuilding = 0;
+	private int selectedElevator = -1;
+	
+	
+	/**
+	 * Updates the gui with information from the provided objects
+	 * 
+	 * @param floor		All information about the floors in the building
+	 * @param elevator	The informatino about a elevator that should be displayed in the gui
+	 */
+	public void update(IFloorModel floor, IElevatorModel elevator) {
+		if(floor == null || elevator == null) {
+			throw new NullPointerException("MainGuiController.update() NullPointerException");
+		}
+		
+		//if there are no elevators, do nothing on update. Nothing should or can be updated
+		if(listview_elevators.getItems().isEmpty()) {
+			return;
+		}
+		
+		//get current selected elevator
+		//getSelectedIndex() returned -1 if no line is selected
+		if(selectedElevator < 0) {
+			throw new IllegalStateException("MainGuiController.update() listview_elevators no line selected!");
+		}
+		//check if the selected elevator is in manual or automatic mode -> set checkbox and button to right state.
+		if(autoModeAlgo.checkIfInAutoMode(selectedElevator)) {
+			checkbox_manual_mode.setSelected(false);
+			button_send_to_floor.setDisable(true);
+		}
+		else {
+			checkbox_manual_mode.setSelected(true);
+			button_send_to_floor.setDisable(false);
+		}
+		
+		//update gui with new values from the given elevator
+		//elevator data
+		Platform.runLater(() -> {
+			Integer targetReranged = elevator.getTarget() + 1;
 			label_target_text.setText(targetReranged.toString());
 			Integer positionReranged = elevator.getPosition() + 1;
-	    	label_position_text.setText(positionReranged.toString());
-	    	
-	    	String direction = elevator.getDirection().toString();
-	    	direction = direction.substring(direction.lastIndexOf('_') + 1);
-	    	direction = direction.substring(0,1).toUpperCase() + direction.substring(1).toLowerCase();
-	    	label_direction_text.setText(direction);
-	    	
-	    	label_payload_text.setText(elevator.getPayload().toString());
-	    	Integer speedAbs = Math.abs(elevator.getSpeed());
-	    	label_speed_text.setText(speedAbs.toString());
-	    	
-	    	String doorsState = elevator.getDoors().toString();
-	    	doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
-	    	doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
-	    	label_doors_text.setText(doorsState);
+			label_position_text.setText(positionReranged.toString());
+			
+			String direction = elevator.getDirection().toString();
+			direction = direction.substring(direction.lastIndexOf('_') + 1);
+			direction = direction.substring(0,1).toUpperCase() + direction.substring(1).toLowerCase();
+			label_direction_text.setText(direction);
+			
+			label_payload_text.setText(elevator.getPayload().toString());
+			Integer speedAbs = Math.abs(elevator.getSpeed());
+			label_speed_text.setText(speedAbs.toString());
+			
+			String doorsState = elevator.getDoors().toString();
+			doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
+			doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
+			label_doors_text.setText(doorsState);
 		});
-    	
-    	//stops
-    	List<Integer> stops = elevator.getStopsList();
+		
+		String floorListViewPrefix = "Floor ";
+		//stops
+		List<Integer> stops = elevator.getStopsList();
 		if (stops == null) {
 			throw new NullPointerException("MainGuiController.update() stops");
 		}
 		ObservableList<String> stopsOl = FXCollections.observableArrayList();
 		for (Integer e : stops) {
-			stopsOl.add("Floor " + (e+1));
+			stopsOl.add(floorListViewPrefix + (e+1));
 		}
 		Platform.runLater(() -> listview_stops.getItems().setAll(stopsOl));
-    	
+		
 		//not serviced floors
 		List<Integer> ignoredFloors = elevator.getIgnoredFloorsList();
 		if (ignoredFloors == null) {
@@ -295,18 +296,18 @@ public class MainGuiController {
 		}
 		ObservableList<String> ignoredFloorsOl = FXCollections.observableArrayList();
 		for (Integer e : ignoredFloors) {
-			ignoredFloorsOl.add("Floor " + (e+1));
+			ignoredFloorsOl.add(floorListViewPrefix + (e+1));
 		}
 		Platform.runLater(() -> listview_no_service.getItems().setAll(ignoredFloorsOl));
 		
-    	//calls
-    	List<Integer> callsUp = floor.getUpButtonsList();
+		//calls
+		List<Integer> callsUp = floor.getUpButtonsList();
 		if (callsUp == null) {
 			throw new NullPointerException("MainGuiController.update() callsUp");
 		}
 		ObservableList<String> callsUpOl = FXCollections.observableArrayList();
 		for (Integer e : callsUp) {
-			callsUpOl.add("Floor " + (e+1));
+			callsUpOl.add(floorListViewPrefix + (e+1));
 		}
 		Platform.runLater(() -> listview_calls_up.getItems().setAll(callsUpOl));
 		
@@ -316,12 +317,12 @@ public class MainGuiController {
 		}
 		ObservableList<String> callsDownOl = FXCollections.observableArrayList();
 		for (Integer e : callsDown) {
-			callsDownOl.add("Floor " + (e+1));
+			callsDownOl.add(floorListViewPrefix + (e+1));
 		}
 		Platform.runLater(() -> listview_calls_down.getItems().setAll(callsDownOl));
 	}
-
-    
+	
+	
 	/**
 	 * Register needed objects in the controller that don't change any more. See update(...) for updates with objects that change during operation.
 	 * Must be called before interacting with any other function in this module once!

@@ -55,12 +55,13 @@ public class RMIConnectionTests {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, StatusAlert, AutoModeAlgo, RMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		coreUpdater.ReconnectRMI();
+		coreUpdater.reconnectRMI();
 		coreUpdater.run();
 		assertEquals("No Elevator Connection", StatusAlert.Status.get());
 	}
 	
 	//ToDo: Test RMI connection
 	//ToDo: SetRMIs, ReconnectRMI
+	//TODO check if up-/down-lists were cleared at reconnect to simulator
 	
 }

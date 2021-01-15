@@ -363,7 +363,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 2"));
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 3"));
-	}	
+	}
 	
 	@Test
 	void testServicedFloorListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
@@ -398,7 +398,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 1"));
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 2"));
 		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 3"));
-	}	
+	}
 	
 	@Test
 	void testStopListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
@@ -437,7 +437,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));		
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 4"));
-	}	
+	}
 	
 	@Test
 	void testStopListContainsCorrectItemsWhenChangingBetweenElevators(FxRobot robot) throws RemoteException, TimeoutException {
@@ -476,7 +476,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));		
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 4"));
-	}		
+	}
 	
 	@Test
 	void testUpsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
@@ -499,7 +499,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 3"));
-	}		
+	}
 	
 	@Test
 	void testDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
@@ -524,7 +524,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 3"));
-	}	
+	}
 	
 	@Test
 	void testUpsAndDownsListContainsCorrectItemsAfterStartup(FxRobot robot) throws RemoteException, TimeoutException {
@@ -572,7 +572,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 3"));
-	}		
+	}
 	
 	@Test
 	void testStopListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
@@ -612,7 +612,7 @@ class EndToEndTest {
 		//elevator2
 		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
 		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(0));
-	}	
+	}
 	
 	@Test
 	void testUpsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
@@ -635,7 +635,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
 		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 4"));
-	}	
+	}
 	
 	@Test
 	void testDownsListContainsCorrectItemsAfterUpdate(FxRobot robot) throws RemoteException, TimeoutException {
@@ -658,7 +658,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 1"));
 		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 4"));
-	}	
+	}
 	
 	@Test
 	void testConnectionStatusIsConnected(FxRobot robot) throws RemoteException, TimeoutException {
@@ -670,7 +670,7 @@ class EndToEndTest {
 		
 		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
-	}		
+	}
 	
 	@Test
 	void testOutOfSync(FxRobot robot) throws RemoteException, TimeoutException {
@@ -699,5 +699,5 @@ class EndToEndTest {
 		
 		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connection lost to Elevator Simulator", robot);
 		//FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connection lost to Elevator Simulator"));
-	}		
+	}
 }

@@ -10,8 +10,8 @@ public class ElevatorModel implements IElevatorModel {
 
 	public ElevatorModel()
 	{
-		Stops = new ArrayList<Integer>();
-		IgnoredFloors = new ArrayList<Integer>();
+		stops = new ArrayList<>();
+		ignoredFloors = new ArrayList<>();
 	}
 	
 	
@@ -19,112 +19,112 @@ public class ElevatorModel implements IElevatorModel {
 	 * Add stop to elevator stop list
 	 */
 	@Override
-	public void addStop(Integer stop)
+	public void addStop(Integer newStop)
 	{
-		if (Stops == null)
+		if (stops == null)
 		{
 			throw new NullPointerException("Nullpointer in ElevatorModel.AddStop()");
 		}
 		
-		if(!(Stops.contains(stop)))
+		if(!(stops.contains(newStop)))
 		{
-			Stops.add(stop);
+			stops.add(newStop);
 		}
 	}
 	
 	@Override
-	public void setTarget(Integer target)
+	public void setTarget(Integer newTarget)
 	{
-		Target = target;
+		target = newTarget;
 	}
 	
 	@Override
-	public void setPosition(Integer position)
+	public void setPosition(Integer newPosition)
 	{
-		Position = position;
+		position = newPosition;
 	}
 	
 	@Override
-	public void setDirection(ElevatorDirection direction)
+	public void setDirection(ElevatorDirection newDirection)
 	{
-		Direction = direction;
+		direction = newDirection;
 	}
 	
 	@Override
-	public void setPayload(Integer payload)
+	public void setPayload(Integer newPayload)
 	{
-		Payload = payload;
+		payload = newPayload;
 	}
 	
 	@Override
-	public void setSpeed(Integer speed)
+	public void setSpeed(Integer newSpeed)
 	{
-		Speed = speed;
+		speed = newSpeed;
 	}
 	
 	@Override
-	public void setDoors(ElevatorDoorStatus doors)
+	public void setDoors(ElevatorDoorStatus newDoorsStatus)
 	{
-		Doors = doors;
+		doors = newDoorsStatus;
 	}
 	
 	@Override
-	public void setStops(List<Integer> stops)
+	public void setStops(List<Integer> newStops)
 	{
-		if(stops != null)
+		if(newStops != null)
 		{
-			Stops = stops;
+			stops = newStops;
 		}
 	}
 	
 	@Override
 	public Integer getTarget()
 	{
-		return Target;
+		return target;
 	}
 	
 	@Override
 	public Integer getPosition()
 	{
-		return Position;
+		return position;
 	}
 	
 	@Override
 	public ElevatorDirection getDirection()
 	{
-		return Direction;
+		return direction;
 	}
 	
 	@Override
 	public Integer getPayload()
 	{
-		return Payload;
+		return payload;
 	}
 	
 	@Override
 	public Integer getSpeed()
 	{
-		return Speed;
+		return speed;
 	}
 	
 	@Override
 	public ElevatorDoorStatus getDoors()
 	{
-		return Doors;
+		return doors;
 	}
 	
 	@Override
 	public List<Integer> getStopsList()
 	{
-		return Stops;
+		return stops;
 	}
 	
 	@Override
 	public void addIgnoredFloor(int floorNumber)
 	{
-		if(!(IgnoredFloors.contains(floorNumber)))
+		if(!(ignoredFloors.contains(floorNumber)))
 		{
-			IgnoredFloors.add(floorNumber);
+			ignoredFloors.add(floorNumber);
 		}
 	}
 	
@@ -133,26 +133,26 @@ public class ElevatorModel implements IElevatorModel {
 	{
 		if(serviceFloors != null)
 		{
-			IgnoredFloors = serviceFloors;
+			ignoredFloors = serviceFloors;
 		}
 	}
 	
 	@Override
 	public List<Integer> getIgnoredFloorsList()
 	{
-		return IgnoredFloors;
+		return ignoredFloors;
 	}	
 	
 	public void clearIgnoredFloorsList() {
-		IgnoredFloors.clear();
+		ignoredFloors.clear();
 	}
 	
-	private Integer Target = 0;
-	private Integer Position = 0;
-	private ElevatorDirection Direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
-	private Integer Payload = 0;
-	private Integer Speed = 0;
-	private ElevatorDoorStatus Doors = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
-	private List<Integer> Stops;
-	 private List<Integer> IgnoredFloors;
+	private Integer target = 0;
+	private Integer position = 0;
+	private ElevatorDirection direction = ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED;
+	private Integer payload = 0;
+	private Integer speed = 0;
+	private ElevatorDoorStatus doors = ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED;
+	private List<Integer> stops;
+	private List<Integer> ignoredFloors;
 }
