@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 
-public class ElevatorModelTest {
+class ElevatorModelTest {
 
     @Test
     void testCreate_and_get() {

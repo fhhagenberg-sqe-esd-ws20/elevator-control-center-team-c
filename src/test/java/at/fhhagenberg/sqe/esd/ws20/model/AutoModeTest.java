@@ -17,7 +17,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
-public class AutoModeTest extends AutoMode {
+class AutoModeTest extends AutoMode {
 
 
 	@Override

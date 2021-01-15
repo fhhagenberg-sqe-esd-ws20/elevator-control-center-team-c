@@ -591,6 +591,7 @@ class EndToEndTest {
 
 
 		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "4", robot);
 		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 4", robot);
 		

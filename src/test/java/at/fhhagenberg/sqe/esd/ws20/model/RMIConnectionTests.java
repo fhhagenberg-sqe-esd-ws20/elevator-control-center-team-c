@@ -20,7 +20,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
-public class RMIConnectionTests {
+class RMIConnectionTests {
 
 	@Mock
 	IBuildingModel MockedBuilding;
