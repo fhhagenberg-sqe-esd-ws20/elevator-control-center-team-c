@@ -3,30 +3,30 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 public class BuildingModel implements IBuildingModel {
 	
 	@Override
-	public void setNumElevators(int numElevators)
+	public void setNumElevators(int newNumElevators)
 	{
-		NumElevators = numElevators;
+		numElevators = newNumElevators;
 	}
 	
 	@Override
-	public void setNumFloors(int numFloors)
+	public void setNumFloors(int newNumFloors)
 	{
-		NumFloors = numFloors;
+		numFloors = newNumFloors;
 	}
 		
 	@Override
 	public int getNumElevators()
 	{
-		return NumElevators;
+		return numElevators;
 	}
 	
 	@Override
 	public int getNumFloors()
 	{
-		return NumFloors;
+		return numFloors;
 	}
 	
-	 private int NumElevators;
-	 private int NumFloors;
+	 private int numElevators;
+	 private int numFloors;
 
 }

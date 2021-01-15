@@ -543,7 +543,7 @@ class UpdateDataTest {
 
 		String expectedStatus = "Sanity Check failed in UpdateData.refreshElevator()";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 		Mockito.verify(MockedmainGuiControler, never()).update(Mockedfloor, Elevators.get(0));
 	}
 	
@@ -781,7 +781,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in getServicesFloors() of SQElevator with floor 0 and elevator 0";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	@Test
@@ -798,7 +798,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in setTarget of SQElevator with floor: 0";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	@Test
@@ -815,7 +815,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in setTarget of SQElevator with floor: 0 for Elevator0";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	
@@ -833,7 +833,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in getClockTick() of SQElevator";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	@Test
@@ -850,7 +850,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in getTarget() of SQElevator 1";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 
 	@Test
@@ -868,7 +868,7 @@ class UpdateDataTest {
 
 		String expectedStatus = "Exception in getClockTick() of SQElevator";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	@Test
@@ -885,7 +885,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in getFloorButtonUp of SQElevator";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	@Test
@@ -902,7 +902,7 @@ class UpdateDataTest {
 		
 		String expectedStatus = "Exception in getFloorButtonDown of SQElevator";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
-		assertEquals(expectedStatus, MockedStatusAlert.Status.get());
+		assertEquals(expectedStatus, MockedStatusAlert.status.get());
 	}
 	
 	@Test

@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqe.esd.ws20.integration;
+package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -18,7 +18,6 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 
 import at.fhhagenberg.sqe.esd.ws20.others.TestUtils;
-import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
@@ -592,6 +591,7 @@ class EndToEndTest {
 
 
 		startGui(robot);
+		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "4", robot);
 		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
 		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 4", robot);
 		

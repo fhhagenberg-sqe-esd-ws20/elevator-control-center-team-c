@@ -3,7 +3,6 @@
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -23,13 +22,12 @@ import javafx.stage.Stage;
 
 public class ElevatorControlCenter extends Application {
 
-	static MainGuiController mainGuiController;
-	static Timer scheduler;
+	MainGuiController mainGuiController;
+	static Timer scheduler = new Timer();
 	static final int SCHEDULER_POLLING_INTERVAL_MS = 50;
 	
 	/**
-	 * Initializes and shows the gui.
-	 * All controls are saved in the fxml file TODO and use localization.
+	 * Initializes rmi connection and sets up the gui.
 	 */
 	@Override
 	public void start(Stage stage) {
@@ -38,7 +36,8 @@ public class ElevatorControlCenter extends Application {
 	}
 	
 	/**
-	 * Set up app structure and show gui
+	 * Set up app structure and show gui. All controls are saved in the fxml file TODO and use localization.
+	 * 
 	 * @param stage the stage for the gui
 	 * @param rmiConnection rmi connection to elevator simulator or mock object 
 	 */
@@ -70,57 +69,47 @@ public class ElevatorControlCenter extends Application {
 		mainGuiController = (MainGuiController)loader.getController();
 		
 		// Setup and connect objects, which are necessary for the MVC Pattern
-		try {
-			SetupMVC(rmiConnection);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		setupMVC(rmiConnection);
 	}
 	
 	
 
-    public static void main(String[] args) {
-        
-        launch();
-        // stop scheduler, when application is shutting down
-        scheduler.cancel();
+	/**
+	 * Entry point of the application
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		launch();
+		// stop scheduler, when application is shutting down
+		scheduler.cancel();
+	}
 
-    }
-    
-    /**
-     * Create models and Controller and connect them with each other
-     * @param rmiConnection rmi connection to elevator simulator or mock object 
-     * @throws RemoteException 
-     */
-    public void SetupMVC(IRMIConnection rmiConnection) throws RemoteException
-    {
-        // Creating models
-        StatusAlert statusAlert = new StatusAlert();
-        IBuildingModel building = new BuildingModel();
-        IFloorModel floor = new FloorModel();
+	/**
+	 * Create models and Controller and connect them with each other
+	 * 
+	 * @param rmiConnection rmi connection to elevator simulator or mock object
+	 */
+	public void setupMVC(IRMIConnection rmiConnection) {
+		// creating all models
+		StatusAlert statusAlert = new StatusAlert();
+		IBuildingModel building = new BuildingModel();
+		IFloorModel floor = new FloorModel();
 
-        AutoMode autoModeAlgorithm = new AutoModeRandomAlgo();
-        
-        // creating list for the elevators
-        List<IElevatorModel> elevators = new ArrayList<IElevatorModel>();
+		AutoMode autoModeAlgorithm = new AutoModeRandomAlgo();
 
-        
-        // Create Scheduler
-        scheduler = new Timer();
+		// creating list for the elevators
+		List<IElevatorModel> elevators = new ArrayList<>();
 
-        
-		// Create updater, which polls values from the elevator every 10ms
-        UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert, autoModeAlgorithm, rmiConnection);
-        
-        // give information about the models to the mainGuiController
-        mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
-        
-        updater.reconnectRMI();
+		// create updater, which polls values from the elevator every 10ms
+		UpdateData updater = new UpdateData(building, floor, elevators, mainGuiController, statusAlert, autoModeAlgorithm, rmiConnection);
 
-        
-        // start task, which polls values from the elevator every SCHEDULER_POLLING_INTERVAL_MS
-        scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);
-    }
+		// give information about the models to the mainGuiController
+		mainGuiController.register(updater, building, statusAlert, autoModeAlgorithm);
 
+		updater.reconnectRMI();
+
+		// start task, which polls values from the elevator every
+		scheduler.schedule(updater, 0, SCHEDULER_POLLING_INTERVAL_MS);
+	}
 }

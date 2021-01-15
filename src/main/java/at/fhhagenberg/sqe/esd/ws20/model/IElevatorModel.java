@@ -114,7 +114,7 @@ public interface IElevatorModel {
 
 	/**
 	 * Get the status of the elevator doors
-	 * @return Status of the elevator doors: 
+	 * @return status of the elevator doors: 
 	 *   ELEVATOR_DOORS_OPEN = 1
 	 *   ELEVATOR_DOORS_CLOSED = 2
 	 *   ELEVATOR_DOORS_OPENING = 3

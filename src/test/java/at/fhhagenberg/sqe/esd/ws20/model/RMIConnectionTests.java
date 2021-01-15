@@ -20,7 +20,7 @@ import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
-public class RMIConnectionTests {
+class RMIConnectionTests {
 
 	@Mock
 	IBuildingModel MockedBuilding;
@@ -57,7 +57,7 @@ public class RMIConnectionTests {
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		coreUpdater.reconnectRMI();
 		coreUpdater.run();
-		assertEquals("No Elevator Connection", StatusAlert.Status.get());
+		assertEquals("No Elevator Connection", StatusAlert.status.get());
 	}
 	
 	//ToDo: Test RMI connection
