@@ -402,7 +402,7 @@ class MainGuiControllerTest {
 	void testDisplayedStatusMessage(FxRobot robot) throws TimeoutException {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		statusAlert.Status.set("moinmoin");
+		statusAlert.status.set("moinmoin");
 		testutils.waitUntilLabelTextChangedTo("#label_status_text", "moinmoin", robot);
 		
 		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("moinmoin"));

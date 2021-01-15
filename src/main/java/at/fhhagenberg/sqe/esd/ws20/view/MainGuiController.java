@@ -350,7 +350,7 @@ public class MainGuiController {
 		
 		
 		//bind status so that gui always show the latest status automatically
-		Platform.runLater(() -> label_status_text.textProperty().bind(statusAlert.Status));
+		Platform.runLater(() -> label_status_text.textProperty().bind(statusAlert.status));
 	}
 	
 	

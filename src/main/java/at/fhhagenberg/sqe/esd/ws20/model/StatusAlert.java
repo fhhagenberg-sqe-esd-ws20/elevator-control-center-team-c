@@ -5,17 +5,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class StatusAlert {
-	public StringProperty Status = new SimpleStringProperty("");
+	public StringProperty status = new SimpleStringProperty("");
 	
 	
 	/**
-	 * Updates the Status text. 
+	 * Updates the status text. 
 	 * Does the same as directly calling the set method of the beans property. But this is Timer/ui thread safe.
 	 * 
 	 * @param newStatus
 	 */
 	public void setStatus(String newStatus) {
-		Platform.runLater(() -> Status.set(newStatus));
+		Platform.runLater(() -> status.set(newStatus));
 	}
 	
 	//TODO when to clear error status? After the next successful rmi access?

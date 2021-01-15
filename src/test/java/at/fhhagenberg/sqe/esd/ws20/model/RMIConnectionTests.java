@@ -57,7 +57,7 @@ public class RMIConnectionTests {
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		coreUpdater.reconnectRMI();
 		coreUpdater.run();
-		assertEquals("No Elevator Connection", StatusAlert.Status.get());
+		assertEquals("No Elevator Connection", StatusAlert.status.get());
 	}
 	
 	//ToDo: Test RMI connection

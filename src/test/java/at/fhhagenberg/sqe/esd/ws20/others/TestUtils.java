@@ -138,7 +138,7 @@ public class TestUtils {
 		WaitForAsyncUtils.waitFor(uiUpdateWaitDelayMs, TimeUnit.MILLISECONDS, new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				if(Objects.equals(expectedStatus, statusAlert.Status.get())) {
+				if(Objects.equals(expectedStatus, statusAlert.status.get())) {
 					return true;
 				}
 				return false;

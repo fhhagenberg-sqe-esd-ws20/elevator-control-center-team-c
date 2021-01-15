@@ -19,7 +19,6 @@ public class AutoModeExampleAlgo extends AutoMode {
 		for (int nextFloor=1; nextFloor<numberOfFloors; nextFloor++) {
 			
 			// Set the target floor to the next floor above
-			//elevators.get(elevator).setTarget(nextFloor);
 			updater.setTarget(nextFloor, elevator);
 			
 			// Wait until closest floor is the target floor and speed is back to zero 
@@ -45,7 +44,6 @@ public class AutoModeExampleAlgo extends AutoMode {
 		// Second, go back from the top floor to the ground floor in one move
 		
 		// Set the committed direction displayed on the elevator to down
-		// controller.setCommittedDirection(elevator, IElevator.ELEVATOR_DIRECTION_DOWN);
 		elevators.get(elevator).setDirection(ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
 		
 		// Set the target floor to the ground floor (floor number 0)

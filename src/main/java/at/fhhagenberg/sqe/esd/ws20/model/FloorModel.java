@@ -7,26 +7,26 @@ public class FloorModel implements IFloorModel {
 
 	public FloorModel()
 	{
-		Ups = new ArrayList<Integer>();
-		Downs = new ArrayList<Integer>();
+		ups = new ArrayList<>();
+		downs = new ArrayList<>();
 	}
 	
 	/**
 	 * Add button press of an up button to the list
 	 */
 	@Override
-	public void addButtonUp(int up)
+	public void addButtonUp(int newUp)
 	{
-		Ups.add(up);
+		ups.add(newUp);
 	}
 	
 	/**
 	 * Add button press of an down button to the list
 	 */
 	@Override
-	public void addButtonDown(int down)
+	public void addButtonDown(int newDown)
 	{
-		Downs.add(down);
+		downs.add(newDown);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class FloorModel implements IFloorModel {
 	@Override
 	public void clearUpButtonsList()
 	{
-		Ups.clear();
+		ups.clear();
 	}
 	
 	/**
@@ -44,39 +44,39 @@ public class FloorModel implements IFloorModel {
 	@Override
 	public void clearDownButtonsList()
 	{
-		Downs.clear();
+		downs.clear();
 	}
 	
 	@Override
-	public void setUpButtonsList(List<Integer> ups)
+	public void setUpButtonsList(List<Integer> newUps)
 	{
-		if(ups != null)
+		if(newUps != null)
 		{
-			Ups = ups;
+			ups = newUps;
 		}
 	}
 	
 	@Override
-	public void setDownButtonsList(List<Integer> downs)
+	public void setDownButtonsList(List<Integer> newDowns)
 	{
-		if(downs != null)
+		if(newDowns != null)
 		{
-			Downs = downs;
+			downs = newDowns;
 		}
 	}
 	
 	@Override
 	public List<Integer> getUpButtonsList()
 	{
-		return Ups;
+		return ups;
 	}
 	
 	@Override
 	public List<Integer> getDownButtonsList()
 	{
-		return Downs;
+		return downs;
 	}
 	
-	private List<Integer> Ups;
-	private List<Integer> Downs;
+	private List<Integer> ups;
+	private List<Integer> downs;
 }
