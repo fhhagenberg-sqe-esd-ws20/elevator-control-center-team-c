@@ -62,5 +62,6 @@ public class RMIConnectionTests {
 	
 	//ToDo: Test RMI connection
 	//ToDo: SetRMIs, ReconnectRMI
+	//TODO check if up-/down-lists were cleared at reconnect to simulator
 	
 }
