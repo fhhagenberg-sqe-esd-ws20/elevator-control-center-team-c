@@ -26,8 +26,16 @@ public abstract class AutoMode {
 	 * @param newUpdater		updater for refreshing all elevators every timer tick
 	 */
 	public void init(IBuildingModel newBuilding, List<IElevatorModel> newElevators, UpdateData newUpdater) {
-		if (newBuilding == null || newElevators == null || newUpdater == null) {
-			throw new NullPointerException("AutoMode.Init() NullPointerException!");
+		if (newBuilding == null) {
+			throw new NullPointerException("1AutoMode.Init() NullPointerException!");
+		}
+		
+		if (newElevators == null) {
+			throw new NullPointerException("2AutoMode.Init() NullPointerException!");
+		}
+		
+		if (newUpdater == null) {
+			throw new NullPointerException("3AutoMode.Init() NullPointerException!");
 		}
 
 		building = newBuilding;

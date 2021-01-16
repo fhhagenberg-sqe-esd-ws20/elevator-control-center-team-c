@@ -46,9 +46,6 @@ class AutoModeTest extends AutoMode {
 	@Mock
 	List<IElevatorModel> MockedElevators;
 
-	// elevators.add(MockedElevator1);
-	// elevators.add(MockedElevator2);
-	// elevators.add(MockedElevator3);
 
 	@BeforeEach
 	public void setup() {
@@ -125,8 +122,5 @@ class AutoModeTest extends AutoMode {
 		Mockito.verify(MockedUpdateData).setTarget(4, 4);
 		Mockito.verifyNoMoreInteractions(MockedUpdateData);
 	}
-
-	// TODO this.disable tests
-	// TODO test all other functions in AutoMode
 
 }
