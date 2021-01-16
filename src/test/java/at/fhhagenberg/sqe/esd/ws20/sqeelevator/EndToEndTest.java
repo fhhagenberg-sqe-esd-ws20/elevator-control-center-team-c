@@ -679,7 +679,7 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(4);
 
 		Mockito.when(mockedElevators.getClockTick()).thenReturn((long)0, (long)1, (long)2, (long)3, (long)4, (long)5, (long)6, (long)7, 
-				(long)8, (long)9, (long)10, (long)11);
+				(long)8, (long)9, (long)10, (long)11, (long)12, (long)13, (long)14, (long)15, (long)16, (long)17, (long)19, (long)20, (long)21);
 
 		startGui(robot);
 		
