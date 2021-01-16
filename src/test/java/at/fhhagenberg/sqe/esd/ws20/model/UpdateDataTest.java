@@ -3,6 +3,7 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.never;
 
@@ -310,7 +311,7 @@ class UpdateDataTest {
 	}		
 	
 	@Test
-	void testSetTargetCommitedDirectionUncomitted() throws RemoteException {
+	void testSetTargetCommitedDirectionNoChange() throws RemoteException {
 		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(10);
 		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(5);
@@ -322,8 +323,8 @@ class UpdateDataTest {
 		
 		assertEquals(5, Elevators.get(0).getTarget());
 		Mockito.verify(MockedElevatorWrapper, times(1)).setTarget(0, 5);
-		Mockito.verify(MockedElevatorWrapper, times(1)).setCommittedDirection(0, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
-	}			
+		Mockito.verify(MockedElevatorWrapper, never()).setCommittedDirection(0, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
+	}
 	
 	@Test
 	void testSetTargetValidDifferentTargetsForTwoElevators() throws RemoteException {
@@ -740,6 +741,7 @@ class UpdateDataTest {
 		Mockito.verify(Mockedfloor, times(1)).addButtonUp(3);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(0);
 		Mockito.verify(Mockedfloor, times(1)).addButtonDown(2);
+		
 	}
 	
 	@Test
@@ -947,6 +949,50 @@ class UpdateDataTest {
 		
 		assertEquals(IElevatorMock, coreUpdater.getSqelevator());
 		assertEquals(IElevatorMock, coreUpdater.getSqBuilding());
+	}
+	
+	
+	@Test
+	void testUpdateAutoModeTickReadReadFail() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenThrow(new RemoteException());
+		
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		assertTrue(coreUpdater.updateAutoMode());
+	}
+	
+	@Test
+	void testUpdateAutoModeNoTick() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long)0, (long)0, (long)0);
+
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		assertFalse(coreUpdater.updateAutoMode());
+		
+		Mockito.verify(MockedAutoModeAlgo, never()).updateAllElevatorTargets();
+	}
+	
+	@Test
+	void testUpdateAutoModeDoUpdate() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long)1, (long)2, (long)3);
+
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		assertFalse(coreUpdater.updateAutoMode());
+		
+		Mockito.verify(MockedAutoModeAlgo, times(1)).updateAllElevatorTargets();
 	}
 	
 }
