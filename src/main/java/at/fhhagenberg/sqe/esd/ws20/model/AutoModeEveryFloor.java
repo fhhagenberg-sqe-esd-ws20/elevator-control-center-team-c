@@ -10,7 +10,7 @@ public class AutoModeEveryFloor extends AutoMode{
 
 		IElevatorModel elevator = elevators.get(elevatorNr);
 		
-		if(elevator.getDoors() == ElevatorDoorStatus.ELEVATOR_DOORS_OPEN && elevator.getPosition() == elevator.getTarget()) {
+		if(elevator.getDoors() == ElevatorDoorStatus.ELEVATOR_DOORS_OPEN && elevator.getPosition().equals(elevator.getTarget())) {
 			
 			if(elevator.getDirection() == ElevatorDirection.ELEVATOR_DIRECTION_UP) {
 				if(elevator.getTarget() < building.getNumFloors()-1)
