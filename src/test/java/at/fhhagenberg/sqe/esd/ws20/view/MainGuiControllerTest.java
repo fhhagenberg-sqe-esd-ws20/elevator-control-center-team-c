@@ -1,10 +1,3 @@
-//https://sormuras.github.io/blog/2018-09-11-testing-in-the-modular-world
-//https://github.com/TestFX/TestFX/issues/638
-//https://stackoverflow.com/questions/12598261/maven-build-debug-in-eclipse
-//https://stackoverflow.com/questions/43636216/how-to-wait-until-element-is-visible-using-testfx
-//https://stackoverflow.com/questions/45631046/in-testfx-version-4-how-can-i-wait-until-an-element-of-the-gui-becomes-visible
-//https://stackoverflow.com/questions/20936101/get-listcell-via-listview
-
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

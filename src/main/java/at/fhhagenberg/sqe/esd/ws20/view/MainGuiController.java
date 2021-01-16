@@ -1,5 +1,3 @@
-//https://stackoverflow.com/questions/31039449/java-8-u40-textformatter-javafx-to-restrict-user-input-only-for-decimal-number
-
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.net.URL;

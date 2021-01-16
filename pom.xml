@@ -11,10 +11,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
-		
+
 		<sonar.projectKey>fhhagenberg-sqe-esd-ws20_elevator-control-center-team-c</sonar.projectKey>
-  		<sonar.organization>fhhagenberg-sqe-esd-ws20</sonar.organization>
-  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.organization>fhhagenberg-sqe-esd-ws20</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencies>
@@ -80,9 +80,9 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.0.0-M3</version>
 					<configuration>
-						<argLine>${argLine} 
+						<argLine>${argLine}
 							--add-exports
-								javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>
+							javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -114,9 +114,34 @@
 				<version>0.0.5</version>
 				<configuration>
 					<launcher>launcher</launcher>
-					<mainClass>at.fhhagenberg.sqe.esd.ws20.view.ElevatorControlCenter</mainClass>
+					<mainClass>at.fhhagenberg.sqe.esd.ws20.view.Main</mainClass>
 				</configuration>
 			</plugin>
+
+			<!-- Build a jar that contains all dependencies (no class relocating here, use the maven-shade-plugin for this) -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>at.fhhagenberg.sqe.esd.ws20.view.Main</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

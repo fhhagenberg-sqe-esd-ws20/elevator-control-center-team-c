@@ -1,5 +1,3 @@
-//https://stackoverflow.com/questions/10751271/accessing-fxml-controller-class
-
 package at.fhhagenberg.sqe.esd.ws20.view;
 
 import java.io.IOException;
