@@ -38,7 +38,7 @@ import javafx.stage.Stage;
  * The register method has to be called before any interaction with the gui is possible!
  * 
  * @author Lukas Ebenstein (s1910567015)
- * @since 2021-01-03 04:06
+ * @since 2021-01-16 01:53
  */
 public class MainGuiController {
 
@@ -48,72 +48,72 @@ public class MainGuiController {
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
 
-    @FXML // fx:id="label_payload_text"
-    private Label label_payload_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelPayloadText"
+    private Label labelPayloadText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_floors_text"
-    private Label label_floors_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelFloorsText"
+    private Label labelFloorsText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_direction_text"
-    private Label label_direction_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelDirectionText"
+    private Label labelDirectionText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="textfield_floor_number"
-    private TextField textfield_floor_number; // Value injected by FXMLLoader
+    @FXML // fx:id="textfieldFloorNumber"
+    private TextField textfieldFloorNumber; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_status_text"
-    private Label label_status_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelStatusText"
+    private Label labelStatusText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="listview_elevators"
-    private ListView<String> listview_elevators; // Value injected by FXMLLoader
+    @FXML // fx:id="listviewElevators"
+    private ListView<String> listviewElevators; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_target_text"
-    private Label label_target_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelTargetText"
+    private Label labelTargetText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="listview_calls_down"
-    private ListView<String> listview_calls_down; // Value injected by FXMLLoader
+    @FXML // fx:id="listviewCallsDown"
+    private ListView<String> listviewCallsDown; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_speed_text"
-    private Label label_speed_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelSpeedText"
+    private Label labelSpeedText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="listview_calls_up"
-    private ListView<String> listview_calls_up; // Value injected by FXMLLoader
+    @FXML // fx:id="listviewCallsUp"
+    private ListView<String> listviewCallsUp; // Value injected by FXMLLoader
 
-    @FXML // fx:id="listview_stops"
-    private ListView<String> listview_stops; // Value injected by FXMLLoader
+    @FXML // fx:id="listviewStops"
+    private ListView<String> listviewStops; // Value injected by FXMLLoader
 
-    @FXML // fx:id="listview_no_service"
-    private ListView<String> listview_no_service; // Value injected by FXMLLoader
+    @FXML // fx:id="listviewNoService"
+    private ListView<String> listviewNoService; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_doors_text"
-    private Label label_doors_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelDoorsText"
+    private Label labelDoorsText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="button_send_to_floor"
-    private Button button_send_to_floor; // Value injected by FXMLLoader
+    @FXML // fx:id="buttonSendToFloor"
+    private Button buttonSendToFloor; // Value injected by FXMLLoader
 
-    @FXML // fx:id="label_position_text"
-    private Label label_position_text; // Value injected by FXMLLoader
+    @FXML // fx:id="labelPositionText"
+    private Label labelPositionText; // Value injected by FXMLLoader
 
-    @FXML // fx:id="checkbox_manual_mode"
-    private CheckBox checkbox_manual_mode; // Value injected by FXMLLoader
+    @FXML // fx:id="checkboxManualMode"
+    private CheckBox checkboxManualMode; // Value injected by FXMLLoader
     
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert label_payload_text != null : "fx:id=\"label_payload_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_floors_text != null : "fx:id=\"label_floors_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_direction_text != null : "fx:id=\"label_direction_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert textfield_floor_number != null : "fx:id=\"textfield_floor_number\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_status_text != null : "fx:id=\"label_status_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_elevators != null : "fx:id=\"listview_elevators\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_target_text != null : "fx:id=\"label_target_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_calls_down != null : "fx:id=\"listview_calls_down\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_speed_text != null : "fx:id=\"label_speed_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_calls_up != null : "fx:id=\"listview_calls_up\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_stops != null : "fx:id=\"listview_stops\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert listview_no_service != null : "fx:id=\"listview_no_service\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_doors_text != null : "fx:id=\"label_doors_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert button_send_to_floor != null : "fx:id=\"button_send_to_floor\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert label_position_text != null : "fx:id=\"label_position_text\" was not injected: check your FXML file 'MainGui.fxml'.";
-        assert checkbox_manual_mode != null : "fx:id=\"checkbox_manual_mode\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelPayloadText != null : "fx:id=\"labelPayloadText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelFloorsText != null : "fx:id=\"labelFloorsText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelDirectionText != null : "fx:id=\"labelDirectionText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert textfieldFloorNumber != null : "fx:id=\"textfieldFloorNumber\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelStatusText != null : "fx:id=\"labelStatusText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listviewElevators != null : "fx:id=\"listviewElevators\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelTargetText != null : "fx:id=\"labelTargetText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listviewCallsDown != null : "fx:id=\"listviewCallsDown\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelSpeedText != null : "fx:id=\"labelSpeedText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listviewCallsUp != null : "fx:id=\"listviewCallsUp\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listviewStops != null : "fx:id=\"listviewStops\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert listviewNoService != null : "fx:id=\"listviewNoService\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelDoorsText != null : "fx:id=\"labelDoorsText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert buttonSendToFloor != null : "fx:id=\"buttonSendToFloor\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert labelPositionText != null : "fx:id=\"labelPositionText\" was not injected: check your FXML file 'MainGui.fxml'.";
+        assert checkboxManualMode != null : "fx:id=\"checkboxManualMode\" was not injected: check your FXML file 'MainGui.fxml'.";
         
         //my own initialization after the one from fxml loader are finished
         setup();
@@ -131,14 +131,14 @@ public class MainGuiController {
     	}
     	
     	//check checkbox state, if checked enable button, otherwise disable. The elevator can only be sent to a floor if in manual mode. 
-    	if(checkbox_manual_mode.isSelected()) {
+    	if(checkboxManualMode.isSelected()) {
     		//disable the automatic mode -> enable manual mode
     		autoModeAlgo.disable(selectedElevator);
-    		button_send_to_floor.setDisable(false);
+    		buttonSendToFloor.setDisable(false);
     	}
     	else {
     		autoModeAlgo.enable(selectedElevator);
-    		button_send_to_floor.setDisable(true);
+    		buttonSendToFloor.setDisable(true);
     	}
     }
     
@@ -156,7 +156,7 @@ public class MainGuiController {
     	//get floor number from textfield
     	int floorNumber;
     	try {
-    		floorNumber = Integer.parseInt(textfield_floor_number.getText());
+    		floorNumber = Integer.parseInt(textfieldFloorNumber.getText());
     	} catch (NumberFormatException e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getLocalizedMessage());
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -189,7 +189,7 @@ public class MainGuiController {
 	 */
 	private void setup() {
 		//set which chars are allowed in the textfield
-		textfield_floor_number.setTextFormatter(new TextFormatter<>(change -> {
+		textfieldFloorNumber.setTextFormatter(new TextFormatter<>(change -> {
 			String newText = change.getControlNewText();
 			//only positive integers without leading sing
 			if (newText.matches("([1-9][0-9]*)?")) {
@@ -199,9 +199,9 @@ public class MainGuiController {
 		}));
 		
 		//listen for selection changes on the elevator listview. Update the selected index.
-		listview_elevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+		listviewElevators.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> ov, String oldValue, String newValue) {
-				selectedElevator = listview_elevators.getSelectionModel().getSelectedIndex();
+				selectedElevator = listviewElevators.getSelectionModel().getSelectedIndex();
 				
 				if(updateData == null) {
 					throw new NullPointerException("MainGuiController.setup() NullPointerException");
@@ -235,46 +235,46 @@ public class MainGuiController {
 		}
 		
 		//if there are no elevators, do nothing on update. Nothing should or can be updated
-		if(listview_elevators.getItems().isEmpty()) {
+		if(listviewElevators.getItems().isEmpty()) {
 			return;
 		}
 		
 		//get current selected elevator
 		//getSelectedIndex() returned -1 if no line is selected
 		if(selectedElevator < 0) {
-			throw new IllegalStateException("MainGuiController.update() listview_elevators no line selected!");
+			throw new IllegalStateException("MainGuiController.update() listviewElevators no line selected!");
 		}
 		//check if the selected elevator is in manual or automatic mode -> set checkbox and button to right state.
 		if(autoModeAlgo.checkIfInAutoMode(selectedElevator)) {
-			checkbox_manual_mode.setSelected(false);
-			button_send_to_floor.setDisable(true);
+			checkboxManualMode.setSelected(false);
+			buttonSendToFloor.setDisable(true);
 		}
 		else {
-			checkbox_manual_mode.setSelected(true);
-			button_send_to_floor.setDisable(false);
+			checkboxManualMode.setSelected(true);
+			buttonSendToFloor.setDisable(false);
 		}
 		
 		//update gui with new values from the given elevator
 		//elevator data
 		Platform.runLater(() -> {
 			Integer targetReranged = elevator.getTarget() + 1;
-			label_target_text.setText(targetReranged.toString());
+			labelTargetText.setText(targetReranged.toString());
 			Integer positionReranged = elevator.getPosition() + 1;
-			label_position_text.setText(positionReranged.toString());
+			labelPositionText.setText(positionReranged.toString());
 			
 			String direction = elevator.getDirection().toString();
 			direction = direction.substring(direction.lastIndexOf('_') + 1);
 			direction = direction.substring(0,1).toUpperCase() + direction.substring(1).toLowerCase();
-			label_direction_text.setText(direction);
+			labelDirectionText.setText(direction);
 			
-			label_payload_text.setText(elevator.getPayload().toString());
+			labelPayloadText.setText(elevator.getPayload().toString());
 			Integer speedAbs = Math.abs(elevator.getSpeed());
-			label_speed_text.setText(speedAbs.toString());
+			labelSpeedText.setText(speedAbs.toString());
 			
 			String doorsState = elevator.getDoors().toString();
 			doorsState = doorsState.substring(doorsState.lastIndexOf('_') + 1); 	//get the last part of the enum, this contains the state.
 			doorsState = doorsState.substring(0,1).toUpperCase() + doorsState.substring(1).toLowerCase();	//all to lower, except the first character
-			label_doors_text.setText(doorsState);
+			labelDoorsText.setText(doorsState);
 		});
 		
 		String floorListViewPrefix = "Floor ";
@@ -287,7 +287,7 @@ public class MainGuiController {
 		for (Integer e : stops) {
 			stopsOl.add(floorListViewPrefix + (e+1));
 		}
-		Platform.runLater(() -> listview_stops.getItems().setAll(stopsOl));
+		Platform.runLater(() -> listviewStops.getItems().setAll(stopsOl));
 		
 		//not serviced floors
 		List<Integer> ignoredFloors = elevator.getIgnoredFloorsList();
@@ -298,7 +298,7 @@ public class MainGuiController {
 		for (Integer e : ignoredFloors) {
 			ignoredFloorsOl.add(floorListViewPrefix + (e+1));
 		}
-		Platform.runLater(() -> listview_no_service.getItems().setAll(ignoredFloorsOl));
+		Platform.runLater(() -> listviewNoService.getItems().setAll(ignoredFloorsOl));
 		
 		//calls
 		List<Integer> callsUp = floor.getUpButtonsList();
@@ -309,7 +309,7 @@ public class MainGuiController {
 		for (Integer e : callsUp) {
 			callsUpOl.add(floorListViewPrefix + (e+1));
 		}
-		Platform.runLater(() -> listview_calls_up.getItems().setAll(callsUpOl));
+		Platform.runLater(() -> listviewCallsUp.getItems().setAll(callsUpOl));
 		
 		List<Integer> callsDown = floor.getDownButtonsList();
 		if (callsDown == null) {
@@ -319,7 +319,7 @@ public class MainGuiController {
 		for (Integer e : callsDown) {
 			callsDownOl.add(floorListViewPrefix + (e+1));
 		}
-		Platform.runLater(() -> listview_calls_down.getItems().setAll(callsDownOl));
+		Platform.runLater(() -> listviewCallsDown.getItems().setAll(callsDownOl));
 	}
 	
 	
@@ -343,14 +343,14 @@ public class MainGuiController {
 		
 		//set/initialize elements that don't change anymore after a connection to the rmi
 		numFloorsInBuilding = buildingModel.getNumFloors();
-		Platform.runLater(() -> label_floors_text.setText(numFloorsInBuilding.toString()));
+		Platform.runLater(() -> labelFloorsText.setText(numFloorsInBuilding.toString()));
 		
 		
 		clearAndFillElevatorListView();
 		
 		
 		//bind status so that gui always show the latest status automatically
-		Platform.runLater(() -> label_status_text.textProperty().bind(statusAlert.status));
+		Platform.runLater(() -> labelStatusText.textProperty().bind(statusAlert.status));
 	}
 	
 	
@@ -359,7 +359,7 @@ public class MainGuiController {
 	 */
 	public void reUpdate() {
 		numFloorsInBuilding = buildingModel.getNumFloors();
-		Platform.runLater(() -> label_floors_text.setText(numFloorsInBuilding.toString()));
+		Platform.runLater(() -> labelFloorsText.setText(numFloorsInBuilding.toString()));
 		
 		clearAndFillElevatorListView();
 	}
@@ -373,13 +373,13 @@ public class MainGuiController {
 			elevatorsOl.add("Elevator " + i);
 		}
 		Platform.runLater(() -> {
-			listview_elevators.getItems().setAll(elevatorsOl);
+			listviewElevators.getItems().setAll(elevatorsOl);
 			//automatically select the first elevator. If the list is empty no item will be selected.
-			listview_elevators.getFocusModel().focus(0);
-			listview_elevators.getSelectionModel().select(0);
+			listviewElevators.getFocusModel().focus(0);
+			listviewElevators.getSelectionModel().select(0);
 			//enable the default disabled checkbox if elevators are in the list/building
-			if(!listview_elevators.getItems().isEmpty()) {
-				checkbox_manual_mode.setDisable(false);
+			if(!listviewElevators.getItems().isEmpty()) {
+				checkboxManualMode.setDisable(false);
 			}
 		});
 	}

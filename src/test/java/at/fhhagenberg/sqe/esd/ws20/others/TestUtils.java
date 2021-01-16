@@ -43,7 +43,7 @@ public class TestUtils {
 	 * waits until a label has a given text or a timeout occurs.
 	 * Tip: Use the last label that should get updated to increase the chance every label was updated before.
 	 * 
-	 * @param labelCssId			Example: "#label_doors_text"
+	 * @param labelCssId			Example: "#labelDoorText"
 	 * @param labelText				Example: "Closed"
 	 * @param robot
 	 * @throws TimeoutException
@@ -61,7 +61,7 @@ public class TestUtils {
 	 * waits until a listview contains a cell with given text or a timeout occurs.
 	 * Tip: Use the last cell of a listview that should get updated to increase the chance every cell was set before.
 	 * 
-	 * @param stviewCssId			Example: "#listview_calls_down"
+	 * @param stviewCssId			Example: "#listviewCallsDown"
 	 * @param cellText				Example: "Elevator 1"
 	 * @param robot
 	 * @throws TimeoutException
@@ -86,7 +86,7 @@ public class TestUtils {
 	 * waits until a node is visible or a timeout occurs.
 	 * Can be used to wait till a new window finished opening.
 	 * 
-	 * @param nodeCssId				Example: "#button_send_to_floor"
+	 * @param nodeCssId				Example: "#buttonSendToFloor"
 	 * @param robot
 	 * @throws TimeoutException
 	 */
@@ -108,7 +108,7 @@ public class TestUtils {
 	 * waits until a node is enabled or a timeout occurs.
 	 * Can be used to wait till a button is enabled after it got enabled through other ui element.
 	 * 
-	 * @param nodeCssId				Example: "#button_send_to_floor"
+	 * @param nodeCssId				Example: "#buttonSendToFloor"
 	 * @param robot
 	 * @throws TimeoutException
 	 */
