@@ -116,14 +116,12 @@ class MainGuiControllerTest {
 		});
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.register(mockedUpdater, null, statusAlert, mockedAutoModeAlgorithm);
-
 		});
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.register(mockedUpdater, mockedBuilding, null, mockedAutoModeAlgorithm);
 		});
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, null);
-
 		});
 	}
 	

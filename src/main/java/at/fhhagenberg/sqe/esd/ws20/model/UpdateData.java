@@ -20,7 +20,7 @@ import sqelevator.IElevator;
  * @author Florian Atzenhofer (s1910567001)
  * @since 2020-12-31 09:10
  * 
- * Represents the updater, which refreshes all data of the elevator every 10 ms
+ * Represents the updater, which refreshes all data of the elevator every timer tick
  *
  */
 public class UpdateData extends TimerTask {

@@ -21,8 +21,9 @@ public abstract class AutoMode {
 	/**
 	 * Initialization for needed Objects
 	 * 
-	 * @param building     the internal model of the building
-	 * @param numElevators the internal list with the models for the elevators
+	 * @param newBuilding		the internal model of the building
+	 * @param newElevators		the internal list with the models for the elevators
+	 * @param newUpdater		updater for refreshing all elevators every timer tick
 	 */
 	public void init(IBuildingModel newBuilding, List<IElevatorModel> newElevators, UpdateData newUpdater) {
 		if (newBuilding == null || newElevators == null || newUpdater == null) {

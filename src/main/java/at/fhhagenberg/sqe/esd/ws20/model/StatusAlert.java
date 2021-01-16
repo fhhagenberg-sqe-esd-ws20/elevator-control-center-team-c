@@ -4,6 +4,13 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+
+/**
+ * Holds a property for showing alerts and exceptions in the gui
+ * 
+ * @author Lukas Ebenstein (s1910567015)
+ * @since 2021-01-16 01:04
+ */
 public class StatusAlert {
 	public StringProperty status = new SimpleStringProperty("");
 	
