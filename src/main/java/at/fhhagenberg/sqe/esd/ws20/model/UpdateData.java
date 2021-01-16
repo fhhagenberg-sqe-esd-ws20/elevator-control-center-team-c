@@ -149,7 +149,6 @@ public class UpdateData extends TimerTask {
             	}
             	else if(!error) {
             		error |= updateAutoMode();
-            		
             	}
 
             	if(error) {
