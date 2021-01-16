@@ -147,6 +147,10 @@ public class UpdateData extends TimerTask {
             	{
     	    		statusAlertContext.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.");
             	}
+            	else if(!error) {
+            		error |= updateAutoMode();
+            		
+            	}
 
             	if(error) {
             		//try to reinitialize rmi
@@ -166,6 +170,29 @@ public class UpdateData extends TimerTask {
         catch (Exception ex) {
         	statusAlertContext.setStatus("Exception when getting values from SQelevator: " + ex.getClass() + ": " + ex.getLocalizedMessage());
         }
+    }
+    
+    /**
+     * Update Automatic Mode so new targets can be calculated
+     * @return error status (true = error)
+     */
+    public boolean updateAutoMode() {
+    	
+    	long tick;
+    	
+		try {
+			tick = sqElevator.getClockTick();
+		} catch (RemoteException e) {
+			return true;
+		}
+		
+		//Make sure elevator has updated data
+    	if(tick > lastTick) {
+    		lastTick = tick;
+    		autoModeAlgorithmContext.updateAllElevatorTargets();
+    	}
+    	
+    	return false;	
     }
     
 
@@ -260,7 +287,8 @@ public class UpdateData extends TimerTask {
 		}
 		else
 		{
-			sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);												
+			//sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
+			//keep committed direction -> easier for algorithm
 		}
     }
     
@@ -622,5 +650,6 @@ public class UpdateData extends TimerTask {
     private static final String GET_CLOCK_EXEC_TEXT = "Exception in getClockTick() of SQElevator";
     private AutoMode autoModeAlgorithmContext;
     private IRMIConnection rmiConnectionContext;
+    private long lastTick = 0;
     
 }
