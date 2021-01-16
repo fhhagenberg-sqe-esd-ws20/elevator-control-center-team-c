@@ -369,7 +369,8 @@ public class MainGuiController {
 	 */
 	private void clearAndFillElevatorListView() {
 		ObservableList<String> elevatorsOl = FXCollections.observableArrayList();
-		for(int i = 1; i < buildingModel.getNumElevators() + 1; ++i) {
+		int numElevators = buildingModel.getNumElevators();
+		for(int i = 1; i < numElevators + 1; ++i) {
 			elevatorsOl.add("Elevator " + i);
 		}
 		Platform.runLater(() -> {

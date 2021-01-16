@@ -531,6 +531,35 @@ class MainGuiControllerTest {
 		FxAssert.verifyThat("#textfieldFloorNumber", TextInputControlMatchers.hasText(""));
 	}
 	
+	@Test
+	void testReUpdateUiChange(FxRobot robot) throws TimeoutException {
+		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2, 4);
+		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(2, 4);
+		
+		
+		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText("2"));
+		
+		
+		mainGuiController.reUpdate();
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "4", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 4", robot);
+		
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 4"));
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText("4"));
+	}
+	
+	
 	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
@@ -582,22 +611,4 @@ class MainGuiControllerTest {
 		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 	}
-	
-	
-	//ToDo: Test reUpdate
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }
