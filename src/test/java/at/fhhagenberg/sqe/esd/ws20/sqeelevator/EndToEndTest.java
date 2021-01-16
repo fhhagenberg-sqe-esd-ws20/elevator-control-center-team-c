@@ -72,7 +72,7 @@ class EndToEndTest {
 		Platform.runLater(new Runnable() { public void run() {
 			new ElevatorControlCenter().setup(mainGuiStage, mockedRMI);
 		}});
-		testutils.waitUntilNodeIsVisible("#button_send_to_floor", robot);
+		testutils.waitUntilNodeIsVisible("#buttonSendToFloor", robot);
 	}
 	
 	
@@ -87,24 +87,24 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
 		
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", uiDefaultLabelText, robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", uiDefaultLabelText, robot);
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.isEmpty());
 		//ui should not change from default as no elevators are available
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.isEmpty());
 		//there should be an error message that the application does not work with no elevators
 		//make sure this access to the ui runs in ui thread
 		robot.interact(() -> {
-			Label label = robot.lookup("#label_status_text").query();
+			Label label = robot.lookup("#labelStatusText").query();
 			assertFalse(label.getText().isEmpty());
 		});
 	}
@@ -121,20 +121,20 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorDoorStatus(0)).thenReturn(2);	//ELEVATOR_DOORS_CLOSED
 		
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closed", robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", "Closed", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 2"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("2"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("3"));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Down"));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("4"));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("5"));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closed"));
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText("3"));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText("Down"));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText("4"));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText("5"));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText("Closed"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Test
@@ -155,31 +155,31 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorDoorStatus(1)).thenReturn(2);	//ELEVATOR_DOORS_CLOSED
 		
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Open", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", "Open", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("2"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("3"));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Up"));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("4"));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("5"));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Open"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText("3"));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText("Up"));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText("4"));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText("5"));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText("Open"));
 		
 		
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closed", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", "Closed", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("11"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("21"));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Down"));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("40"));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("50"));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closed"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("11"));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText("21"));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText("Down"));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText("40"));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText("50"));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText("Closed"));
 	}
 	
 	@Test
@@ -187,9 +187,9 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "25", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "25", robot);
 		
-		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("25"));
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText("25"));
 	}
 	
 	
@@ -197,65 +197,65 @@ class EndToEndTest {
 	void testCheckboxDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
-		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#checkboxManualMode", NodeMatchers.isDisabled());
 	}
 	
 	@Test
 	void testCheckboxEnabledOnMultipleElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
-		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#checkboxManualMode", NodeMatchers.isEnabled());
 	}
 	
 	@Test
 	void testCheckboxStateChangeOnElevatorChange(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
-		robot.clickOn("#checkbox_manual_mode");
+		robot.clickOn("#checkboxManualMode");
 		//testfx currently can't check if the checkbox is checked, there is no Matchers for checkboxes
 		//so here we check if the button is enabled
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isEnabled());
 		
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
 	void testButtonDisabledOnNoElevators(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(0);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);	//wait for anything, just to delay and give the ui enough time to build
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
 	void testButtonDisabledWithCheckboxNotChecked(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
 	void testButtonEnabledWithCheckboxChecked(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);
 		
-		robot.clickOn("#checkbox_manual_mode");
-		testutils.waitUntilNodeIsEnabled("#button_send_to_floor", robot);
+		robot.clickOn("#checkboxManualMode");
+		testutils.waitUntilNodeIsEnabled("#buttonSendToFloor", robot);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isEnabled());
 	}
 	
 	@Test
@@ -264,10 +264,10 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		Mockito.when(mockedElevators.getElevatorFloor(0)).thenReturn(30);
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		
 		robot.interact(() -> {
-			Label label = robot.lookup("#label_status_text").query();
+			Label label = robot.lookup("#labelStatusText").query();
 			assertFalse(label.getText().isEmpty());
 		});
 	}
@@ -278,16 +278,16 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
 		
-		//robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("0");
-		robot.clickOn("#button_send_to_floor");
+		//robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("0");
+		robot.clickOn("#buttonSendToFloor");
 		
 		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Disabled("This test does not work in online Github build.")
@@ -296,16 +296,16 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
 		
-		//robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("30");
-		robot.clickOn("#button_send_to_floor");
+		//robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("30");
+		robot.clickOn("#buttonSendToFloor");
 		
 		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Disabled("This test does not work in online Github build.")
@@ -314,16 +314,16 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
 		
-		//robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("");
-		robot.clickOn("#button_send_to_floor");
+		//robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("");
+		robot.clickOn("#buttonSendToFloor");
 		
 		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Disabled("This does not work at 0.1 speed. The target gets reset back to original to fast.")
@@ -332,18 +332,18 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
 		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#label_target_text", "1", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelTargetText", "1", robot);
 		
 		
-		//robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("5");
-		robot.clickOn("#button_send_to_floor");
+		//robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("5");
+		robot.clickOn("#buttonSendToFloor");
 		
-		testutils.waitUntilLabelTextChangedTo("#label_target_text", "5", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelTargetText", "5", robot);
 		
 		Mockito.verify(mockedElevators).setTarget(0, 4);
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("5"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("5"));
 	}
 	
 	
@@ -356,12 +356,12 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(3);
 		
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 3", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 3", robot);
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(3));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 2"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(3));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 3"));
 	}
 	
 	@Test
@@ -379,24 +379,24 @@ class EndToEndTest {
 		Mockito.when(mockedElevators.getServicesFloors(1, 2)).thenReturn(false);
 
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "3", robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilListviewHasCellText("#listview_no_service", "Floor 3", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "3", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewNoService", "Floor 3", robot);
 		
 		// elavator1
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 3"));
 		// change view
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		//elevator2
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(3));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasItems(3));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 3"));
 	}
 	
 	@Test
@@ -417,25 +417,25 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewStops", "Floor 2", robot);
 		
 		
 		// elavator1
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 3"));
 		// change view	
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		//elevator2
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(4));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));		
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 2"));		
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 4"));
 	}
 	
 	@Test
@@ -456,25 +456,25 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewStops", "Floor 2", robot);
 		
 		
 		// elavator1
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 3"));
 		// change view	
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		//elevator2
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(4));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));		
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 2"));		
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 4"));
 	}
 	
 	@Test
@@ -490,14 +490,14 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_calls_up", "Floor 3", robot);
+		testutils.waitUntilListviewHasCellText("#listviewCallsUp", "Floor 3", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 3"));
 	}
 	
 	@Test
@@ -513,16 +513,16 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "4", robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 3", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "4", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewCallsDown", "Floor 3", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 3"));
 	}
 	
 	@Test
@@ -542,35 +542,35 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "4", robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 3", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "4", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewCallsDown", "Floor 3", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(4));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 3"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 4"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 3"));
 		
 		// change view	(values must also be set after changing to other view)
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(4));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 3"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 4"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 3"));
 	}
 	
 	@Test
@@ -591,27 +591,27 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "4", robot);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
-		testutils.waitUntilListviewHasCellText("#listview_stops", "Floor 4", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "4", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewStops", "Floor 4", robot);
 		
 		// elavator1
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(4));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(4));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 4"));
 
 		
 		// change view	
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		
 		//elevator2
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(0));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(0));
 	}
 	
 	@Test
@@ -627,14 +627,14 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_calls_up", "Floor 4", robot);
+		testutils.waitUntilListviewHasCellText("#listviewCallsUp", "Floor 4", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 4"));
 	}
 	
 	@Test
@@ -650,14 +650,14 @@ class EndToEndTest {
 
 
 		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 4", robot);
+		testutils.waitUntilListviewHasCellText("#listviewCallsDown", "Floor 4", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 1"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 1"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 4"));
 	}
 	
 	@Test
@@ -668,8 +668,8 @@ class EndToEndTest {
 
 		startGui(robot);
 		
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connected to Elevator", robot);
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connected to Elevator"));
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
 	@Test
@@ -683,9 +683,9 @@ class EndToEndTest {
 
 		startGui(robot);
 		
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.", robot);
 		
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface."));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface."));
 	}	
 	
 	@Test
@@ -697,7 +697,7 @@ class EndToEndTest {
 
 		startGui(robot);
 		
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "Connection lost to Elevator Simulator", robot);
-		//FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("Connection lost to Elevator Simulator"));
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connection lost to Elevator Simulator", robot);
+		//FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connection lost to Elevator Simulator"));
 	}
 }

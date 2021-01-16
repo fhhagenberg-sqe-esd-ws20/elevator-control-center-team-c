@@ -116,14 +116,12 @@ class MainGuiControllerTest {
 		});
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.register(mockedUpdater, null, statusAlert, mockedAutoModeAlgorithm);
-
 		});
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.register(mockedUpdater, mockedBuilding, null, mockedAutoModeAlgorithm);
 		});
 		assertThrows(NullPointerException.class, () -> {
 			mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, null);
-
 		});
 	}
 	
@@ -141,14 +139,14 @@ class MainGuiControllerTest {
 	@Test
 	void testHandlersBeforeRegister(FxRobot robot) {
 		//no elements are in the elevator, nothing should happen as the checkbox is disabled by default
-		robot.clickOn("#checkbox_manual_mode");
+		robot.clickOn("#checkboxManualMode");
 		Mockito.verifyNoMoreInteractions(mockedAutoModeAlgorithm);
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 		
 		//no elements are in the elevator, nothing should happen as the checkbox is disabled by default and therefore the button never gets enabled
-		robot.clickOn("#button_send_to_floor");
+		robot.clickOn("#buttonSendToFloor");
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
@@ -169,21 +167,21 @@ class MainGuiControllerTest {
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
 		//nothing should change from the default
-		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText(uiDefaultLabelText));
 		Mockito.verifyNoMoreInteractions(mockedElevator);
 		Mockito.verifyNoMoreInteractions(mockedFloor);
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.isEmpty());
 	}
 	
 	@Test
@@ -192,22 +190,23 @@ class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		//make sure the ui thread has enough time to update the ui
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "", robot);
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.isEmpty());
 		//ui should not change from default as no elevators are available
-		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("0"));
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText("0"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.isEmpty());
 	}
 	@Test
 	void testNoElevatorsUpdateAfterRegister(FxRobot robot) throws TimeoutException {
@@ -215,25 +214,26 @@ class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		mainGuiController.update(mockedFloor, mockedElevator);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", uiDefaultLabelText, robot);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "0", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", uiDefaultLabelText, robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "0", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "", robot);
 		
 		//nothing should change from the default
-		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("0"));
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText(""));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText(uiDefaultLabelText));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText("0"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText(""));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText(uiDefaultLabelText));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText(uiDefaultLabelText));
 		Mockito.verifyNoMoreInteractions(mockedElevator);
 		Mockito.verifyNoMoreInteractions(mockedFloor);
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.isEmpty());
 	}
 	
 	
@@ -249,24 +249,24 @@ class MainGuiControllerTest {
 		// as we don't set thenReturn, by default Mockito returns an empty collection for all lists
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closing", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", "Closing", robot);
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 1"));
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasListCell("Elevator 2"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("1"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("1"));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Uncommitted"));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("3"));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("4"));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closing"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.isEmpty());
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 1"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasListCell("Elevator 2"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("1"));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText("1"));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText("Uncommitted"));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText("3"));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText("4"));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText("Closing"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.isEmpty());
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.isEmpty());
 	}
 	
 	@Test
@@ -286,23 +286,23 @@ class MainGuiControllerTest {
 		
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		testutils.waitUntilListviewHasCellText("#listview_calls_down", "Floor 8", robot);
+		testutils.waitUntilListviewHasCellText("#listviewCallsDown", "Floor 8", robot);
 		
 		
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 2"));
-		FxAssert.verifyThat("#listview_stops", ListViewMatchers.hasListCell("Floor 3"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 4"));
-		FxAssert.verifyThat("#listview_no_service", ListViewMatchers.hasListCell("Floor 5"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 6"));
-		FxAssert.verifyThat("#listview_calls_up", ListViewMatchers.hasListCell("Floor 7"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasItems(2));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 8"));
-		FxAssert.verifyThat("#listview_calls_down", ListViewMatchers.hasListCell("Floor 9"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 2"));
+		FxAssert.verifyThat("#listviewStops", ListViewMatchers.hasListCell("Floor 3"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 4"));
+		FxAssert.verifyThat("#listviewNoService", ListViewMatchers.hasListCell("Floor 5"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 6"));
+		FxAssert.verifyThat("#listviewCallsUp", ListViewMatchers.hasListCell("Floor 7"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasItems(2));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 8"));
+		FxAssert.verifyThat("#listviewCallsDown", ListViewMatchers.hasListCell("Floor 9"));
 	}
 	
 	@Test
@@ -315,10 +315,10 @@ class MainGuiControllerTest {
 		Mockito.when(mockedElevator.getSpeed()).thenReturn(4);
 		Mockito.when(mockedElevator.getDoors()).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_OPENING);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		
 		mainGuiController.update(mockedFloor, mockedElevator);
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
@@ -339,7 +339,7 @@ class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
@@ -359,33 +359,33 @@ class MainGuiControllerTest {
 		Mockito.when(mockedElevator.getSpeed()).thenReturn(4, 40);
 		Mockito.when(mockedElevator.getDoors()).thenReturn(ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING, ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closing", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", "Closing", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("1"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("2"));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Uncommitted"));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("3"));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("4"));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closing"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 1"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("1"));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText("2"));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText("Uncommitted"));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText("3"));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText("4"));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText("Closing"));
 		
 		
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		mainGuiController.update(mockedFloor, mockedElevator);
-		testutils.waitUntilLabelTextChangedTo("#label_doors_text", "Closed", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelDoorsText", "Closed", robot);
 		
 		
-		FxAssert.verifyThat("#listview_elevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
-		FxAssert.verifyThat("#label_target_text", LabeledMatchers.hasText("1"));
-		FxAssert.verifyThat("#label_position_text", LabeledMatchers.hasText("11"));
-		FxAssert.verifyThat("#label_direction_text", LabeledMatchers.hasText("Up"));
-		FxAssert.verifyThat("#label_payload_text", LabeledMatchers.hasText("30"));
-		FxAssert.verifyThat("#label_speed_text", LabeledMatchers.hasText("40"));
-		FxAssert.verifyThat("#label_doors_text", LabeledMatchers.hasText("Closed"));
+		FxAssert.verifyThat("#listviewElevators", ListViewMatchers.hasSelectedRow("Elevator 2"));
+		FxAssert.verifyThat("#labelTargetText", LabeledMatchers.hasText("1"));
+		FxAssert.verifyThat("#labelPositionText", LabeledMatchers.hasText("11"));
+		FxAssert.verifyThat("#labelDirectionText", LabeledMatchers.hasText("Up"));
+		FxAssert.verifyThat("#labelPayloadText", LabeledMatchers.hasText("30"));
+		FxAssert.verifyThat("#labelSpeedText", LabeledMatchers.hasText("40"));
+		FxAssert.verifyThat("#labelDoorsText", LabeledMatchers.hasText("Closed"));
 	}
 	
 	@Test
@@ -393,9 +393,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		testutils.waitUntilLabelTextChangedTo("#label_floors_text", "25", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelFloorsText", "25", robot);
 		
-		FxAssert.verifyThat("#label_floors_text", LabeledMatchers.hasText("25"));
+		FxAssert.verifyThat("#labelFloorsText", LabeledMatchers.hasText("25"));
 	}
 	
 	@Test
@@ -403,9 +403,9 @@ class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		statusAlert.status.set("moinmoin");
-		testutils.waitUntilLabelTextChangedTo("#label_status_text", "moinmoin", robot);
+		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "moinmoin", robot);
 		
-		FxAssert.verifyThat("#label_status_text", LabeledMatchers.hasText("moinmoin"));
+		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("moinmoin"));
 	}
 	
 	
@@ -416,7 +416,7 @@ class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		//there is currently no extra Matchers for Checkboxes, so we use the general node one here.
-		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#checkboxManualMode", NodeMatchers.isDisabled());
 	}
 	
 	@Test
@@ -424,9 +424,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		testutils.waitUntilListviewHasCellText("#listview_elevators", "Elevator 2", robot);
+		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
 		
-		FxAssert.verifyThat("#checkbox_manual_mode", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#checkboxManualMode", NodeMatchers.isEnabled());
 	}
 	
 	@Test
@@ -443,16 +443,16 @@ class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		
-		robot.clickOn("#checkbox_manual_mode");
+		robot.clickOn("#checkboxManualMode");
 		//testfx currently can't check if the checkbox is checked, there is no Matchers for checkboxes
 		//so here we check if the button is enabled
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isEnabled());
 		
-		robot.clickOn("#listview_elevators");
+		robot.clickOn("#listviewElevators");
 		robot.type(KeyCode.DOWN);
 		mainGuiController.update(mockedFloor, mockedElevator);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
@@ -461,14 +461,14 @@ class MainGuiControllerTest {
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		//enable checkbox
-		robot.clickOn("#checkbox_manual_mode");
+		robot.clickOn("#checkboxManualMode");
 		Mockito.verify(mockedAutoModeAlgorithm).disable(0);
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isEnabled());
 		
 		//diable checkbox
-		robot.clickOn("#checkbox_manual_mode");
+		robot.clickOn("#checkboxManualMode");
 		Mockito.verify(mockedAutoModeAlgorithm).enable(0);
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	
@@ -478,7 +478,7 @@ class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
@@ -487,7 +487,7 @@ class MainGuiControllerTest {
 		
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isDisabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isDisabled());
 	}
 	
 	@Test
@@ -495,9 +495,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		robot.clickOn("#checkbox_manual_mode");
+		robot.clickOn("#checkboxManualMode");
 		
-		FxAssert.verifyThat("#button_send_to_floor", NodeMatchers.isEnabled());
+		FxAssert.verifyThat("#buttonSendToFloor", NodeMatchers.isEnabled());
 	}
 	
 	@Test
@@ -506,9 +506,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("5");
-		robot.clickOn("#button_send_to_floor");
+		robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("5");
+		robot.clickOn("#buttonSendToFloor");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(4);
@@ -521,14 +521,14 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("0");
+		robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("0");
 		
-		FxAssert.verifyThat("#textfield_floor_number", TextInputControlMatchers.hasText(""));
+		FxAssert.verifyThat("#textfieldFloorNumber", TextInputControlMatchers.hasText(""));
 		
-		robot.doubleClickOn("#textfield_floor_number").write("-");
+		robot.doubleClickOn("#textfieldFloorNumber").write("-");
 		
-		FxAssert.verifyThat("#textfield_floor_number", TextInputControlMatchers.hasText(""));
+		FxAssert.verifyThat("#textfieldFloorNumber", TextInputControlMatchers.hasText(""));
 	}
 	
 	@Disabled("Github CI online can't execute this test. All following tests will fail.")
@@ -538,9 +538,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("0");
-		robot.clickOn("#button_send_to_floor");
+		robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("0");
+		robot.clickOn("#buttonSendToFloor");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
@@ -555,9 +555,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("30");
-		robot.clickOn("#button_send_to_floor");
+		robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("30");
+		robot.clickOn("#buttonSendToFloor");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
@@ -573,9 +573,9 @@ class MainGuiControllerTest {
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
-		robot.clickOn("#checkbox_manual_mode");
-		robot.doubleClickOn("#textfield_floor_number").write("");
-		robot.clickOn("#button_send_to_floor");
+		robot.clickOn("#checkboxManualMode");
+		robot.doubleClickOn("#textfieldFloorNumber").write("");
+		robot.clickOn("#buttonSendToFloor");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
