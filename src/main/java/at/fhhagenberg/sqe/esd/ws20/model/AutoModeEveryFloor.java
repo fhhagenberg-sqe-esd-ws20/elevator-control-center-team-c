@@ -3,6 +3,13 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 
+/**
+ * Automode algorithm implementation. 
+ * Stops at every floor, up and down. Like a Paternoster elevator system.
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-17 22:00
+ */
 public class AutoModeEveryFloor extends AutoMode{
 
 	@Override
@@ -16,7 +23,7 @@ public class AutoModeEveryFloor extends AutoMode{
 				if(elevator.getTarget() < building.getNumFloors()-1)
 				{
 					return elevator.getTarget()+1;
-				}	
+				}
 				else 
 				{
 					return elevator.getTarget()-1;
@@ -26,7 +33,7 @@ public class AutoModeEveryFloor extends AutoMode{
 				if(elevator.getTarget() > 0) 
 				{
 					return elevator.getTarget()-1;
-				}	
+				}
 				else 
 				{
 					return elevator.getTarget()+1;
@@ -40,7 +47,7 @@ public class AutoModeEveryFloor extends AutoMode{
 				else if(elevator.getTarget() > 0) 
 				{
 					return elevator.getTarget()-1;
-				}	
+				}
 				else {
 					return elevator.getTarget();
 				}
@@ -50,9 +57,4 @@ public class AutoModeEveryFloor extends AutoMode{
 		
 		return elevator.getTarget();
 	}
-
-	
-	
-	
-	
 }

@@ -1,7 +1,5 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +14,15 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 
+/**
+ * Tests the AutoModeEveryFloor implementation of the Automode algorithm implementation.
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-17 22:00
+ */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
-public class AutoModeEveryFloorTests {
+class AutoModeEveryFloorTests {
 
 	@Mock
 	IBuildingModel MockedBuilding;
