@@ -137,8 +137,8 @@ public interface IElevatorModel {
 	void setIgnoredFloors(List<Integer> serviceFloors);
 	
 	/**
-	 * Get the list of floors which are serviced by the elevator.
-	 * @return the floor which are serviced
+	 * Get the list of floors which are not serviced by the elevator.
+	 * @return the floor which are not serviced
 	 */
 	List<Integer> getIgnoredFloorsList();
 	
