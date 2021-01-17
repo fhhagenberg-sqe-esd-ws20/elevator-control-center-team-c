@@ -108,7 +108,7 @@ public class UpdateData extends TimerTask {
 			int elevator = random.nextInt(numElevators);
 			int floor = random.nextInt(numFloors);	//this can also generate 0. This will be ignored by elevator simulator as ground floor will always be serviced.
 			try {
-				sqElevator.setServicesFloors(elevator, 1, false);
+				sqElevator.setServicesFloors(elevator, floor, false);
 			} catch (RemoteException e) {
 				statusAlertContext.setStatus("Exception in generateNotServicedFloors() 2 of SQElevator with floor " + floor + " and elevator  " + elevator);
 			}
