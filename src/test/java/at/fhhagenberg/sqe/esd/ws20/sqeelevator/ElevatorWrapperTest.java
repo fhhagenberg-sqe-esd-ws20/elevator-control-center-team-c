@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.rmi.RemoteException;
+import java.security.InvalidParameterException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,26 +97,95 @@ class ElevatorWrapperTest {
 	}
 
 	@Test
-	void testSetCommittedDirection() throws RemoteException {
+	void testSetCommittedDirection_Down() throws RemoteException {
 		elevatorWrapper.setCommittedDirection(1, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
 
 		// verify method calls
 		Mockito.verify(mockedIElevator).setCommittedDirection(1, IElevator.ELEVATOR_DIRECTION_DOWN);
 		Mockito.verifyNoMoreInteractions(mockedIElevator);
 	}
+	
+	@Test
+	void testSetCommittedDirection_Up() throws RemoteException {
+		elevatorWrapper.setCommittedDirection(1, ElevatorDirection.ELEVATOR_DIRECTION_UP);
+
+		// verify method calls
+		Mockito.verify(mockedIElevator).setCommittedDirection(1, IElevator.ELEVATOR_DIRECTION_UP);
+		Mockito.verifyNoMoreInteractions(mockedIElevator);
+	}
+	
+	@Test
+	void testSetCommittedDirection_Uncommited() throws RemoteException {
+		elevatorWrapper.setCommittedDirection(1, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
+
+		// verify method calls
+		Mockito.verify(mockedIElevator).setCommittedDirection(1, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+		Mockito.verifyNoMoreInteractions(mockedIElevator);
+	}
 
 	@Test
-	void testGetCommittedDirection() throws RemoteException {
+	void testGetCommittedDirection_Down() throws RemoteException {
 		Mockito.when(mockedIElevator.getCommittedDirection(4)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
 
 		assertEquals(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_DOWN, elevatorWrapper.getCommittedDirection(4));
 	}
+	
+	@Test
+	void testGetCommittedDirection_Up() throws RemoteException {
+		Mockito.when(mockedIElevator.getCommittedDirection(4)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+
+		assertEquals(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_UP, elevatorWrapper.getCommittedDirection(4));
+	}
+	
+	@Test
+	void testGetCommittedDirection_Uncommited() throws RemoteException {
+		Mockito.when(mockedIElevator.getCommittedDirection(4)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+
+		assertEquals(IElevatorWrapper.ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED, elevatorWrapper.getCommittedDirection(4));
+	}
+	
+	@Test
+	void testGetCommittedDirection_Error() throws RemoteException {
+		Mockito.when(mockedIElevator.getCommittedDirection(4)).thenReturn(10);
+
+		assertThrows(InvalidParameterException.class, () 
+				-> elevatorWrapper.getCommittedDirection(4));
+	}
 
 	@Test
-	void testGetElevatorDoorStatus() throws RemoteException {
+	void testGetElevatorDoorStatus_Closed() throws RemoteException {
 		Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
 
 		assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_CLOSED, elevatorWrapper.getElevatorDoorStatus(5));
+	}
+	
+	@Test
+	void testGetElevatorDoorStatus_Closing() throws RemoteException {
+		Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+
+		assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_CLOSING, elevatorWrapper.getElevatorDoorStatus(5));
+	}
+	
+	@Test
+	void testGetElevatorDoorStatus_Open() throws RemoteException {
+		Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
+
+		assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_OPEN, elevatorWrapper.getElevatorDoorStatus(5));
+	}
+	
+	@Test
+	void testGetElevatorDoorStatus_Opening() throws RemoteException {
+		Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(IElevator.ELEVATOR_DOORS_OPENING);
+
+		assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_OPENING, elevatorWrapper.getElevatorDoorStatus(5));
+	}
+	
+	@Test
+	void testGetElevatorDoorStatus_Error() throws RemoteException {
+		Mockito.when(mockedIElevator.getElevatorDoorStatus(5)).thenReturn(10);
+
+		assertThrows(InvalidParameterException.class, () 
+				-> elevatorWrapper.getElevatorDoorStatus(5));
 	}
 
 	@Test
