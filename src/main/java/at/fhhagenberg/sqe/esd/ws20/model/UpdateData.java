@@ -232,7 +232,7 @@ public class UpdateData extends TimerTask {
 		}
 		
 		//Make sure elevator has updated data
-    	if(tick > lastTick) {
+    	if(tick != lastTick) {
     		lastTick = tick;
     		autoModeAlgorithmContext.updateAllElevatorTargets();
     	}
