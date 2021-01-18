@@ -28,8 +28,7 @@ public class RMIConnection implements IRMIConnection {
 			generateNotServicedFloors(elevator);
 
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			// Nothing to do, just return null ptr
-			// TODO Warum ist hier nichts zu tun?
+			// return null ptr. error must be caught by the caller
 		}
 		return elevator;
 	}
