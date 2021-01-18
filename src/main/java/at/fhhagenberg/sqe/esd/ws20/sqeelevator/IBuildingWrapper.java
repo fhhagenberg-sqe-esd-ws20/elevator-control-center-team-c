@@ -50,16 +50,4 @@ public interface IBuildingWrapper {
 	 */
 	public long getClockTick() throws java.rmi.RemoteException;
 	
-	
-	
-	/* **********************************************************************************
-	 * Functions not wrapped
-	 ********************************************************************************** */
-	
-	/**
-	 * Retrieves the height of the floors in the building. 
-	 * @return floor height (ft)
-	 */
-	//public int getFloorHeight() throws java.rmi.RemoteException; 
-	
 }
