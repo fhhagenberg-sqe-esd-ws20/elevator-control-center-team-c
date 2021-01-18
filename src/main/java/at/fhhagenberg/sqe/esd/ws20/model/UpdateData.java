@@ -2,7 +2,6 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -18,11 +17,10 @@ import sqelevator.IElevator;
 
 
 /**
- * @author Florian Atzenhofer (s1910567001)
- * @since 2020-12-31 09:10
- * 
  * Represents the updater, which refreshes all data of the elevator every timer tick
  *
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:10
  */
 public class UpdateData extends TimerTask {
 
@@ -74,46 +72,7 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
-	/**
-	 * generate floors that are not serviced. This is not done by the simulator -> we have to do it.
-	 * If there are already not serviced floors set, this function does not overwrite them and returns.
-	 */
-	private void generateNotServicedFloors() {
-		//ground floor gets always serviced according to specification
-		if (buildingModel.getNumFloors() <= 1) {
-			return;
-		}
-		
-		int numElevators = buildingModel.getNumElevators();
-		int numFloors = buildingModel.getNumFloors();
-		
-		//check if there are already no serviced floors set -> don't overwrite them
-		boolean anyFloorNotServiced = false;
-		for(int elevator = 0; elevator < numElevators; elevator++) {
-			for(int floor = 0; floor < numFloors; floor++) {
-				try {
-					if(!sqElevator.getServicesFloors(elevator, floor)) anyFloorNotServiced = true;
-				} catch (RemoteException e) {
-					statusAlertContext.setStatus("Exception in generateNotServicedFloors() 1 of SQElevator with floor " + floor + " and elevator  " + elevator);
-				}
-			}
-		}
-		if(anyFloorNotServiced) {
-			return;
-		}
-		
-		//all floors are serviced -> add some not serviced ones
-		SecureRandom random = new SecureRandom();
-		for(int i = 0; i < NOT_SERVICED_FLOORS_RANDOM_ITERATIONS; i++) {
-			int elevator = random.nextInt(numElevators);
-			int floor = random.nextInt(numFloors);	//this can also generate 0. This will be ignored by elevator simulator as ground floor will always be serviced.
-			try {
-				sqElevator.setServicesFloors(elevator, floor, false);
-			} catch (RemoteException e) {
-				statusAlertContext.setStatus("Exception in generateNotServicedFloors() 2 of SQElevator with floor " + floor + " and elevator  " + elevator);
-			}
-		}
-	}
+
 	
 	
 	/** 
@@ -128,9 +87,6 @@ public class UpdateData extends TimerTask {
 		{
 			throw new InvalidParameterException("Numer of stored elevators not the same as number of elevators in the building!");
 		}
-		
-		// generate floors that are not serviced. This is not done by the simulator -> we have to do it
-		generateNotServicedFloors();
 		
 		// get all servicefloors of each elevator and store them in a list
 		for(int elevator = 0; elevator < elevatorsList.size(); elevator++)
@@ -328,7 +284,7 @@ public class UpdateData extends TimerTask {
 		}
 		else if(targetFloor < currentFloor)
 		{
-			sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);						
+			sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
 		}
 		else
 		{
@@ -696,5 +652,4 @@ public class UpdateData extends TimerTask {
     private AutoMode autoModeAlgorithmContext;
     private IRMIConnection rmiConnectionContext;
     private long lastTick = 0;
-    private static final int NOT_SERVICED_FLOORS_RANDOM_ITERATIONS = 15;
 }
