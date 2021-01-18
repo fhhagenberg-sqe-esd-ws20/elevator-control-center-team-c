@@ -2,7 +2,6 @@ package at.fhhagenberg.sqe.esd.ws20.model;
 
 import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -18,11 +17,10 @@ import sqelevator.IElevator;
 
 
 /**
- * @author Florian Atzenhofer (s1910567001)
- * @since 2020-12-31 09:10
- * 
  * Represents the updater, which refreshes all data of the elevator every timer tick
  *
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2020-12-31 09:10
  */
 public class UpdateData extends TimerTask {
 
@@ -286,7 +284,7 @@ public class UpdateData extends TimerTask {
 		}
 		else if(targetFloor < currentFloor)
 		{
-			sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);						
+			sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
 		}
 		else
 		{
