@@ -219,26 +219,23 @@ public class UpdateData extends TimerTask {
      */
     public void setTarget(int floor, int elevator)
     {
-    	if(floor >= 0 && floor < buildingModel.getNumFloors())
+    	if(floor >= 0 && floor < buildingModel.getNumFloors() && elevator >= 0 && elevator < elevatorsList.size())
 		{
-			if(elevator >= 0 && elevator < elevatorsList.size())
+			elevatorsList.get(elevator).setTarget(floor);
+			
+			// set new target for SQElevator
+			try {
+				int currentPosition = sqElevator.getElevatorFloor(elevator);
+				sqElevator.setTarget(elevator, floor);
+				setComittedDirection(currentPosition, floor, elevator);
+				
+			} catch (RemoteException e) {
+				statusAlertContext.setStatus("Exception in setTarget of SQElevator with floor: " + floor + " for Elevator" + elevator);
+			}
+			
+			if(elevator == selectedElevator)
 			{
-				elevatorsList.get(elevator).setTarget(floor);
-				
-				// set new target for SQElevator
-				try {
-					int currentPosition = sqElevator.getElevatorFloor(elevator);
-					sqElevator.setTarget(elevator, floor);
-					setComittedDirection(currentPosition, floor, elevator);
-					
-				} catch (RemoteException e) {
-					statusAlertContext.setStatus("Exception in setTarget of SQElevator with floor: " + floor + " for Elevator" + elevator);
-				}
-				
-				if(elevator == selectedElevator)
-				{
-					mainGuiController.update(floorModel, elevatorsList.get(selectedElevator));
-				}
+				mainGuiController.update(floorModel, elevatorsList.get(selectedElevator));
 			}
 		}
     }
@@ -285,11 +282,6 @@ public class UpdateData extends TimerTask {
 		else if(targetFloor < currentFloor)
 		{
 			sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_DOWN);
-		}
-		else
-		{
-			//sqElevator.setCommittedDirection(elevatorIdx, ElevatorDirection.ELEVATOR_DIRECTION_UNCOMMITTED);
-			//keep committed direction -> easier for algorithm
 		}
     }
     
@@ -449,26 +441,7 @@ public class UpdateData extends TimerTask {
     	}
     	
     	// refresh stoplist
-    	List<Integer> stops = new ArrayList<>();
-    	tempElevator.setStops(stops);
-    	
-    	// get pressed stops for all floors
-    	for(int i = 0; i < buildingModel.getNumFloors(); i++)
-    	{
-    		boolean buttonPressed = false;
-    		// if stop button was pressed in this elevator, add it to the list
-    		try {
-				buttonPressed = sqElevator.getElevatorButton(elevatorIdx, i);
-			} catch (RemoteException e) {
-				error = true;
-				statusAlertContext.setStatus("Exception in getTarget() of SQElevator 1");
-			}
-    		
-    		if(buttonPressed)
-    		{
-    			stops.add(i);
-    		}
-    	}
+    	error |= refreshStopList(tempElevator, elevatorIdx);
     	
     	long clockTickAfterUpdate = 0;
     	try {
@@ -501,6 +474,33 @@ public class UpdateData extends TimerTask {
 	    	}
     	}
     	
+    	return error;
+    }
+    
+    
+    private boolean refreshStopList(IElevatorModel elevator, int elevatorIdx)
+    {
+    	List<Integer> stops = new ArrayList<>();
+    	elevator.setStops(stops);
+    	boolean error = false;
+    	
+    	// get pressed stops for all floors
+    	for(int i = 0; i < buildingModel.getNumFloors(); i++)
+    	{
+    		boolean buttonPressed = false;
+    		// if stop button was pressed in this elevator, add it to the list
+    		try {
+				buttonPressed = sqElevator.getElevatorButton(elevatorIdx, i);
+			} catch (RemoteException e) {
+				error = true;
+				statusAlertContext.setStatus("Exception in getTarget() of SQElevator 1");
+			}
+    		
+    		if(buttonPressed)
+    		{
+    			stops.add(i);
+    		}
+    	}
     	return error;
     }
     
