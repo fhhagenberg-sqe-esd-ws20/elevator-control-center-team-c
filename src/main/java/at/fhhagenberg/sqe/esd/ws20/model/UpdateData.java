@@ -126,6 +126,23 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
+	/**
+	 * If currentTick < lastTick the simulator was restartet without restarting the rmi connection
+	 * 
+	 * @return	true on restart, otherwise false
+	 */
+	public boolean checkIfSimulatorRestart() {
+		try {
+			if (sqElevator.getClockTick() < lastTick) {
+				return true;
+			}
+		} catch (RemoteException e) {
+			return true;
+		}
+		return false;
+	}
+	
+	
     /**
      * Periodic task refreshes properties of the elevator periodically
      */
@@ -152,7 +169,9 @@ public class UpdateData extends TimerTask {
             	else if(!error) {
             		error |= updateAutoMode();
             	}
-
+            	
+            	error |= checkIfSimulatorRestart();
+            	
             	if(error) {
             		//try to reinitialize rmi
             		reconnectRMI();
