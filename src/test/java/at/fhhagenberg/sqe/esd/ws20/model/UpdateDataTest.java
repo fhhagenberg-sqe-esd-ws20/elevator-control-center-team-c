@@ -953,47 +953,4 @@ class UpdateDataTest {
 	}
 	
 	
-	@Test
-	void testUpdateAutoModeTickReadReadFail() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		Mockito.when(MockedElevatorWrapper.getClockTick()).thenThrow(new RemoteException());
-		
-		// elevator1
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
-		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		
-		assertTrue(coreUpdater.updateAutoMode());
-	}
-	
-	@Test
-	void testUpdateAutoModeNoTick() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long)0, (long)0, (long)0);
-
-		// elevator1
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
-		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		
-		assertFalse(coreUpdater.updateAutoMode());
-		
-		Mockito.verify(MockedAutoModeAlgo, never()).updateAllElevatorTargets();
-	}
-	
-	@Test
-	void testUpdateAutoModeDoUpdate() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long)1, (long)2, (long)3);
-
-		// elevator1
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
-		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		
-		assertFalse(coreUpdater.updateAutoMode());
-		
-		Mockito.verify(MockedAutoModeAlgo, times(1)).updateAllElevatorTargets();
-	}
-	
 }
