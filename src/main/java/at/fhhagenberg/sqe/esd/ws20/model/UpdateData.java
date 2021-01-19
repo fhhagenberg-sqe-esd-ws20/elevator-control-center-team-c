@@ -126,22 +126,6 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
-	/**
-	 * If currentTick < lastTick the simulator was restartet without restarting the rmi connection
-	 * 
-	 * @return	true on restart, otherwise false
-	 */
-	public boolean checkIfSimulatorRestart() {
-		try {
-			if (sqElevator.getClockTick() < lastTick) {
-				return true;
-			}
-		} catch (RemoteException e) {
-			return true;
-		}
-		return false;
-	}
-	
 	
     /**
      * Periodic task refreshes properties of the elevator periodically
@@ -153,6 +137,22 @@ public class UpdateData extends TimerTask {
         	if(sqElevator != null && sqBuilding != null) {
         	
             	boolean error = false;
+            	long tick = 0;
+            	
+            	//Get simulator time because if the time is the same, no update needs to be done
+            	//if time is running backwards -> simulator was restarted -> Do a reconnect and new initialization
+        		try {
+        			tick = sqElevator.getClockTick();
+        		} catch (RemoteException e) {
+        			error |= true;
+        		}
+        		
+        		if(tick < lastTick) 
+        		{
+        			error |= true;	
+        		}
+        		
+        		
             	// refresh list with the up and down buttons of the floors
             	error |= refreshUpDownList();
             	
@@ -166,11 +166,12 @@ public class UpdateData extends TimerTask {
             	{
     	    		statusAlertContext.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.");
             	}
-            	else if(!error) {
-            		error |= updateAutoMode();
+            	else if(!error && tick > lastTick) {
+            		autoModeAlgorithmContext.updateAllElevatorTargets();
             	}
             	
-            	error |= checkIfSimulatorRestart();
+            	
+            	lastTick = tick;
             	
             	if(error) {
             		//try to reinitialize rmi
@@ -190,29 +191,6 @@ public class UpdateData extends TimerTask {
         catch (Exception ex) {
         	statusAlertContext.setStatus("Exception when getting values from SQelevator: " + ex.getClass() + ": " + ex.getLocalizedMessage());
         }
-    }
-    
-    /**
-     * Update Automatic Mode so new targets can be calculated
-     * @return error status (true = error)
-     */
-    public boolean updateAutoMode() {
-    	
-    	long tick;
-    	
-		try {
-			tick = sqElevator.getClockTick();
-		} catch (RemoteException e) {
-			return true;
-		}
-		
-		//Make sure elevator has updated data
-    	if(tick != lastTick) {
-    		lastTick = tick;
-    		autoModeAlgorithmContext.updateAllElevatorTargets();
-    	}
-    	
-    	return false;	
     }
     
 
@@ -586,6 +564,7 @@ public class UpdateData extends TimerTask {
 		initializeServicedFloors();
 		autoModeAlgorithmContext.init(buildingModel, elevatorsList, this);
 		mainGuiController.reUpdate();
+		lastTick = 0;
     }
     
     /**
