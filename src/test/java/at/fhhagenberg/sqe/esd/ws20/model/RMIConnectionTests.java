@@ -69,9 +69,4 @@ class RMIConnectionTests {
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, StatusAlert);
 		assertEquals(expectedStatus, StatusAlert.status.get());
 	}
-	
-	//ToDo: Test RMI connection
-	//ToDo: SetRMIs, ReconnectRMI
-	//TODO check if up-/down-lists were cleared at reconnect to simulator
-	
 }
