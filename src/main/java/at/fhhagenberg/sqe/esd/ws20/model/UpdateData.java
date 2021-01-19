@@ -126,7 +126,7 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
-	public boolean getElevatorClockTick() {
+	public boolean updateElevatorClockTick() {
 		try {
 			currentTick = sqElevator.getClockTick();
 			return false;
@@ -146,7 +146,7 @@ public class UpdateData extends TimerTask {
         	
             	boolean error = false;
             	
-            	error |= getElevatorClockTick();
+            	error |= updateElevatorClockTick();
             	//Get simulator time because if the time is the same, no update needs to be done
             	//if time is running backwards -> simulator was restarted -> Do a reconnect and new initialization
 
@@ -636,6 +636,14 @@ public class UpdateData extends TimerTask {
     	return sqBuilding;
     }
     
+    /**
+     * Get the CurrentTick
+     * @return CurrentTick
+     */
+    public long getCurrentTick()
+    {
+    	return currentTick;
+    }
     
 	private IElevatorWrapper sqElevator;
 	private IBuildingWrapper sqBuilding;
