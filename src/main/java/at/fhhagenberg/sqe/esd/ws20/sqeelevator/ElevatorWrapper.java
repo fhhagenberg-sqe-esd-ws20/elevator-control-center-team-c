@@ -8,7 +8,9 @@ import sqelevator.IElevator;
 /**
  * Class to connect the provided interfaces with the elevator interface provided 
  * by the elevator manufacturer.
- *
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-08 14:18
  */
 public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
 
@@ -77,7 +79,7 @@ public class ElevatorWrapper implements IElevatorWrapper, IBuildingWrapper {
             break;
         default:
             throw new InvalidParameterException("Wrong commited direction (set)");
-        }			
+        }
 	}
 
 	@Override

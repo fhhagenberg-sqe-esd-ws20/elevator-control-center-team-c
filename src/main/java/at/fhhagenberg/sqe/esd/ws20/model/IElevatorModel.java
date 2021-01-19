@@ -146,5 +146,4 @@ public interface IElevatorModel {
 	 * Clear all ignored floors.
 	 */
 	public void clearIgnoredFloorsList();
-
 }

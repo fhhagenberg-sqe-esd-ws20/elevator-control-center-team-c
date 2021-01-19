@@ -6,6 +6,12 @@ import java.util.List;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDoorStatus;
 
+/**
+ * Model of an elevator. Holds all information of an elevator.
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2020-12-30 18:00
+ */
 public class ElevatorModel implements IElevatorModel {
 
 	public ElevatorModel()
@@ -13,11 +19,7 @@ public class ElevatorModel implements IElevatorModel {
 		stops = new ArrayList<>();
 		ignoredFloors = new ArrayList<>();
 	}
-	
-	
-	/**
-	 * Add stop to elevator stop list
-	 */
+
 	@Override
 	public void addStop(Integer newStop)
 	{

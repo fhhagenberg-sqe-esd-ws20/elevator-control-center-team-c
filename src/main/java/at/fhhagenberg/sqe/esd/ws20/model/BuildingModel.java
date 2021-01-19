@@ -1,5 +1,12 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
+/**
+ * Model of a building. Holds all information of a building.
+ * 
+ * @author Florian Atzenhofer (s1910567001)
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2020-12-30 18:20
+ */
 public class BuildingModel implements IBuildingModel {
 	
 	@Override
@@ -26,7 +33,6 @@ public class BuildingModel implements IBuildingModel {
 		return numFloors;
 	}
 	
-	 private int numElevators;
-	 private int numFloors;
-
+	private int numElevators;
+	private int numFloors;
 }

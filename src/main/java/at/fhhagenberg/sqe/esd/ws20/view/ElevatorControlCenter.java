@@ -18,6 +18,13 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+/**
+ * Starts the gui an sets up the MVC. Creates all needed objects and starts the
+ * timer scheduler.
+ * 
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2021-01-18 22:26
+ */
 public class ElevatorControlCenter extends Application {
 
 	MainGuiController mainGuiController;

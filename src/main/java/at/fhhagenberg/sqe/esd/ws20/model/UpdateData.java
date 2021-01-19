@@ -20,7 +20,7 @@ import sqelevator.IElevator;
  * Represents the updater, which refreshes all data of the elevator every timer tick
  *
  * @author Florian Atzenhofer (s1910567001)
- * @since 2020-12-31 09:10
+ * @since 2021-01-18 20:00
  */
 public class UpdateData extends TimerTask {
 
