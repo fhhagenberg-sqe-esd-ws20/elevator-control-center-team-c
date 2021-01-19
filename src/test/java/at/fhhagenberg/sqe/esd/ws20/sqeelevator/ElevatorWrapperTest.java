@@ -18,9 +18,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper.ElevatorDirection;
 import sqelevator.IElevator;
 
+/**
+ * Tests the elevator wrapper
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2020-12-30 19:20
+ */
 @ExtendWith(MockitoExtension.class)
-
-
 class ElevatorWrapperTest {
 
 	@Mock

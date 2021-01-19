@@ -4,7 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-
+/**
+ * Tests the model of the building
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-16 00:40
+ */
 class BuildingModelTest {
 
     @Test

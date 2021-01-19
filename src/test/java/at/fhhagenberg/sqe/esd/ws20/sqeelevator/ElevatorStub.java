@@ -2,6 +2,12 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import sqelevator.IElevator;
 
+/**
+ * Stub for the elevator. Always returns hardcoded values.
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-16 00:40
+ */
 public class ElevatorStub implements IElevator {	
 	
 	public int getCommittedDirection(int elevatorNumber) throws java.rmi.RemoteException

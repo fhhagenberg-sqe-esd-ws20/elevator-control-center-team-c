@@ -7,6 +7,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests the model of the floor
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-16 00:40
+ */
 class FloorModelTest {
 
 	@Test

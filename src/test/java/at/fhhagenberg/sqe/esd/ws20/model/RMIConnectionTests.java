@@ -22,6 +22,12 @@ import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IRMIConnection;
 import at.fhhagenberg.sqe.esd.ws20.view.MainGuiController;
 
+/**
+ * Tests the rmi connection
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-16 00:40
+ */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
 class RMIConnectionTests {
