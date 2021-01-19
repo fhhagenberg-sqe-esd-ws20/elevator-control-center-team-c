@@ -951,5 +951,27 @@ class UpdateDataTest {
 		assertEquals(IElevatorMock, coreUpdater.getSqBuilding());
 	}
 	
+	@Test
+	void testgetElevatorClockTick_Error() throws RemoteException {
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenThrow(new RemoteException());
+
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		assertTrue(coreUpdater.updateElevatorClockTick());
+	}
+	
+	@Test
+	void testgetElevatorClockTick() throws RemoteException {
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long) 1234);
+
+		// elevator1
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		assertFalse(coreUpdater.updateElevatorClockTick());
+		assertEquals(1234, coreUpdater.getCurrentTick());
+	}
 	
 }
