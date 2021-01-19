@@ -24,7 +24,4 @@ public class StatusAlert {
 	public void setStatus(String newStatus) {
 		Platform.runLater(() -> status.set(newStatus));
 	}
-	
-	//TODO when to clear error status? After the next successful rmi access?
-	//TODO how to show if the status is current or old? Add a timestamp?
 }
