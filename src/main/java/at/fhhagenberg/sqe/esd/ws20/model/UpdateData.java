@@ -126,6 +126,14 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
+	public boolean getElevatorClockTick() {
+		try {
+			currentTick = sqElevator.getClockTick();
+			return false;
+		} catch (RemoteException e) {
+			return true;
+		}
+	}
 	
     /**
      * Periodic task refreshes properties of the elevator periodically
@@ -137,21 +145,15 @@ public class UpdateData extends TimerTask {
         	if(sqElevator != null && sqBuilding != null) {
         	
             	boolean error = false;
-            	long tick = 0;
             	
+            	error |= getElevatorClockTick();
             	//Get simulator time because if the time is the same, no update needs to be done
             	//if time is running backwards -> simulator was restarted -> Do a reconnect and new initialization
-        		try {
-        			tick = sqElevator.getClockTick();
-        		} catch (RemoteException e) {
-        			error |= true;
-        		}
-        		
-        		if(tick < lastTick) 
+
+        		if(currentTick < lastTick) 
         		{
         			error |= true;	
         		}
-        		
         		
             	// refresh list with the up and down buttons of the floors
             	error |= refreshUpDownList();
@@ -166,12 +168,11 @@ public class UpdateData extends TimerTask {
             	{
     	    		statusAlertContext.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.");
             	}
-            	else if(!error && tick > lastTick) {
+            	else if(!error && currentTick > lastTick) {
             		autoModeAlgorithmContext.updateAllElevatorTargets();
             	}
             	
-            	
-            	lastTick = tick;
+            	lastTick = currentTick;
             	
             	if(error) {
             		//try to reinitialize rmi
@@ -650,4 +651,5 @@ public class UpdateData extends TimerTask {
     private AutoMode autoModeAlgorithmContext;
     private IRMIConnection rmiConnectionContext;
     private long lastTick = 0;
+    private long currentTick = 0;
 }
