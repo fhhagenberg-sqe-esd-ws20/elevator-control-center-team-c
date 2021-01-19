@@ -94,7 +94,6 @@ public class ElevatorControlCenter extends Application {
 		IBuildingModel building = new BuildingModel();
 		IFloorModel floor = new FloorModel();
 
-		//AutoMode autoModeAlgorithm = new AutoModeRandomAlgo();
 		AutoMode autoModeAlgorithm = new AutoModeEveryFloor();
 
 		// creating list for the elevators

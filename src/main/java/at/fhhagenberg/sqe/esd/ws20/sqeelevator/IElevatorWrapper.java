@@ -129,31 +129,4 @@ public interface IElevatorWrapper {
 	 */
 	public long getClockTick() throws java.rmi.RemoteException;
 	
-	
-	
-	/* **********************************************************************************
-	 * Functions not wrapped
-	 ********************************************************************************** */
-	
-	/**
-	 * Provides the current location of the specified elevator in feet from the bottom of the building. 
-	 * @param elevatorNumber  - elevator number whose location is being retrieved 
-	 * @return returns the location in feet of the indicated elevator from the bottom of the building
-	 */
-	//public int getElevatorPosition(int elevatorNumber) throws java.rmi.RemoteException; 
-	
-	/**
-	 * Retrieves the maximum number of passengers that can fit on the specified elevator.
-	 * @param elevatorNumber - elevator number whose service is being retrieved
-	 * @return number of passengers
-	 */
-	//public int getElevatorCapacity(int elevatorNumber) throws java.rmi.RemoteException;
-	
-	/**
-	 * Provides the current acceleration of the specified elevator in feet per sec^2. 
-	 * @param elevatorNumber - elevator number whose acceleration is being retrieved 
-	 * @return returns the acceleration of the indicated elevator where positive speed is acceleration and negative is deceleration
-	 */
-	//public int getElevatorAccel(int elevatorNumber) throws java.rmi.RemoteException;
-	
 }
