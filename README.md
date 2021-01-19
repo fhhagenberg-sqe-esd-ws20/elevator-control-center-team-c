@@ -11,7 +11,7 @@
 
 ## GUI overview
 The following picture should give an overview of the different parts of the GUI. The colors mark the different sections of the GUI.  
-Click ```here``` to see the image in full resolution.  
+Click [here](https://github.com/fhhagenberg-sqe-esd-ws20/elevator-control-center-team-c/raw/Documentation/doc/includes/GUI-explanation.png) to see the image in full resolution.  
 
 1. Red: On the left side there is a list showing all elevators in the building. After clicking on one of the elevators in the list the middle section, market in cyan, shows all information about this elevator. At the bottom there is also the list of floors in the building.  
 2. Cyan: All information about the elevator. On the left side in this section the manual mode can be enabled for this elevator. The right side of this section shows the stop buttons pressed inside the elevator and which floors the elevator does not service.  
