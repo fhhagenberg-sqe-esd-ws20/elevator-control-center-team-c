@@ -540,6 +540,8 @@ class UpdateDataTest {
 		Mockito.when(MockedElevatorWrapper.getElevatorFloor(0)).thenReturn(5);
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		
 		coreUpdater.refreshElevator(0);
 
@@ -780,7 +782,11 @@ class UpdateDataTest {
 		
 		// elevator1
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setConnection(true);
+
+		
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+
 		
 		String expectedStatus = "Exception in getServicesFloors() of SQElevator with floor 0 and elevator 0";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
@@ -797,7 +803,10 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.setTarget(0);
+
 		
 		String expectedStatus = "Exception in setTarget of SQElevator with floor: 0";
 		testutils.waitUntilStatusAlertHasStatus(expectedStatus, MockedStatusAlert);
@@ -814,6 +823,8 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.setTarget(0, 0);
 		
 		String expectedStatus = "Exception in setTarget of SQElevator with floor: 0 for Elevator0";
@@ -832,6 +843,8 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.refreshElevator(0);
 		
 		String expectedStatus = "Exception in getClockTick() of SQElevator";
@@ -849,6 +862,8 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.refreshElevator(0);
 		
 		String expectedStatus = "Exception in getTarget() of SQElevator 1";
@@ -866,6 +881,8 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.refreshUpDownList();
 		
 
@@ -884,6 +901,8 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.refreshUpList();
 		
 		String expectedStatus = "Exception in getFloorButtonUp of SQElevator";
@@ -901,6 +920,8 @@ class UpdateDataTest {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		coreUpdater.setConnection(true);
+
 		coreUpdater.refreshDownList();
 		
 		String expectedStatus = "Exception in getFloorButtonDown of SQElevator";
