@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -64,7 +62,7 @@ class RMIConnectionTests {
 	}
 	
 	@Test
-	void testReconnectRMIFailureTest() throws RemoteException, InterruptedException, TimeoutException {		
+	void testReconnectRMIFailureTest() throws RemoteException, InterruptedException, TimeoutException {
 		Mockito.when(MockedBuildingWrapper.getFloorNum()).thenReturn(4);
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, MockedElevators, 
