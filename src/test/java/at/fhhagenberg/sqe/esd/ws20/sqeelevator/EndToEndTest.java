@@ -272,7 +272,7 @@ class EndToEndTest {
 		});
 	}
 	
-	@Disabled("This test does not work in online Github build.")
+	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -290,7 +290,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
-	@Disabled("This test does not work in online Github build.")
+	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
@@ -308,7 +308,7 @@ class EndToEndTest {
 		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
 	}
 	
-	@Disabled("This test does not work in online Github build.")
+	@Disabled("Github CI online can't execute this test. All following tests will fail.")
 	@Test
 	void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException, TimeoutException {
 		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
