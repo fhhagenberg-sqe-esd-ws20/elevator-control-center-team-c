@@ -48,7 +48,6 @@ All tests can be categorized in the following categories.
 
 ### Coverage of classes by testfile
 Click ```here``` to see the image in full resolution.  
-```TODO```: Bild vom UML Diagramm einfügen. In dem einzeichnen welcher Test was abdeckt.  
+Click ```here``` to see the class diagram without markings and in full resolution.  
 
-
-```TODO```: Change relative image paths to abosulte github web links  
+![Class diagrams. Markings show which test tests which classes.](doc/includes/ElevatorControl_ClassDiagram_marked.png)
