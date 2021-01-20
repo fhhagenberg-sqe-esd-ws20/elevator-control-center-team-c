@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqe.esd.ws20.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -68,11 +69,11 @@ class RMIConnectionTests {
 		
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, MockedElevators, 
 				MockedmainGuiControler, StatusAlert, AutoModeAlgo, RMIConnection);
+		coreUpdater.setConnection(true);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		coreUpdater.reconnectRMI();
-		String expectedStatus = "No Elevator Connection";
+		
 
-		testutils.waitUntilStatusAlertHasStatus(expectedStatus, StatusAlert);
-		assertEquals(expectedStatus, StatusAlert.status.get());
+		assertFalse(coreUpdater.getConnection());
 	}
 }
