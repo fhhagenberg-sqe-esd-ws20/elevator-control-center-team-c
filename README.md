@@ -37,15 +37,14 @@ Download the code and open the project in eclipse (or adapt the project to your 
 - Build standalone jar: ```clean compile assembly:single```  
 
 ## Test concept
-```TODO```: Was war Whitbox, Blackbox, Unit testing, integration testing?  
-
 We used multiple test files that cover different areas of our program. Most of the tests use the TestFx test framework with Mockito.  
 All tests can be categorized in the following categories.  
-- Unit tests: Each class gets tested as its own unit. All object the unit requires are replaced by Mock-objects.
-- Controller-GUI tests: Only the GUI-controller and the GUI are tested together. All object the controller requires are replaced by Mock-objects. It is tested whether function calls and bindings to the controller are shown correctly in the GUI.
-- End-to-End tests: Every class that relies on the elevator simulator were replaced by mocks, see the class diagram below. It is tested whether an interaction with the GUI results in a correct call to the elevator simulator. 
+- Unit tests: Each class gets tested as its own unit. All object the unit requires are replaced by Mock-objects. These tests are implemented as white-box tests.  
+- Controller-GUI tests: Only the GUI-controller and the GUI are tested together. All object the controller requires are replaced by Mock-objects. It is tested whether function calls and bindings to the controller are shown correctly in the GUI. This test is implemented as white-box test.  
+- End-to-End tests: Every class that relies on the elevator simulator were replaced by mocks, see the class diagram below. It is tested whether an interaction with the GUI results in a correct call to the elevator simulator. This test is implemented as black-box test.  
+- Manual tests: Short manual tests were executed to check if the application still works in combination with the elevator simulator. The experience based test technique was used.  
 
-The static analysis results of sonarcloud were used during all tests to improve code quality and resolve bugs.
+The static analysis results of sonarcloud were used during all tests to improve code quality and resolve bugs.  
 
 
 ### Coverage of classes by testfile
