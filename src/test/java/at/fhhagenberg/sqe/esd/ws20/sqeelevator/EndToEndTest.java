@@ -645,6 +645,8 @@ class EndToEndTest {
 		startGui(robot);
 		
 		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connection lost to Elevator Simulator", robot);
+		
+		// Verifying the status here can fail, beause the connection could already be established and the status would be "Connected to elevator" then.
 		//FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connection lost to Elevator Simulator"));
 	}
 }
