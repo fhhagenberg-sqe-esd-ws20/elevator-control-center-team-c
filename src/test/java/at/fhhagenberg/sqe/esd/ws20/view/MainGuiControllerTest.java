@@ -507,6 +507,7 @@ class MainGuiControllerTest {
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
 		Mockito.verify(mockedUpdater).setTarget(4);
+		Mockito.verify(mockedUpdater).getIgnoredFloorsFromSelectedElevator();
 		Mockito.verifyNoMoreInteractions(mockedUpdater);
 	}
 	
@@ -559,10 +560,12 @@ class MainGuiControllerTest {
 	@ParameterizedTest
 	@CsvSource({"0", 	//too low
 				"30", 	//too high
-				"''"})	//empty
+				"''",	//empty
+				"8"})	//not serviced floor
 	void testButtonClickedEnteredFloorInvalid(String floor, FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
+		Mockito.when(mockedUpdater.getIgnoredFloorsFromSelectedElevator()).thenReturn(List.of(8-1));
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		robot.clickOn("#checkboxManualMode");
@@ -570,7 +573,6 @@ class MainGuiControllerTest {
 		robot.clickOn("#buttonSendToFloor");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);
-		Mockito.verifyNoMoreInteractions(mockedUpdater);
 		testutils.verifyAlertDialogHasHeader("Error");
 		robot.clickOn("OK");
 	}
