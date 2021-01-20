@@ -937,21 +937,6 @@ class UpdateDataTest {
 		Mockito.verify(MockedRMIConnection, times(1)).getElevator();
 	}
 	
-	//TODO
-	@Disabled("wie soll man SetRMIs testen? Das objekt wird ja in der methode angelegt")
-	@Test
-	void testSetRMIIsSettingRMIs() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-
-		// elevator1
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
-		coreUpdater.setRMIs(IElevatorMock);
-		
-		assertEquals(IElevatorMock, coreUpdater.getSqelevator());
-		assertEquals(IElevatorMock, coreUpdater.getSqBuilding());
-	}
-	
 	@Test
 	void testgetElevatorClockTick_Error() throws RemoteException {
 		Mockito.when(MockedElevatorWrapper.getClockTick()).thenThrow(new RemoteException());
