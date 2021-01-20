@@ -981,4 +981,20 @@ class UpdateDataTest {
 		assertEquals(1234, coreUpdater.getCurrentTick());
 	}
 	
+	@Test
+	void testGetElevatorIgnoredListNoElevators() {
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		assertTrue(coreUpdater.getIgnoredFloorsFromSelectedElevator().isEmpty());
+	}
+	
+	@Test
+	void testGetElevatorIgnoredList() throws RemoteException {
+		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
+		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
+		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
+		
+		System.out.println(coreUpdater.getIgnoredFloorsFromSelectedElevator());
+		assertFalse(coreUpdater.getIgnoredFloorsFromSelectedElevator().isEmpty());
+	}
 }

@@ -175,6 +175,14 @@ public class MainGuiController {
     		//this should never happen, the textformatter of the textfield should not allow input that is <=0
     		throw new NumberFormatException("MainGuiController.buttonSendToFloor() floorNumber<=0");
     	}
+    	//check if target floor is an ignored one -> don't move the elevator to this ignored floor
+    	if(updateData.getIgnoredFloorsFromSelectedElevator().contains(floorNumber-1)) {
+    		Alert alert = new Alert(AlertType.ERROR, "The entered floor number (" + floorNumber + ") is not serviced!");
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("/icons8-elevator-96.png"));
+			alert.showAndWait();
+    		return;
+    	}
     	
     	//send to UpdateData and set as new floor
     	//internal the floors are in range 0 to numFloorsInBuilding-1. But the user enters 1 to numFloorsInBuilding. To be have to subtract 1 here to convert the ranges.

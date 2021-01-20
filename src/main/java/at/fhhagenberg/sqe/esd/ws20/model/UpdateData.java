@@ -278,6 +278,20 @@ public class UpdateData extends TimerTask {
     		mainGuiController.update(floorModel, elevatorsList.get(selectedElevator));
     	}
     }
+
+	/**
+	 * Returns the list of ignored floors for the currently selected elevator
+	 * 
+	 * @return	a list of ignored floors
+	 */
+	public List<Integer> getIgnoredFloorsFromSelectedElevator() {
+		try {
+			return elevatorsList.get(selectedElevator).getIgnoredFloorsList();
+		} catch (IndexOutOfBoundsException e) {
+			statusAlertContext.setStatus("Exception in getIgnoredFloorsFromSelectedElevator()");
+			return new ArrayList<>();
+		}
+	}
     
     
     /**
