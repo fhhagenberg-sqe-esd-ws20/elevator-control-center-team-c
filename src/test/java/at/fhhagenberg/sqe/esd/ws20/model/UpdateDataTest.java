@@ -34,6 +34,7 @@ import sqelevator.IElevator;
  * Testing Class UpdateData
  *
  * @author Florian Atzenhofer
+* @since 2021-01-16 00:40
  */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
@@ -951,48 +952,27 @@ class UpdateDataTest {
 		assertEquals(IElevatorMock, coreUpdater.getSqBuilding());
 	}
 	
-	
 	@Test
-	void testUpdateAutoModeTickReadReadFail() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
+	void testgetElevatorClockTick_Error() throws RemoteException {
 		Mockito.when(MockedElevatorWrapper.getClockTick()).thenThrow(new RemoteException());
-		
-		// elevator1
-		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
-		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
-		
-		assertTrue(coreUpdater.updateAutoMode());
-	}
-	
-	@Test
-	void testUpdateAutoModeNoTick() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long)0, (long)0, (long)0);
 
 		// elevator1
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		assertFalse(coreUpdater.updateAutoMode());
-		
-		Mockito.verify(MockedAutoModeAlgo, never()).updateAllElevatorTargets();
+		assertTrue(coreUpdater.updateElevatorClockTick());
 	}
 	
 	@Test
-	void testUpdateAutoModeDoUpdate() throws RemoteException {
-		Mockito.when(MockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(MockedBuilding.getNumFloors()).thenReturn(4);
-		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long)1, (long)2, (long)3);
+	void testgetElevatorClockTick() throws RemoteException {
+		Mockito.when(MockedElevatorWrapper.getClockTick()).thenReturn((long) 1234);
 
 		// elevator1
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		assertFalse(coreUpdater.updateAutoMode());
-		
-		Mockito.verify(MockedAutoModeAlgo, times(1)).updateAllElevatorTargets();
+		assertFalse(coreUpdater.updateElevatorClockTick());
+		assertEquals(1234, coreUpdater.getCurrentTick());
 	}
 	
 }

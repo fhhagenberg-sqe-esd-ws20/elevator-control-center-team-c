@@ -20,7 +20,7 @@ import sqelevator.IElevator;
  * Represents the updater, which refreshes all data of the elevator every timer tick
  *
  * @author Florian Atzenhofer (s1910567001)
- * @since 2020-12-31 09:10
+ * @since 2021-01-18 20:00
  */
 public class UpdateData extends TimerTask {
 
@@ -126,6 +126,15 @@ public class UpdateData extends TimerTask {
 	}
 	
 	
+	public boolean updateElevatorClockTick() {
+		try {
+			currentTick = sqElevator.getClockTick();
+			return false;
+		} catch (RemoteException e) {
+			return true;
+		}
+	}
+	
     /**
      * Periodic task refreshes properties of the elevator periodically
      */
@@ -136,6 +145,16 @@ public class UpdateData extends TimerTask {
         	if(sqElevator != null && sqBuilding != null) {
         	
             	boolean error = false;
+            	
+            	error |= updateElevatorClockTick();
+            	//Get simulator time because if the time is the same, no update needs to be done
+            	//if time is running backwards -> simulator was restarted -> Do a reconnect and new initialization
+
+        		if(currentTick < lastTick) 
+        		{
+        			error |= true;	
+        		}
+        		
             	// refresh list with the up and down buttons of the floors
             	error |= refreshUpDownList();
             	
@@ -149,10 +168,12 @@ public class UpdateData extends TimerTask {
             	{
     	    		statusAlertContext.setStatus("Out of sync with the simulator. We are to slow with polling values from the Elevator Interface.");
             	}
-            	else if(!error) {
-            		error |= updateAutoMode();
+            	else if(!error && currentTick > lastTick) {
+            		autoModeAlgorithmContext.updateAllElevatorTargets();
             	}
-
+            	
+            	lastTick = currentTick;
+            	
             	if(error) {
             		//try to reinitialize rmi
             		reconnectRMI();
@@ -171,29 +192,6 @@ public class UpdateData extends TimerTask {
         catch (Exception ex) {
         	statusAlertContext.setStatus("Exception when getting values from SQelevator: " + ex.getClass() + ": " + ex.getLocalizedMessage());
         }
-    }
-    
-    /**
-     * Update Automatic Mode so new targets can be calculated
-     * @return error status (true = error)
-     */
-    public boolean updateAutoMode() {
-    	
-    	long tick;
-    	
-		try {
-			tick = sqElevator.getClockTick();
-		} catch (RemoteException e) {
-			return true;
-		}
-		
-		//Make sure elevator has updated data
-    	if(tick != lastTick) {
-    		lastTick = tick;
-    		autoModeAlgorithmContext.updateAllElevatorTargets();
-    	}
-    	
-    	return false;	
     }
     
 
@@ -567,6 +565,7 @@ public class UpdateData extends TimerTask {
 		initializeServicedFloors();
 		autoModeAlgorithmContext.init(buildingModel, elevatorsList, this);
 		mainGuiController.reUpdate();
+		lastTick = 0;
     }
     
     /**
@@ -637,6 +636,14 @@ public class UpdateData extends TimerTask {
     	return sqBuilding;
     }
     
+    /**
+     * Get the CurrentTick
+     * @return CurrentTick
+     */
+    public long getCurrentTick()
+    {
+    	return currentTick;
+    }
     
 	private IElevatorWrapper sqElevator;
 	private IBuildingWrapper sqBuilding;
@@ -652,4 +659,5 @@ public class UpdateData extends TimerTask {
     private AutoMode autoModeAlgorithmContext;
     private IRMIConnection rmiConnectionContext;
     private long lastTick = 0;
+    private long currentTick = 0;
 }

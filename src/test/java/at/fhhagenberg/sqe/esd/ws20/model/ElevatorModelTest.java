@@ -9,6 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.sqe.esd.ws20.sqeelevator.IElevatorWrapper;
 
+/**
+ * Tests the model of the elevator
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-16 00:40
+ */
 class ElevatorModelTest {
 
     @Test
@@ -131,6 +137,5 @@ class ElevatorModelTest {
     	
         assertEquals(IElevatorWrapper.ElevatorDoorStatus.ELEVATOR_DOORS_OPEN, elevatorModel.getDoors());
     }
-    
     
 }

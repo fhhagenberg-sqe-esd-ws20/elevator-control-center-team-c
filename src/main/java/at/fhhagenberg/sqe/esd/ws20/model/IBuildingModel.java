@@ -32,5 +32,4 @@ public interface IBuildingModel {
 	 * @return the number of floors in the building.
 	 */
 	int getNumFloors();
-
 }

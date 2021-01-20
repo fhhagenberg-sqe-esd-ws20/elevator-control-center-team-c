@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -554,49 +556,17 @@ class MainGuiControllerTest {
 	
 	
 	@Disabled("Github CI online can't execute this test. All following tests will fail.")
-	@Test
-	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) {
+	@ParameterizedTest
+	@CsvSource({"0", 	//too low
+				"30", 	//too high
+				"''"})	//empty
+	void testButtonClickedEnteredFloorInvalid(String floor, FxRobot robot) {
 		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
 		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
 		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
 		
 		robot.clickOn("#checkboxManualMode");
-		robot.doubleClickOn("#textfieldFloorNumber").write("0");
-		robot.clickOn("#buttonSendToFloor");
-		
-		Mockito.verify(mockedUpdater).setSelectedElevator(0);
-		Mockito.verifyNoMoreInteractions(mockedUpdater);
-		testutils.verifyAlertDialogHasHeader("Error");
-		robot.clickOn("OK");
-	}
-	
-	@Disabled("Github CI online can't execute this test. All following tests will fail.")
-	@Test
-	void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) {
-		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
-		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		
-		robot.clickOn("#checkboxManualMode");
-		robot.doubleClickOn("#textfieldFloorNumber").write("30");
-		robot.clickOn("#buttonSendToFloor");
-		
-		Mockito.verify(mockedUpdater).setSelectedElevator(0);
-		Mockito.verifyNoMoreInteractions(mockedUpdater);
-		testutils.verifyAlertDialogHasHeader("Error");
-		//robot.clickOn("OK");
-		robot.type(KeyCode.ESCAPE);
-	}
-	
-	@Disabled("Github CI online can't execute this test. All following tests will fail.")
-	@Test
-	void testButtonClickedEnteredFloorEmpty(FxRobot robot) {
-		Mockito.when(mockedBuilding.getNumElevators()).thenReturn(2);
-		Mockito.when(mockedBuilding.getNumFloors()).thenReturn(25);
-		mainGuiController.register(mockedUpdater, mockedBuilding, statusAlert, mockedAutoModeAlgorithm);
-		
-		robot.clickOn("#checkboxManualMode");
-		robot.doubleClickOn("#textfieldFloorNumber").write("");
+		robot.doubleClickOn("#textfieldFloorNumber").write(floor);
 		robot.clickOn("#buttonSendToFloor");
 		
 		Mockito.verify(mockedUpdater).setSelectedElevator(0);

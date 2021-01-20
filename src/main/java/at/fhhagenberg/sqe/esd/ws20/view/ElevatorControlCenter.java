@@ -18,6 +18,13 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+/**
+ * Starts the gui an sets up the MVC. Creates all needed objects and starts the
+ * timer scheduler.
+ * 
+ * @author Florian Atzenhofer (s1910567001)
+ * @since 2021-01-18 22:26
+ */
 public class ElevatorControlCenter extends Application {
 
 	MainGuiController mainGuiController;
@@ -34,7 +41,7 @@ public class ElevatorControlCenter extends Application {
 	}
 	
 	/**
-	 * Set up app structure and show gui. All controls are saved in the fxml file TODO and use localization.
+	 * Set up app structure and show gui. All controls are saved in the fxml file.
 	 * 
 	 * @param stage the stage for the gui
 	 * @param rmiConnection rmi connection to elevator simulator or mock object 
@@ -43,7 +50,6 @@ public class ElevatorControlCenter extends Application {
 		Parent root = null;
 		FXMLLoader loader;
 		try {
-			//TODO Readd localization at the end of the project after all strings were defined and externalized
 			loader = new FXMLLoader(getClass().getResource("/MainGui.fxml"));
 			root = loader.load();
 		} catch (IOException e) {

@@ -272,59 +272,6 @@ class EndToEndTest {
 		});
 	}
 	
-	@Disabled("This test does not work in online Github build.")
-	@Test
-	void testButtonClickedEnteredFloorOutsideBoundsLower(FxRobot robot) throws RemoteException, TimeoutException {
-		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
-		
-		//robot.clickOn("#checkboxManualMode");
-		robot.doubleClickOn("#textfieldFloorNumber").write("0");
-		robot.clickOn("#buttonSendToFloor");
-		
-		testutils.verifyAlertDialogHasHeader("Error");
-		robot.clickOn("OK");
-		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
-	}
-	
-	@Disabled("This test does not work in online Github build.")
-	@Test
-	void testButtonClickedEnteredFloorOutsideBoundsUpper(FxRobot robot) throws RemoteException, TimeoutException {
-		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
-		
-		//robot.clickOn("#checkboxManualMode");
-		robot.doubleClickOn("#textfieldFloorNumber").write("30");
-		robot.clickOn("#buttonSendToFloor");
-		
-		testutils.verifyAlertDialogHasHeader("Error");
-		robot.clickOn("OK");
-		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
-	}
-	
-	@Disabled("This test does not work in online Github build.")
-	@Test
-	void testButtonClickedEnteredFloorEmpty(FxRobot robot) throws RemoteException, TimeoutException {
-		Mockito.when(mockedElevators.getElevatorNum()).thenReturn(2);
-		Mockito.when(mockedElevators.getFloorNum()).thenReturn(25);
-		startGui(robot);
-		testutils.waitUntilListviewHasCellText("#listviewElevators", "Elevator 2", robot);
-		testutils.waitUntilLabelTextChangedTo("#labelStatusText", "Connected to Elevator", robot);
-		
-		//robot.clickOn("#checkboxManualMode");
-		robot.doubleClickOn("#textfieldFloorNumber").write("");
-		robot.clickOn("#buttonSendToFloor");
-		
-		testutils.verifyAlertDialogHasHeader("Error");
-		robot.clickOn("OK");
-		FxAssert.verifyThat("#labelStatusText", LabeledMatchers.hasText("Connected to Elevator"));
-	}
 	
 	@Disabled("This does not work at 0.1 speed. The target gets reset back to original to fast.")
 	@Test

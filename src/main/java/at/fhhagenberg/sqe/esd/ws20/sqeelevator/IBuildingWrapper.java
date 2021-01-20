@@ -1,5 +1,11 @@
 package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
+/**
+ * Wraps all elevator functions related to the building
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2020-12-28 16:00
+ */
 public interface IBuildingWrapper {
 
 	/* **********************************************************************************

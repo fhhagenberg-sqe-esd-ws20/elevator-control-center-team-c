@@ -2,8 +2,12 @@ package at.fhhagenberg.sqe.esd.ws20.sqeelevator;
 
 import java.rmi.RemoteException;
 
-//TODO: Move this file to test folder, when real simulator is available
-
+/**
+ * Stub for the elevator wrapper. Always returns hardcoded values.
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-04 09:40
+ */
 public class ElevatorWrapperStub implements IElevatorWrapper, IBuildingWrapper  {
 
 	@Override

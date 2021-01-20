@@ -57,5 +57,4 @@ public interface IFloorModel {
 	 * @return the list of down buttons pressed
 	 */
 	List<Integer> getDownButtonsList();
-
 }

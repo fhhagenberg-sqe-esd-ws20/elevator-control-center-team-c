@@ -16,6 +16,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testfx.framework.junit5.ApplicationExtension;
 
+/**
+ * Tests the base class Automode for all algorithm implementations
+ * 
+ * @author Stefan Wohlrab (s1910567010)
+ * @since 2021-01-16 23:00
+ */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(ApplicationExtension.class)
 class AutoModeTest extends AutoMode {
