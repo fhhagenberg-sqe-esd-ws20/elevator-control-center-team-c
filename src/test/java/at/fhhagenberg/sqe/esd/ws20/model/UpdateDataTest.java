@@ -994,7 +994,6 @@ class UpdateDataTest {
 		coreUpdater = new UpdateData(MockedBuilding, Mockedfloor, Elevators, MockedmainGuiControler, MockedStatusAlert, MockedAutoModeAlgo, MockedRMIConnection);
 		coreUpdater.setSqs(MockedBuildingWrapper, MockedElevatorWrapper);
 		
-		System.out.println(coreUpdater.getIgnoredFloorsFromSelectedElevator());
 		assertFalse(coreUpdater.getIgnoredFloorsFromSelectedElevator().isEmpty());
 	}
 }
