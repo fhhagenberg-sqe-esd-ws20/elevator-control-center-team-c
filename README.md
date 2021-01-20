@@ -23,14 +23,14 @@ At the bottom of the window the latest status/error message is shown.
 
 
 ## How to download and run
-### Prerequisites
-1. Working installation of Java SE/JDK version >=11 (major version >=55)  
-2. Working installation of Maven 3
-### Standalone jar
+Download the elevator simulator from [latest release](https://github.com/winterer/elevator/releases/latest).
+### Standalone
+Make sure you have a working installation of Java SE/JDK version >=11 (major version >=55).  
+
 Download standalone jar from included assets from [latest release](https://github.com/fhhagenberg-sqe-esd-ws20/elevator-control-center-team-c/releases/latest).
 
 ### Build your own
-Download the code and open the project in eclipse (or adapt the project to your IDE). Make sure Maven is installed and working correctly.
+Download the code and open the project in eclipse (or adapt the project to your IDE). Make sure Maven 3 is installed and working correctly.
 #### Relevant Maven commands
 - Run: ```clean javafx:run```  
 - Generate code coverage: ```verify```  
@@ -41,10 +41,12 @@ Download the code and open the project in eclipse (or adapt the project to your 
 
 We used multiple test files that cover different areas of our program. Most of the tests use the TestFx test framework with Mockito.  
 All tests can be categorized in the following categories.  
-- Unit tests: 
-- Controller-GUI tests: 
-- End-to-End tests: 
-- ...
+- Unit tests: Each class gets tested as its own unit. All object the unit requires are replaced by Mock-objects.
+- Controller-GUI tests: Only the GUI-controller and the GUI are tested together. All object the controller requires are replaced by Mock-objects. It is tested whether function calls and bindings to the controller are shown correctly in the GUI.
+- End-to-End tests: Every class that relies on the elevator simulator were replaced by mocks, see the class diagram below. It is tested whether an interaction with the GUI results in a correct call to the elevator simulator. 
+
+The static analysis results of sonarcloud were used during all tests to improve code quality and resolve bugs.
+
 
 ### Coverage of classes by testfile
 Click [here](https://github.com/fhhagenberg-sqe-esd-ws20/elevator-control-center-team-c/raw/Documentation/doc/includes/ElevatorControl_ClassDiagram_marked.png) to see the image in full resolution.  
