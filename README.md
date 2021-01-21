@@ -48,6 +48,7 @@ The static analysis results of sonarcloud were used during all tests to improve 
 
 
 ### Coverage of classes by testfile
+The colors have no special meaning or connection to each other, they are used for better visual differentiation in the image.  
 Click [here](https://github.com/fhhagenberg-sqe-esd-ws20/elevator-control-center-team-c/raw/Documentation/doc/includes/ElevatorControl_ClassDiagram_marked.png) to see the image in full resolution.  
 Click [here](https://github.com/fhhagenberg-sqe-esd-ws20/elevator-control-center-team-c/raw/Documentation/doc/includes/ElevatorControl_ClassDiagram_full.png) to see the class diagram without markings and in full resolution.  
 
